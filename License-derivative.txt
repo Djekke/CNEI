@@ -1,0 +1,5 @@
+This mod uses some original CoreMod files made by AtomicTorch Studio:
+
+\Scripts\ClientComponents\Input\GameButton.cs
+\UI\Controls\Game\HUD\HUDButtonsBar.xaml
+\UI\Controls\Game\HUD\Data\ViewModelHUD.cs
