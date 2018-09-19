@@ -35,7 +35,12 @@
                      IsCached="True">
 
         <Grid>
-            <TabControl Style="{StaticResource TabControlCompactStyleDockMode}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TabControl Style="{StaticResource TabControlCompactStyleDockMode}"
+                        Grid.Column="1">
                 <TabItem Header="Items">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -54,7 +59,7 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                
+
                 <TabItem Header="Structures">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -72,7 +77,7 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                
+
                 <TabItem Header="Creatures">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -100,9 +105,15 @@
                             <TextBlock Text="Settings" />
                         </StackPanel>
                     </TabItem.Header>
-                    
                 </TabItem>
             </TabControl>
+
+            <ContentControl Template="{StaticResource SidePanelTemplate}"
+                            Visibility="{Binding IsCreativePanelVisibile, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Grid.Column="0">
+                <TextBlock Text="Creative Panel"
+                           HorizontalAlignment="Center" />
+            </ContentControl>
         </Grid>
 
     </core:GameWindow>

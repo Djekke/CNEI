@@ -2,6 +2,7 @@
 {
     using AtomicTorch.CBND.CoreMod.Characters;
     using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
+    using AtomicTorch.CBND.CoreMod.Systems.ServerOperator;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.CBND.GameApi.Scripting;
@@ -23,7 +24,15 @@
         public IReadOnlyList<ViewModelStructure> StructuresList { get; }
 
         public IReadOnlyList<ViewModelCreature> CreaturesList { get; }
-        
+
+        private bool IsCreativeModeOn => ServerOperatorSystem.ClientIsOperator();
+
+        // TODO: Update this on Operator status change
+        public bool IsCreativePanelVisibile
+        {
+            get => IsCreativeModeOn;
+        }
+
         public ViewModelWindowCNEIMenu()
         {
             this.ItemsList = GetAllItems()
