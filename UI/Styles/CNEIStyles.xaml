@@ -96,30 +96,23 @@
 
     <!-- Side Panel template -->
     <ControlTemplate x:Key="SidePanelTemplate">
-        <Grid x:Name="CreativePanel"
+
+        <Grid x:Name="LayoutRoot"
               Margin="{StaticResource SidePanelMarginLeft}"
-              Width="{StaticResource SidePanelWidth}">
+              Width="{StaticResource SidePanelWidth}"
+              Background="{StaticResource WindowBackground}">
             <Border Style="{StaticResource WidgetBackgroundBorder}" />
 
             <Border BorderThickness="1,1,0,1"
                     CornerRadius="3,0,0,3">
-                <Grid Margin="10"
-                      RenderTransformOrigin="0.5,0.5">
-                    <Grid.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <SkewTransform />
-                            <RotateTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </Grid.RenderTransform>
-
-                    <ContentPresenter KeyboardNavigation.TabNavigation="Cycle" />
+                <Grid Margin="10">
+                    <ContentPresenter />
                 </Grid>
             </Border>
 
-            <Grid x:Name="WidgetBackground">
-                <Border CornerRadius="3" Background="{StaticResource WidgetBackgroundImageTexture}" />
+            <Grid x:Name="WidgetBackground"
+                  IsHitTestVisible="False">
+                <!--<Border CornerRadius="3" Background="{StaticResource WidgetBackgroundImageTexture}" />-->
                 <Border VerticalAlignment="Top" Height="10" CornerRadius="3"
                         Background="{StaticResource WidgetBackgroundGradientHorizontal}" />
                 <Border VerticalAlignment="Bottom" Height="10" CornerRadius="3"

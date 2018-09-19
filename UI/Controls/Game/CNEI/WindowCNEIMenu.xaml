@@ -2,6 +2,7 @@
     x:Class="AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.WindowCNEIMenu"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cnei="clr-namespace:AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI"
     xmlns:data="clr-namespace:AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data"
     xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
@@ -111,8 +112,7 @@
             <ContentControl Template="{StaticResource SidePanelTemplate}"
                             Visibility="{Binding IsCreativePanelVisibile, Converter={StaticResource BoolToVisibilityConverter}}"
                             Grid.Column="0">
-                <TextBlock Text="Creative Panel"
-                           HorizontalAlignment="Center" />
+                <cnei:CreativePanel />
             </ContentControl>
         </Grid>
 

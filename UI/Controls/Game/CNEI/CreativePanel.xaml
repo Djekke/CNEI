@@ -1,0 +1,22 @@
+﻿<base:BaseUserControl
+    x:Class="AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.CreativePanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
+
+    <DockPanel LastChildFill="False">
+        <TextBlock Text="Creative Panel"
+                   HorizontalAlignment="Center"
+                   DockPanel.Dock="Top" />
+        
+        <StackPanel Orientation="Horizontal"
+                    DockPanel.Dock="Top"
+                    HorizontalAlignment="Center"
+                    Margin="0,3,0,3">
+            <Button Content="Heal"
+                    Command="{Binding Heal}" />
+        </StackPanel>
+
+    </DockPanel>
+    
+</base:BaseUserControl>
