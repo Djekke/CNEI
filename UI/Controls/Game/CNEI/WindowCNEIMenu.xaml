@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cnei="clr-namespace:AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI"
     xmlns:data="clr-namespace:AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data"
-    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=AtomicTorch.CBND.CoreMod" 
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
 
     <base:BaseUserControl.Resources>
