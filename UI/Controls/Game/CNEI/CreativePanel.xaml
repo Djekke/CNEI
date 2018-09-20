@@ -4,18 +4,73 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
 
+    <base:BaseUserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </base:BaseUserControl.Resources>
+
     <DockPanel LastChildFill="False">
         <TextBlock Text="Creative Panel"
                    HorizontalAlignment="Center"
                    DockPanel.Dock="Top" />
         
-        <StackPanel Orientation="Horizontal"
-                    DockPanel.Dock="Top"
-                    HorizontalAlignment="Center"
-                    Margin="0,3,0,3">
-            <Button Content="Heal"
-                    Command="{Binding Heal}" />
-        </StackPanel>
+        <WrapPanel Orientation="Horizontal"
+                   DockPanel.Dock="Top"
+                   HorizontalAlignment="Center">
+            <WrapPanel.Resources>
+                <Style TargetType="{x:Type Button}"
+                       BasedOn="{StaticResource IconButton}">
+                    <Setter Property="Margin" Value="3" />
+                </Style>
+                <Style TargetType="{x:Type ToggleButton}"
+                       BasedOn="{StaticResource IconToggleButton}">
+                    <Setter Property="Margin" Value="3" />
+                </Style>
+            </WrapPanel.Resources>
+            <Button Command="{Binding SetTimeOfDay}"
+                    CommandParameter="6"
+                    base:ToolTipServiceExtend.ToolTip="Set time at sunrise">
+                <Button.Content>
+                    <Image Source="/UI/Images/Icons/CNEI/icon_sunrise.png" />
+                </Button.Content>
+            </Button>
+            <Button Command="{Binding SetTimeOfDay}"
+                    CommandParameter="12"
+                    base:ToolTipServiceExtend.ToolTip="Set time at noon">
+                <Button.Content>
+                    <Image Source="/UI/Images/Icons/CNEI/icon_sun.png" />
+                </Button.Content>
+            </Button>
+            <Button Command="{Binding SetTimeOfDay}"
+                    CommandParameter="20"
+                    base:ToolTipServiceExtend.ToolTip="Set time at sunset">
+                <Button.Content>
+                    <Image Source="/UI/Images/Icons/CNEI/icon_sunset.png" />
+                </Button.Content>
+            </Button>
+            <Button Command="{Binding SetTimeOfDay}"
+                    CommandParameter="0"
+                    base:ToolTipServiceExtend.ToolTip="Set time at midnight">
+                <Button.Content>
+                    <Image Source="/UI/Images/Icons/CNEI/icon_moon.png" />
+                </Button.Content>
+            </Button>
+            <Button Command="{Binding Heal}"
+                    base:ToolTipServiceExtend.ToolTip="Heal myself">
+                <Button.Content>
+                    <Image Source="/UI/Images/Icons/CNEI/icon_heart.png" />
+                </Button.Content>
+            </Button>
+            <ToggleButton Command="{Binding GodModeToggle}"
+                          base:ToolTipServiceExtend.ToolTip="Toggle god mode">
+                <ToggleButton.Content>
+                    <Image Source="/UI/Images/Icons/CNEI/icon_godmod.png" />
+                </ToggleButton.Content>
+            </ToggleButton>
+        </WrapPanel>
 
     </DockPanel>
     

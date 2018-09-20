@@ -8,10 +8,27 @@
     {
         public BaseCommand Heal { get; }
 
+        public BaseCommand SetTimeOfDay { get; }
+
+        public BaseCommand GodModeToggle { get; }
+
+        private bool IsGodModeOn = false;
+
         public ViewModelCreativePanel()
         {
-            this.Heal = new ActionCommand(() => 
-                                ConsoleCommandsSystem.SharedExecuteConsoleCommand("/player.heal"));
+            this.Heal = new ActionCommand(() => ExecuteCommand("/player.heal"));
+            this.SetTimeOfDay = new ActionCommandWithParameter(time =>
+                    ExecuteCommand("/admin.setTimeOfDay " + time));
+            this.GodModeToggle = new ActionCommand(() =>
+                {
+                    this.IsGodModeOn = !this.IsGodModeOn;
+                    ExecuteCommand("/player.setInvincibility " + this.IsGodModeOn);
+                });
+        }
+
+        private void ExecuteCommand(string command)
+        {
+            ConsoleCommandsSystem.SharedExecuteConsoleCommand(command);
         }
     }
 }
