@@ -6,6 +6,7 @@
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.CBND.GameApi.Scripting;
+    using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using AtomicTorch.GameEngine.Common.Extensions;
     using System;
     using System.Collections.Generic;
@@ -33,6 +34,8 @@
             get => IsCreativeModeOn;
         }
 
+        public BaseCommand ShowDetails { get; }
+
         public ViewModelWindowCNEIMenu()
         {
             this.ItemsList = GetAllItems()
@@ -44,6 +47,7 @@
             this.CreaturesList = GetAllCreatures()
                                     .Select(creature => new ViewModelCreature(creature))
                                     .ToList();
+            this.ShowDetails = new ActionCommand(() => WindowCNEIDetails.Open());
         }
 
         protected override void DisposeViewModel()

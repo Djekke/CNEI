@@ -106,6 +106,8 @@
                             <TextBlock Text="Settings" />
                         </StackPanel>
                     </TabItem.Header>
+                    <Button Content="Open Details Window"
+                            Command="{Binding ShowDetails}" />
                 </TabItem>
             </TabControl>
 

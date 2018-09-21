@@ -1,0 +1,36 @@
+﻿<core:BaseUserControlWithWindow
+    x:Class="AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.WindowCNEIDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cnei="clr-namespace:AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI"
+    xmlns:data="clr-namespace:AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=AtomicTorch.CBND.CoreMod"
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
+
+    <core:GameWindow x:Name="GameWindow"
+                     Width="{StaticResource GameMenuStandardWindowWidth}"
+                     Height="{StaticResource GameMenuStandardWindowHeight}"
+                     IsCached="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Grid.Row="0">
+                <TextBlock Text="Details window ( " />
+                <TextBlock Text="{Binding CurrentWindowNumber}" />
+                <TextBlock Text=" / " />
+                <TextBlock Text="{Binding TotalWindowsCount}" />
+                <TextBlock Text=" )" />
+            </StackPanel>
+
+            <cnei:EntityDetails DataContext="{Binding SelectedWindow}"
+                                Grid.Row="1" />
+
+
+        </Grid>
+    </core:GameWindow>
+</core:BaseUserControlWithWindow>
