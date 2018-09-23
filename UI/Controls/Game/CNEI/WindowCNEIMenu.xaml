@@ -12,21 +12,8 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+                <ResourceDictionary Source="Data/EntityTemplates/ProtoEntityDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <DataTemplate DataType="{x:Type data:ViewModelEntity}">
-                <Border>
-                    <!-- Icon -->
-                    <Rectangle Fill="{Binding Icon}" Width="32" Height="32" />
-                    <!-- Tooltip -->
-                    <base:ToolTipServiceExtend.ToolTip>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Title}" FontWeight="Bold" />
-                            <TextBlock Text="{Binding Type}" FontWeight="Bold" />
-                        </StackPanel>
-                    </base:ToolTipServiceExtend.ToolTip>
-                </Border>
-            </DataTemplate>
 
         </ResourceDictionary>
     </base:BaseUserControl.Resources>

@@ -9,49 +9,7 @@
 
     public class EntityList
     {
-        private static IReadOnlyList<IProtoItem> allItems;
-
-        private static IReadOnlyList<IProtoObjectStructure> allStructures;
-
-        private static IReadOnlyList<IProtoCharacterMob> allCreatures;
-
         private static IReadOnlyList<IProtoEntity> allEntity;
-
-        public static IReadOnlyList<IProtoItem> AllItems
-        {
-            get
-            {
-                if (allItems == null)
-                {
-                    allItems = Api.FindProtoEntities<IProtoItem>();
-                }
-                return allItems;
-            }
-        }
-
-        public static IReadOnlyList<IProtoObjectStructure> AllStructures
-        {
-            get
-            {
-                if (allStructures == null)
-                {
-                    allStructures = Api.FindProtoEntities<IProtoObjectStructure>();
-                }
-                return allStructures;
-            }
-        }
-
-        public static IReadOnlyList<IProtoCharacterMob> AllCreatures
-        {
-            get
-            {
-                if (allCreatures == null)
-                {
-                    allCreatures = Api.FindProtoEntities<IProtoCharacterMob>();
-                }
-                return allCreatures;
-            }
-        }
 
         public static IReadOnlyList<IProtoEntity> AllEntity
         {

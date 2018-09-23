@@ -18,8 +18,7 @@
 
     public class ViewModelWindowCNEIMenu : BaseViewModel
     {
-        private readonly IReadOnlyList<ViewModelEntity> allEntities =
-            EntityList.AllEntity.Select(e => new ViewModelEntity(e)).ToList().AsReadOnly();
+        private readonly IReadOnlyList<ProtoEntityViewModel> allEntities;
 
         private string searchText = string.Empty;
 
@@ -27,7 +26,7 @@
 
         public int CurrentEntityCount => this.CurrentEntityList.Count;
 
-        public IReadOnlyList<ViewModelEntity> CurrentEntityList { get; private set; }
+        public IReadOnlyList<ProtoEntityViewModel> CurrentEntityList { get; private set; }
 
         public Visibility VisibilitySettings { get; set; } = Visibility.Collapsed;
 
@@ -61,6 +60,10 @@
 
         public ViewModelWindowCNEIMenu()
         {
+            if (allEntities == null)
+            {
+                allEntities = GetAllEntitiesVMList();
+            }
             UpdateEntitiesList();
 
             this.ShowDetails = new ActionCommand(() => WindowCNEIDetails.Open());
@@ -79,17 +82,45 @@
         {
             if (this.CurrentEntityList == null)
             {
-                //this.CurrentEntityList = new List<ViewModelEntity> { new ViewModelEntity(Api.GetProtoEntity<ObjectConstructionSite>()) };
+                //this.CurrentEntityList = new List<ProtoEntityViewModel> { new ProtoEntityViewModel(Api.GetProtoEntity<ObjectConstructionSite>()) };
                 //this.CurrentEntityList = this.allEntities.Where(VME => VME.ProtoEntity is IProtoItem).ToList();
-                this.CurrentEntityList = this.allEntities;
+                this.CurrentEntityList = this.allEntities.ToList();
             }
         }
 
-        private List<IProtoEntity> GetAllItems()
+        private IReadOnlyList<ProtoEntityViewModel> GetAllEntitiesVMList()
         {
-            var list = EntityList.AllEntity.ToList();
-            list.SortBy(r => r.Id, StringComparer.Ordinal);
-            return list;
+            var allEntitiesList = EntityList.AllEntity;
+            List<ProtoEntityViewModel> allEntitiesVMList = new List<ProtoEntityViewModel>();
+            foreach (var entity in allEntitiesList)
+            {
+                var entityType = entity.GetType();
+                bool templateFound = false;
+                Type type;
+                do
+                {
+                    type = Type.GetType("AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data."
+                                + GetNameWithoutGenericArity(entityType.Name) + "ViewModel");
+                    if (type != null)
+                    {
+                        templateFound = true;
+                        allEntitiesVMList.Add((ProtoEntityViewModel)Activator.CreateInstance(type, new object[] { entity }));
+                    }
+                    entityType = entityType.BaseType;
+                } while ((entityType.BaseType != null) && (!templateFound));
+                if (entityType == null)
+                {
+                    Api.Logger.Error("Template for " + entity + "not found");
+                    allEntitiesVMList.Add(new ProtoEntityViewModel(entity));
+                }
+            }
+            return allEntitiesVMList.AsReadOnly();
+        }
+
+        private string GetNameWithoutGenericArity(string s)
+        {
+            int index = s.IndexOf('`');
+            return index == -1 ? s : s.Substring(0, index);
         }
     }
 }

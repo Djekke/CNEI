@@ -7,11 +7,11 @@
 
     public class ViewModelWindowCNEIDetails : BaseViewModel
     {
-        public List<ViewModelEntity> EntityList { get; set; }
+        public List<ProtoEntityViewModel> EntityList { get; set; }
 
-        private ViewModelEntity selectedEntity;
+        private ProtoEntityViewModel selectedEntity;
 
-        public ViewModelEntity SelectedEntity
+        public ProtoEntityViewModel SelectedEntity
         {
             get => this.selectedEntity;
             set

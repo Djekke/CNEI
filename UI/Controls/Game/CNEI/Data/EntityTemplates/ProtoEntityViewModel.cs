@@ -7,15 +7,11 @@
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using System.Reflection;
 
-    public class ViewModelEntity : BaseViewModel
+    public class ProtoEntityViewModel : BaseViewModel
     {
         public virtual IProtoEntity ProtoEntity { get; private set; }
 
-        public ViewModelEntity()
-        {
-        }
-
-        public ViewModelEntity(IProtoEntity entity)
+        public ProtoEntityViewModel(IProtoEntity entity)
         {
             this.ProtoEntity = entity;
             this.Title = entity.Name;
@@ -23,18 +19,19 @@
             this.Type = entity.Id;
         }
 
-        public virtual ITextureResource IconResource { get; }
+        public virtual ITextureResource IconResource { get; private set; }
 
         public virtual TextureBrush Icon
         {
             get
             {
-                ITextureResource icon = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
-                if (this.IconResource != null)
+                if (this.IconResource == null || 
+                    ((this.IconResource is TextureResource) &&
+                    !Api.Shared.IsFileExists((TextureResource)this.IconResource)))
                 {
-                    icon = this.IconResource;
+                    this.IconResource = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
                 }
-                return Api.Client.UI.GetTextureBrush(icon);
+                return Api.Client.UI.GetTextureBrush(this.IconResource);
             }
         }
 
