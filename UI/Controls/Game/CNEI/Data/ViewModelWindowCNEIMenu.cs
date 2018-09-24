@@ -1,24 +1,20 @@
 ﻿namespace AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data
 {
-    using AtomicTorch.CBND.CoreMod.Characters;
-    using AtomicTorch.CBND.CoreMod.Items.Tools.Axes;
-    using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
-    using AtomicTorch.CBND.CoreMod.StaticObjects.Structures.ConstructionSite;
     using AtomicTorch.CBND.CoreMod.Systems.ServerOperator;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data;
-    using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
-    using AtomicTorch.GameEngine.Common.Extensions;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Windows;
 
     public class ViewModelWindowCNEIMenu : BaseViewModel
     {
-        private readonly IReadOnlyList<ProtoEntityViewModel> allEntities;
+        private List<ProtoEntityViewModel> allEntitiesVMList;
+
+        private SortedDictionary<string, List<ProtoEntityViewModel>> allEntitiesVMDictionary;
 
         private string searchText = string.Empty;
 
@@ -28,9 +24,38 @@
 
         public IReadOnlyList<ProtoEntityViewModel> CurrentEntityList { get; private set; }
 
-        public Visibility VisibilitySettings { get; set; } = Visibility.Collapsed;
+        public ObservableCollection<ViewModelEntityCategory> CategoryList { get; }
 
-        public Visibility VisibilityEntityList { get; set; } = Visibility.Visible;
+        public BaseCommand ShowDetails { get; }
+
+        public ViewModelWindowCNEIMenu()
+        {
+            if (allEntitiesVMList == null)
+            {
+                GetAllEntitiesVMList();
+            }
+            UpdateEntitiesList();
+            this.CategoryList = new ObservableCollection<ViewModelEntityCategory>();
+            foreach (KeyValuePair<string, List<ProtoEntityViewModel>> entry in allEntitiesVMDictionary)
+            {
+                this.CategoryList.Add(new ViewModelEntityCategory(entry.Key, entry.Value));
+            }
+
+            this.ShowDetails = new ActionCommand(() => WindowCNEIDetails.Open());
+        }
+
+        protected override void DisposeViewModel()
+        {
+            base.DisposeViewModel();
+            foreach (var viewModelEntity in this.allEntitiesVMList)
+            {
+                viewModelEntity.Dispose();
+            }
+            foreach (var viewModelEntityCategory in CategoryList)
+            {
+                viewModelEntityCategory.Dispose();
+            }
+        }
 
         public string SearchText
         {
@@ -56,42 +81,21 @@
             get => IsCreativeModeOn;
         }
 
-        public BaseCommand ShowDetails { get; }
-
-        public ViewModelWindowCNEIMenu()
-        {
-            if (allEntities == null)
-            {
-                allEntities = GetAllEntitiesVMList();
-            }
-            UpdateEntitiesList();
-
-            this.ShowDetails = new ActionCommand(() => WindowCNEIDetails.Open());
-        }
-
-        protected override void DisposeViewModel()
-        {
-            base.DisposeViewModel();
-            foreach(var viewModelEntity in this.allEntities)
-            {
-                viewModelEntity.Dispose();
-            }
-        }
-
         private void UpdateEntitiesList()
         {
             if (this.CurrentEntityList == null)
             {
                 //this.CurrentEntityList = new List<ProtoEntityViewModel> { new ProtoEntityViewModel(Api.GetProtoEntity<ObjectConstructionSite>()) };
                 //this.CurrentEntityList = this.allEntities.Where(VME => VME.ProtoEntity is IProtoItem).ToList();
-                this.CurrentEntityList = this.allEntities.ToList();
+                this.CurrentEntityList = this.allEntitiesVMList.ToList();
             }
         }
 
-        private IReadOnlyList<ProtoEntityViewModel> GetAllEntitiesVMList()
+        private void GetAllEntitiesVMList()
         {
+            this.allEntitiesVMList = new List<ProtoEntityViewModel>();
+            this.allEntitiesVMDictionary = new SortedDictionary<string, List<ProtoEntityViewModel>>();
             var allEntitiesList = EntityList.AllEntity;
-            List<ProtoEntityViewModel> allEntitiesVMList = new List<ProtoEntityViewModel>();
             foreach (var entity in allEntitiesList)
             {
                 var entityType = entity.GetType();
@@ -104,17 +108,41 @@
                     if (type != null)
                     {
                         templateFound = true;
-                        allEntitiesVMList.Add((ProtoEntityViewModel)Activator.CreateInstance(type, new object[] { entity }));
+                        var newEntityVM = (ProtoEntityViewModel) Activator.CreateInstance(type, new object[] {entity});
+                        this.allEntitiesVMList.Add(newEntityVM);
+                        var keyName = GetNameWithoutGenericArity(entity.GetType().BaseType.ToString());
+                        AddEntityVMToDictonary(keyName, newEntityVM);
                     }
                     entityType = entityType.BaseType;
                 } while ((entityType.BaseType != null) && (!templateFound));
                 if (entityType == null)
                 {
                     Api.Logger.Error("Template for " + entity + "not found");
-                    allEntitiesVMList.Add(new ProtoEntityViewModel(entity));
+                    var newEntityVM = new ProtoEntityViewModel(entity);
+                    this.allEntitiesVMList.Add(newEntityVM);
+                    var keyName = GetNameWithoutGenericArity(typeof(ProtoEntity).ToString());
+                    AddEntityVMToDictonary(keyName, newEntityVM);
                 }
             }
-            return allEntitiesVMList.AsReadOnly();
+        }
+
+        private void AddEntityVMToDictonary(string keyName, ProtoEntityViewModel entityVM)
+        {
+            if (keyName != null)
+            {
+                if (allEntitiesVMDictionary.ContainsKey(keyName))
+                {
+                    this.allEntitiesVMDictionary[keyName].Add(entityVM);
+                }
+                else
+                {
+                    this.allEntitiesVMDictionary.Add(keyName, new List<ProtoEntityViewModel>() { entityVM });
+                }
+            }
+            else
+            {
+                Api.Logger.Error("Can not add entityVM to Dictonary for " + entityVM.ProtoEntity);
+            }
         }
 
         private string GetNameWithoutGenericArity(string s)
