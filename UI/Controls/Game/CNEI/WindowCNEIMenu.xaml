@@ -33,51 +33,62 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TabControl Style="{StaticResource TabControlCompactStyleDockMode}"
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Margin="0,0,0,3">
-                <TabItem Header="All" />
-                <TabItem DockPanel.Dock="Right">
-                    <TabItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Content/Textures/Options/General.png"
-                                   Width="20"
-                                   Height="20" />
-                            <TextBlock Text="Settings" />
-                        </StackPanel>
-                    </TabItem.Header>
-                </TabItem>
-            </TabControl>
+            <DockPanel Grid.Row="0"
+                       Grid.Column="1"
+                       Margin="0,0,0,3">
+
+                <ToggleButton DockPanel.Dock="Right"
+                              x:Name="SettingsButton"
+                              Margin="4,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Content/Textures/Options/General.png"
+                               Width="20"
+                               Height="20" />
+                        <TextBlock Text="Settings" />
+                    </StackPanel>
+                </ToggleButton>
+
+                <Grid>
+                    <Border BorderThickness="0,0,0,1"
+                            BorderBrush="{StaticResource ItemBorderNormalBrush}"
+                            Background="{StaticResource ItemBackgroundNormalBrush}"
+                            VerticalAlignment="Center">
+                        <core:TextBoxSearch
+                            SearchText="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="1" />
+                    </Border>
+                </Grid>
+            </DockPanel>
 
             <Grid x:Name="EntityListGrid"
                   Grid.Row="1"
-                  Grid.Column="1"
-                  Visibility="{Binding VisibilityEntityList}">
+                  Grid.Column="1">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=SettingsButton}"
+                                         Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0"
-                        BorderThickness="0,0,0,1"
-                        BorderBrush="{StaticResource ItemBorderNormalBrush}"
-                        Background="{StaticResource ItemBackgroundNormalBrush}">
-                    <core:TextBoxSearch
-                        SearchText="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Margin="1" />
-                </Border>
-                
-                <ScrollViewer Grid.Row="1"
+                <ScrollViewer Grid.Row="0"
                               VerticalScrollBarVisibility="Visible"
                               Margin="1,1,1,1">
                     <ListBox Style="{StaticResource DefaultListBox}"
                              ItemsSource="{Binding CurrentEntityList}"/>
                 </ScrollViewer>
 
-                <StackPanel Grid.Row="2" Style="{StaticResource BottomPanel}">
+                <StackPanel Grid.Row="1"
+                            Style="{StaticResource BottomPanel}">
                     <TextBlock Text="Entity count: " />
                     <TextBlock Text="{Binding CurrentEntityCount}" />
                 </StackPanel>
@@ -86,8 +97,19 @@
 
             <Grid x:Name="SettingsGrid"
                   Grid.Row="1"
-                  Grid.Column="1"
-                  Visibility="{Binding VisibilitySettings}">
+                  Grid.Column="1">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=SettingsButton}"
+                                         Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
                 <Button Content="Open Details Window"
                         Command="{Binding ShowDetails}" />
             </Grid>
