@@ -80,24 +80,21 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <ScrollViewer Grid.Row="0"
-                              VerticalScrollBarVisibility="Visible"
-                              Margin="1,1,1,1">
-                    <ListBox Style="{StaticResource ListBoxCategory}"
-                             ItemsSource="{Binding CategoryList}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Title}"
-                                               Visibility="Visible"
-                                               FontSize="10" />
-                                    <ListBox Style="{StaticResource DefaultListBox}"
-                                             ItemsSource="{Binding EntityVMList}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </ScrollViewer>
+
+                <ListBox Style="{StaticResource ListBoxCategory}"
+                         ItemsSource="{Binding CategoryList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding Title}"
+                                           Visibility="Visible"
+                                           FontSize="10" />
+                                <ListBox Style="{StaticResource DefaultListBox}"
+                                         ItemsSource="{Binding EntityVMList}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
                 <StackPanel Grid.Row="1"
                             Style="{StaticResource BottomPanel}">

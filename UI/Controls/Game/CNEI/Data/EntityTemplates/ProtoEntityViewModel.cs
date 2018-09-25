@@ -26,9 +26,7 @@
         {
             get
             {
-                if (this.IconResource == null || 
-                    ((this.IconResource is TextureResource) &&
-                    !Api.Shared.IsFileExists((TextureResource)this.IconResource)))
+                if (this.IconResource == null)
                 {
                     this.IconResource = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
                 }
