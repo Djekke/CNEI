@@ -6,6 +6,7 @@
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using System.Reflection;
+    using System.Windows;
 
     public class ProtoEntityViewModel : BaseViewModel
     {
@@ -38,6 +39,12 @@
         public virtual string Title { get; }
 
         public virtual string Type { get; }
+
+        public virtual Visibility Visibility => Visibility.Visible;
+
+        public virtual Visibility CountVisibility => Visibility.Collapsed;
+
+        public virtual int Count => 0;
 
         private object GetPropertyByName(object obj, string name)
         {

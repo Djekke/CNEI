@@ -4,21 +4,27 @@
     xmlns:data="clr-namespace:AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
 
-    <!-- Preview in list -->
-    <DataTemplate DataType="{x:Type data:ProtoEntityViewModel}">
-        <Border>
-            <!-- Icon -->
-            <Rectangle Fill="{Binding Icon}" Width="32" Height="32" />
-            <!-- Tooltip -->
-            <base:ToolTipServiceExtend.ToolTip>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding Title}" FontWeight="Bold" />
-                    <TextBlock Text="{Binding Type}" FontWeight="Bold" />
-                </StackPanel>
-            </base:ToolTipServiceExtend.ToolTip>
-        </Border>
-    </DataTemplate>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/UI/Styles/DefaultStyles.xaml" />
+        <ResourceDictionary Source="/UI/Styles/SpecialItemsPanel.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->
+    <DataTemplate DataType="{x:Type data:ProtoEntityViewModel}">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+            <TextBlock Text="{Binding Title}" 
+                       HorizontalAlignment="Center"/>
+            <Border x:Name="Border"
+                    Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
+                    BorderThickness="0,0,0,3"
+                    CornerRadius="3,3,0,0"
+                    Padding="2,1,2,0"
+                    Width="256" Height="256">
+                <Rectangle Fill="{Binding Icon}"/>
+            </Border>
+        </StackPanel>
+    </DataTemplate>
 
 </ResourceDictionary>

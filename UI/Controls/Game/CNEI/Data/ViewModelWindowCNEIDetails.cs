@@ -1,7 +1,6 @@
 ﻿namespace AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data
 {
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
-    using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.CBND.GameApi.Scripting;
     using System.Collections.Generic;
 
@@ -11,7 +10,7 @@
 
         private ProtoEntityViewModel selectedEntity;
 
-        public ProtoEntityViewModel SelectedEntity
+        public ProtoEntityViewModel SelectedEntityViewModel
         {
             get => this.selectedEntity;
             set
@@ -27,11 +26,16 @@
 
         public int TotalWindowsCount => EntityList?.Count ?? 0;
 
-        public int CurrentWindowNumber => (EntityList?.FindIndex(s => s == SelectedEntity) ?? -1) + 1;
+        public int CurrentWindowNumber => (EntityList?.FindIndex(s => s == SelectedEntityViewModel) ?? -1) + 1;
 
         public ViewModelWindowCNEIDetails()
         {
 
+        }
+
+        public ViewModelWindowCNEIDetails(ProtoEntityViewModel entityViewModel)
+        {
+            this.SelectedEntityViewModel = entityViewModel;
         }
     }
 }

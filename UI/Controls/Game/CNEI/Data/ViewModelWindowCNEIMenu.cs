@@ -41,7 +41,7 @@
                 this.CategoryList.Add(new ViewModelEntityCategory(entry.Key, entry.Value));
             }
 
-            this.ShowDetails = new ActionCommand(() => WindowCNEIDetails.Open());
+            this.ShowDetails = new ActionCommand(() => WindowCNEIDetails.Open(allEntitiesVMList.FirstOrDefault()));
         }
 
         protected override void DisposeViewModel()

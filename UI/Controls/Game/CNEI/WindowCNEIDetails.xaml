@@ -7,30 +7,21 @@
     xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=AtomicTorch.CBND.CoreMod"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
 
+    <base:BaseUserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+                <ResourceDictionary Source="Data/EntityTemplates/ProtoEntityDataTemplate.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </base:BaseUserControl.Resources>
+
     <core:GameWindow x:Name="GameWindow"
                      Width="{StaticResource GameMenuStandardWindowWidth}"
                      Height="{StaticResource GameMenuStandardWindowHeight}"
                      IsCached="True">
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        Grid.Row="0">
-                <TextBlock Text="Details window ( " />
-                <TextBlock Text="{Binding CurrentWindowNumber}" />
-                <TextBlock Text=" / " />
-                <TextBlock Text="{Binding TotalWindowsCount}" />
-                <TextBlock Text=" )" />
-            </StackPanel>
-
-            <cnei:EntityDetails DataContext="{Binding SelectedWindow}"
-                                Grid.Row="1" />
-
-
+            <ContentControl Content="{Binding SelectedEntityViewModel}"/>
         </Grid>
     </core:GameWindow>
 </core:BaseUserControlWithWindow>

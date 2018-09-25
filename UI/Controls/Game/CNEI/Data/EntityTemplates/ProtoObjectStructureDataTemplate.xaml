@@ -3,9 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
 
-    <!-- Preview in list -->
-        <!-- Using template of base class ProtoEntity -->
-
     <!-- Detail info -->
 
 </ResourceDictionary>

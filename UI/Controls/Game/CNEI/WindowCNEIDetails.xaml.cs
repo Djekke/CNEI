@@ -6,25 +6,26 @@
 
     public partial class WindowCNEIDetails : BaseUserControlWithWindow
     {
+        private ProtoEntityViewModel entityViewModel;
+
         public static WindowCNEIDetails Instance { get; private set; }
 
         public ViewModelWindowCNEIDetails ViewModel { get; private set; }
 
-        public WindowCNEIDetails()
+        public static WindowCNEIDetails Open(ProtoEntityViewModel entityViewModel)
         {
-
-        }
-
-        public static WindowCNEIDetails Open()
-        {
-            if (Instance != null)
+            if (Instance == null)
             {
-                return Instance;
+                var instance = new WindowCNEIDetails();
+                instance.entityViewModel = entityViewModel;
+                Instance = instance;
+                Api.Client.UI.LayoutRootChildren.Add(instance);
+            }
+            else
+            {
+                Instance.entityViewModel = entityViewModel;
             }
 
-            var instance = new WindowCNEIDetails();
-            Instance = instance;
-            Api.Client.UI.LayoutRootChildren.Add(instance);
             return Instance;
         }
 
@@ -37,7 +38,7 @@
         protected override void OnLoaded()
         {
             base.OnLoaded();
-            this.DataContext = this.ViewModel = new ViewModelWindowCNEIDetails();
+            this.DataContext = this.ViewModel = new ViewModelWindowCNEIDetails(this.entityViewModel);
         }
 
         protected override void OnUnloaded()
@@ -46,7 +47,10 @@
             this.DataContext = null;
             this.ViewModel.Dispose();
             this.ViewModel = null;
-            Instance = null;
+            if (Instance == this)
+            {
+                Instance = null;
+            }
         }
     }
 }
