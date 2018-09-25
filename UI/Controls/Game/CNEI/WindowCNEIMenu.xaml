@@ -119,8 +119,45 @@
                     </Style>
                 </Grid.Style>
 
-                <Button Content="Open Details Window"
-                        Command="{Binding ShowDetails}" />
+                <StackPanel Orientation="Vertical">
+                    <GroupBox Header="View Type">
+                        <StackPanel>
+                            <RadioButton GroupName="ViewType" x:Name="ViewTypeSimpleList"
+                                         Content="Simple list" IsChecked="True"/>
+                            <RadioButton GroupName="ViewType" x:Name="ViewTypeGroup"
+                                         Content="Group by baseType"/>
+                            <CheckBox x:Name="ShowGroupName"
+                                      Content="Show group name"
+                                      IsChecked="True"
+                                      Margin="10,0,0,0"
+                                      IsEnabled="{Binding IsChecked, ElementName=ViewTypeGroup}"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Content">
+                        <StackPanel>
+                            <CheckBox x:Name="ShowItems"
+                                      Content="Show items"
+                                      IsChecked="True"/>
+                            <CheckBox x:Name="ShowStructures"
+                                      Content="Show structures"
+                                      IsChecked="True"/>
+                            <CheckBox x:Name="ShowMobs"
+                                      Content="Show mobs"
+                                      IsChecked="True"/>
+                            <CheckBox x:Name="ShowEntityWithTemplates"
+                                      Content="Show entity with templates"
+                                      IsChecked="False"/>
+                            <CheckBox x:Name="ShowAllEntity">
+                                <CheckBox.Content>
+                                    <TextBlock>
+                                        <Run>Show all entity </Run>
+                                        <Run Foreground="Red">(only for development use)</Run>
+                                    </TextBlock>
+                                </CheckBox.Content>
+                            </CheckBox>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
             </Grid>
 
             <ContentControl Template="{StaticResource SidePanelTemplate}"
