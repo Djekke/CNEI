@@ -1,8 +1,40 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
+    xmlns:data="clr-namespace:AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->
+    <DataTemplate DataType="{x:Type data:ProtoItemViewModel}">
+        <StackPanel>
+            <Expander Header="Information" IsExpanded="True">
+                <StackPanel HorizontalAlignment="Center"
+                            Orientation="Vertical">
+                    <TextBlock Text="{Binding Title}"
+                               HorizontalAlignment="Center"/>
+                    <Border x:Name="Border"
+                            Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
+                            BorderThickness="0,0,0,3"
+                            CornerRadius="3,3,0,0"
+                            Padding="2,1,2,0"
+                            Width="256" Height="256">
+                        <Rectangle Fill="{Binding Icon}"/>
+                    </Border>
+                    <TextBlock Text="{Binding Description}"
+                               HorizontalAlignment="Center"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Expander>
+            <Expander Header="How to get">
+
+            </Expander>
+            <Expander Header="Uses">
+
+            </Expander>
+        </StackPanel>
+    </DataTemplate>
 
 </ResourceDictionary>

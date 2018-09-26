@@ -20,6 +20,14 @@
             this.Type = entity.Id;
         }
 
+        public ProtoEntityViewModel(IProtoEntity entity, ITextureResource entityIcon)
+        {
+            this.ProtoEntity = entity;
+            this.Title = entity.Name;
+            this.IconResource = entityIcon;
+            this.Type = entity.Id;
+        }
+
         public virtual ITextureResource IconResource { get; private set; }
 
         public virtual TextureBrush Icon

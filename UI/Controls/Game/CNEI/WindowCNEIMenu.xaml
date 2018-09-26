@@ -9,12 +9,9 @@
 
     <base:BaseUserControl.Resources>
         <ResourceDictionary>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
-                <ResourceDictionary Source="Data/EntityTemplates/ProtoEntityDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
         </ResourceDictionary>
     </base:BaseUserControl.Resources>
 

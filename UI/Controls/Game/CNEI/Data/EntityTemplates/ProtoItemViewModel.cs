@@ -5,9 +5,11 @@
 
     public class ProtoItemViewModel : ProtoEntityViewModel
     {
-        public ProtoItemViewModel(IProtoItem item) : base(item)
+        public ProtoItemViewModel(IProtoItem item) : base(item, item.Icon)
         {
-            
+            this.Description = item.Description;
         }
+
+        public string Description { get; }
     }
 }
