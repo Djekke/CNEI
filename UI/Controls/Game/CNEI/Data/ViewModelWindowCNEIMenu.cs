@@ -16,6 +16,8 @@
 
         private SortedDictionary<string, List<ProtoEntityViewModel>> allEntitiesVMDictionary;
 
+        public ViewModelTypeHierarchy TypeHierarchy { get; private set; }
+
         private string searchText = string.Empty;
 
         private bool IsCreativeModeOn => ServerOperatorSystem.ClientIsOperator();
@@ -55,6 +57,7 @@
             {
                 viewModelEntityCategory.Dispose();
             }
+            TypeHierarchy.Dispose();
         }
 
         public string SearchText
@@ -95,6 +98,7 @@
         {
             this.allEntitiesVMList = new List<ProtoEntityViewModel>();
             this.allEntitiesVMDictionary = new SortedDictionary<string, List<ProtoEntityViewModel>>();
+            this.TypeHierarchy = new ViewModelTypeHierarchy();
             var allEntitiesList = EntityList.AllEntity;
             foreach (var entity in allEntitiesList)
             {
@@ -109,6 +113,7 @@
                     {
                         templateFound = true;
                         var newEntityVM = (ProtoEntityViewModel) Activator.CreateInstance(type, new object[] {entity});
+                        TypeHierarchy.Add(entity.GetType(), newEntityVM);
                         this.allEntitiesVMList.Add(newEntityVM);
                         var keyName = GetNameWithoutGenericArity(entity.GetType().BaseType.ToString());
                         AddEntityVMToDictonary(keyName, newEntityVM);
@@ -120,6 +125,7 @@
                     Api.Logger.Error("Template for " + entity + "not found");
                     var newEntityVM = new ProtoEntityViewModel(entity);
                     this.allEntitiesVMList.Add(newEntityVM);
+                    TypeHierarchy.Add(entity.GetType(), newEntityVM);
                     var keyName = GetNameWithoutGenericArity(typeof(ProtoEntity).ToString());
                     AddEntityVMToDictonary(keyName, newEntityVM);
                 }
