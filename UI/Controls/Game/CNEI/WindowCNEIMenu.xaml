@@ -60,8 +60,7 @@
 
             <Grid x:Name="EntityListGrid"
                   Grid.Row="1"
-                  Grid.Column="1"
-                  Visibility="Collapsed">
+                  Grid.Column="1">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Visible" />
@@ -75,32 +74,54 @@
                 </Grid.Style>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal"
+                            x:Name="NavigationRoot"
+                            HorizontalAlignment="Center"
+                            Margin="0,-4,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}" />
+                    </StackPanel.Resources>
+                    <Button Content="&lt;"
+                            Command="{Binding PrevPage}"
+                            IsEnabled="{Binding FilteredEntityVMList.IsNotFirstPage}"/>
+                    <TextBlock Text="( "/>
+                    <TextBlock Text="{Binding FilteredEntityVMList.CurrentPage}"/>
+                    <TextBlock Text=" / "/>
+                    <TextBlock Text="{Binding FilteredEntityVMList.PageCount}"/>
+                    <TextBlock Text=" )"/>
+                    <Button Content="&gt;"
+                            Command="{Binding NextPage}"
+                            IsEnabled="{Binding FilteredEntityVMList.IsNotLastPage}"/>
+                </StackPanel>
 
-                <ListBox Style="{StaticResource ListBoxColumn}"
-                         ItemsSource="{Binding CategoryList}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <ListBox Style="{StaticResource ListBoxRow}"
-                                     ItemsSource="{Binding EntityVMList}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <ListBox Grid.Row="1"
+                         Style="{StaticResource ListBoxRow}"
+                         ItemsSource="{Binding FilteredEntityVMList.Items}"
+                         HorizontalAlignment="Center"/>
 
-                <StackPanel Grid.Row="1"
-                            Style="{StaticResource BottomPanel}">
+                <StackPanel Grid.Row="2"
+                            Style="{StaticResource BottomPanel}"
+                            Margin="0,3,0,0">
                     <TextBlock Text="Entity count: " />
-                    <TextBlock Text="{Binding CurrentEntityCount}" />
+                    <TextBlock Text="{Binding FilteredEntityVMList.EntityCount}" />
                 </StackPanel>
 
             </Grid>
 
             <Grid x:Name="TreeViewTypeHierarchyGrid"
                   Grid.Row="1"
-                  Grid.Column="1">
+                  Grid.Column="1"
+                  Visibility="Collapsed">
                 <TreeView x:Name="TreeViewTypeHierarchy"
                           ItemsSource="{Binding TypeHierarchy.Derivatives}"
                           VirtualizingPanel.IsVirtualizing="True"
