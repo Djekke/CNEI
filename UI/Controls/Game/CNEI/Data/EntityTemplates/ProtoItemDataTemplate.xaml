@@ -10,28 +10,39 @@
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:ProtoItemViewModel}">
         <StackPanel>
-            <Expander Header="Information" IsExpanded="True">
+            <Expander Header="Information"
+                      IsExpanded="True">
                 <StackPanel HorizontalAlignment="Center"
                             Orientation="Vertical">
-                    <TextBlock Text="{Binding Title}"
-                               HorizontalAlignment="Center"/>
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="{Binding Title}" />
                     <Border x:Name="Border"
                             Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
                             BorderThickness="0,0,0,3"
                             CornerRadius="3,3,0,0"
                             Padding="2,1,2,0"
                             Width="256" Height="256">
-                        <Rectangle Fill="{Binding Icon}"/>
+                        <Rectangle Fill="{Binding Icon}" />
                     </Border>
                     <TextBlock Text="{Binding Description}"
-                               HorizontalAlignment="Center"
-                               TextWrapping="Wrap"/>
+                               TextWrapping="Wrap" />
+                    <TextBlock Visibility="{Binding IsStackable, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Run Text="Max items per stack: " />
+                        <Run Text="{Binding MaxItemsPerStack}"
+                             FontSize="12" />
+                    </TextBlock>
                 </StackPanel>
             </Expander>
-            <Expander Header="How to get">
+            <Expander Header="How to get"
+                      IsExpanded="True">
 
             </Expander>
-            <Expander Header="Uses">
+            <Expander Header="Uses"
+                      IsExpanded="True">
 
             </Expander>
         </StackPanel>

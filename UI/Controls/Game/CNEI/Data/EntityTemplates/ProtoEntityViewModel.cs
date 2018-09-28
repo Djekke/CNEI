@@ -10,35 +10,49 @@
 
     public class ProtoEntityViewModel : BaseViewModel
     {
+        private ITextureResource iconResource;
+
+        private TextureBrush icon;
+
         public virtual IProtoEntity ProtoEntity { get; private set; }
 
         public ProtoEntityViewModel(IProtoEntity entity)
         {
             this.ProtoEntity = entity;
             this.Title = entity.Name;
-            this.IconResource = GetPropertyByName(entity, "Icon") as ITextureResource;
             this.Type = entity.Id;
         }
 
-        public ProtoEntityViewModel(IProtoEntity entity, ITextureResource entityIcon)
+        public ProtoEntityViewModel(IProtoEntity entity, ITextureResource icon) : this(entity)
         {
-            this.ProtoEntity = entity;
-            this.Title = entity.Name;
-            this.IconResource = entityIcon;
-            this.Type = entity.Id;
+            this.iconResource = icon;
         }
 
-        public virtual ITextureResource IconResource { get; private set; }
+        public virtual ITextureResource IconResource
+        {
+            get
+            {
+                if (iconResource == null)
+                {
+                    this.iconResource = GetPropertyByName(this.ProtoEntity, "Icon") as ITextureResource;
+                }
+                return this.iconResource;
+            }
+        }
 
         public virtual TextureBrush Icon
         {
             get
             {
-                if (this.IconResource == null)
+                if (this.icon == null)
                 {
-                    this.IconResource = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
+                    if (this.IconResource == null)
+                    {
+                        this.iconResource = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
+                    }
+                    this.icon = Api.Client.UI.GetTextureBrush(this.IconResource);
                 }
-                return Api.Client.UI.GetTextureBrush(this.IconResource);
+                return this.icon;
             }
         }
 
@@ -50,11 +64,9 @@
 
         public virtual Visibility CountVisibility => Visibility.Collapsed;
 
-        public virtual int Count => 0;
-
         private object GetPropertyByName(object obj, string name)
         {
-            return obj.GetType().GetProperty(name, BindingFlags.Instance |
+            return obj?.GetType().GetProperty(name, BindingFlags.Instance |
                                                    BindingFlags.Public |
                                                    BindingFlags.NonPublic |
                                                    BindingFlags.GetProperty)?.GetValue(obj, null);

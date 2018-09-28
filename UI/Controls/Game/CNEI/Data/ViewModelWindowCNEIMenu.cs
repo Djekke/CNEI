@@ -24,14 +24,11 @@
 
         private bool IsCreativeModeOn => ServerOperatorSystem.ClientIsOperator();
 
+        // Default settings.
         private bool isShowingItems = true;
-
         private bool isShowingStructures = true;
-
         private bool isShowingMobs = true;
-
-        private bool isShowingEntityWithTemplates = true;
-
+        private bool isShowingEntityWithTemplates = true; //TODO: change to false, true for debug
         private bool isShowingAll = false;
 
         //public int CurrentEntityCount => this.EntityVMList.Count;
