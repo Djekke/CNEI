@@ -122,7 +122,7 @@
                   Grid.Row="1"
                   Grid.Column="1"
                   Visibility="Collapsed">
-                <TreeView x:Name="TreeViewTypeHierarchy"
+                <!--<TreeView x:Name="TreeViewTypeHierarchy"
                           ItemsSource="{Binding TypeHierarchy.Derivatives}"
                           VirtualizingPanel.IsVirtualizing="True"
                           Foreground="Yellow">
@@ -168,7 +168,7 @@
                             </HierarchicalDataTemplate.Triggers>
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>
-                </TreeView>
+                </TreeView>-->
 
             </Grid>
 
@@ -188,7 +188,7 @@
                 </Grid.Style>
 
                 <StackPanel Orientation="Vertical">
-                    <GroupBox Header="View Type">
+                    <!--<GroupBox Header="View Type">
                         <StackPanel>
                             <RadioButton GroupName="ViewType" x:Name="ViewTypeSimpleList"
                                          Content="Simple list" IsChecked="True"/>
@@ -200,22 +200,23 @@
                                       Margin="10,0,0,0"
                                       IsEnabled="{Binding IsChecked, ElementName=ViewTypeGroup}"/>
                         </StackPanel>
-                    </GroupBox>
+                    </GroupBox>-->
                     <GroupBox Header="Content">
                         <StackPanel>
                             <CheckBox x:Name="ShowItems"
                                       Content="Show items"
-                                      IsChecked="True"/>
+                                      IsChecked="{Binding IsShowingItems}"/>
                             <CheckBox x:Name="ShowStructures"
                                       Content="Show structures"
-                                      IsChecked="True"/>
+                                      IsChecked="{Binding IsShowingStructures}"/>
                             <CheckBox x:Name="ShowMobs"
                                       Content="Show mobs"
-                                      IsChecked="True"/>
+                                      IsChecked="{Binding IsShowingMobs}"/>
                             <CheckBox x:Name="ShowEntityWithTemplates"
                                       Content="Show entity with templates"
-                                      IsChecked="False"/>
-                            <CheckBox x:Name="ShowAllEntity">
+                                      IsChecked="{Binding IsShowingEntityWithTemplates}"/>
+                            <CheckBox x:Name="ShowAllEntity"
+                                      IsChecked="{Binding IsShowingAll}">
                                 <CheckBox.Content>
                                     <TextBlock>
                                         <Run>Show all entity </Run>

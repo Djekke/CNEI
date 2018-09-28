@@ -1,7 +1,10 @@
 ﻿namespace AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data
 {
+    using AtomicTorch.CBND.CoreMod.Characters;
+    using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
     using AtomicTorch.CBND.CoreMod.Systems.ServerOperator;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
+    using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using System;
@@ -15,11 +18,21 @@
 
         //private SortedDictionary<string, List<ProtoEntityViewModel>> allEntitiesVMDictionary;
 
-        public ViewModelTypeHierarchy TypeHierarchy { get; private set; }
+        //public ViewModelTypeHierarchy TypeHierarchy { get; private set; }
 
         private string searchText = string.Empty;
 
         private bool IsCreativeModeOn => ServerOperatorSystem.ClientIsOperator();
+
+        private bool isShowingItems = true;
+
+        private bool isShowingStructures = true;
+
+        private bool isShowingMobs = true;
+
+        private bool isShowingEntityWithTemplates = true;
+
+        private bool isShowingAll = false;
 
         //public int CurrentEntityCount => this.EntityVMList.Count;
 
@@ -35,6 +48,122 @@
 
         public BaseCommand PrevPage { get; }
 
+        public bool IsShowingItems
+        {
+            get => this.isShowingItems;
+            set
+            {
+                if (value == this.isShowingItems)
+                {
+                    return;
+                }
+                this.isShowingItems = value;
+                if (!this.isShowingItems)
+                {
+                    this.IsShowingEntityWithTemplates = false;
+                    this.IsShowingAll = false;
+                }
+                this.FilteredEntityVMList.Refresh();
+                this.NotifyThisPropertyChanged();
+            }
+        }
+
+        public bool IsShowingStructures
+        {
+            get => this.isShowingStructures;
+            set
+            {
+                if (value == this.isShowingStructures)
+                {
+                    return;
+                }
+                this.isShowingStructures = value;
+                if (!this.isShowingStructures)
+                {
+                    this.IsShowingEntityWithTemplates = false;
+                    this.IsShowingAll = false;
+                }
+                this.FilteredEntityVMList.Refresh();
+                this.NotifyThisPropertyChanged();
+            }
+        }
+
+        public bool IsShowingMobs
+        {
+            get => this.isShowingMobs;
+            set
+            {
+                if (value == this.isShowingMobs)
+                {
+                    return;
+                }
+                this.isShowingMobs = value;
+                if (!this.isShowingMobs)
+                {
+                    this.IsShowingEntityWithTemplates = false;
+                    this.IsShowingAll = false;
+                }
+                this.FilteredEntityVMList.Refresh();
+                this.NotifyThisPropertyChanged();
+            }
+        }
+
+        public bool IsShowingEntityWithTemplates
+        {
+            get => this.isShowingEntityWithTemplates;
+            set
+            {
+                if (value == this.isShowingEntityWithTemplates)
+                {
+                    return;
+                }
+                this.isShowingEntityWithTemplates = value;
+                if (isShowingEntityWithTemplates)
+                {
+                    this.IsShowingItems = true;
+                    this.IsShowingStructures = true;
+                    this.IsShowingMobs = true;
+                }
+                else
+                {
+                    this.IsShowingAll = false;
+                }
+                this.FilteredEntityVMList.Refresh();
+                this.NotifyThisPropertyChanged();
+            }
+        }
+
+        public bool IsShowingAll
+        {
+            get => this.isShowingAll;
+            set
+            {
+                if (value == this.isShowingAll)
+                {
+                    return;
+                }
+                this.isShowingAll = value;
+                if (isShowingAll)
+                {
+                    this.IsShowingItems = true;
+                    this.IsShowingStructures = true;
+                    this.IsShowingMobs = true;
+                    this.IsShowingEntityWithTemplates = true;
+                }
+                this.FilteredEntityVMList.Refresh();
+                this.NotifyThisPropertyChanged();
+            }
+        }
+
+        private bool SettingsFilter(ProtoEntityViewModel entityVM)
+        {
+            return IsShowingAll ||
+                   (IsShowingEntityWithTemplates && (entityVM.GetType().BaseType == typeof(ProtoEntityViewModel))) ||
+                   (IsShowingItems && (entityVM.ProtoEntity is IProtoItem)) ||
+                   (IsShowingStructures && (entityVM.ProtoEntity is IProtoObjectStructure)) ||
+                   (IsShowingMobs && (entityVM.ProtoEntity is IProtoCharacterMob));
+        }
+
         public ViewModelWindowCNEIMenu()
         {
             if (this.allEntitiesVMList == null)
@@ -44,6 +173,7 @@
             //UpdateEntitiesList();
 
             this.FilteredEntityVMList = new FilteredObservableWithPaging<ProtoEntityViewModel>(this.allEntitiesVMList);
+            this.FilteredEntityVMList.AddFilter(SettingsFilter);
             this.FilteredEntityVMList.AddFilter(SearchFilter);
             this.FilteredEntityVMList.SetPageCapacity(this.PageCapacity);
 
@@ -68,7 +198,7 @@
             //{
             //    viewModelEntityCategory.Dispose();
             //}
-            TypeHierarchy.Dispose();
+            //TypeHierarchy.Dispose();
         }
 
         public string SearchText
@@ -116,7 +246,7 @@
         {
             this.allEntitiesVMList = new List<ProtoEntityViewModel>();
             //this.allEntitiesVMDictionary = new SortedDictionary<string, List<ProtoEntityViewModel>>();
-            this.TypeHierarchy = new ViewModelTypeHierarchy();
+            //this.TypeHierarchy = new ViewModelTypeHierarchy();
             var allEntitiesList = EntityList.AllEntity;
             foreach (var entity in allEntitiesList)
             {
@@ -131,7 +261,7 @@
                     {
                         templateFound = true;
                         var newEntityVM = (ProtoEntityViewModel) Activator.CreateInstance(type, new object[] {entity});
-                        TypeHierarchy.Add(entity.GetType(), newEntityVM);
+                        //TypeHierarchy.Add(entity.GetType(), newEntityVM);
                         this.allEntitiesVMList.Add(newEntityVM);
                         //var keyName = GetNameWithoutGenericArity(entity.GetType().BaseType.ToString());
                         //AddEntityVMToDictonary(keyName, newEntityVM);
@@ -143,7 +273,7 @@
                     Api.Logger.Error("Template for " + entity + "not found");
                     var newEntityVM = new ProtoEntityViewModel(entity);
                     this.allEntitiesVMList.Add(newEntityVM);
-                    TypeHierarchy.Add(entity.GetType(), newEntityVM);
+                    //TypeHierarchy.Add(entity.GetType(), newEntityVM);
                     //var keyName = GetNameWithoutGenericArity(typeof(ProtoEntity).ToString());
                     //AddEntityVMToDictonary(keyName, newEntityVM);
                 }

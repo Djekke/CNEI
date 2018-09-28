@@ -60,10 +60,15 @@
             }
         }
 
-        public void AddFilter(Predicate<T> filter)
+        public bool AddFilter(Predicate<T> filter)
         {
-            this.Filters.Add(filter);
-            Refresh();
+            if (!this.Filters.Contains(filter))
+            {
+                this.Filters.Add(filter);
+                Refresh();
+                return true;
+            }
+            return false;
         }
 
         public bool RemoveFilter(Predicate<T> filter)

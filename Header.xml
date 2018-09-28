@@ -7,7 +7,7 @@
   <title>CNEI mod</title>
   <author>Djekke</author>
   <description>CNEI mod for CryoFall. All items, buildings and creature with info, recipes and usage.</description>
-  <version>0.0.2</version>
+  <version>0.1.0</version>
   <updated>17.09.2018</updated>
   <!-- Mod type: 1 - server, 2 - client-server, 3 - client -->
   <!-- Please note: mods of type 1 and 2 are ignored
