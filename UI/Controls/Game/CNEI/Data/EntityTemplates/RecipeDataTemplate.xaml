@@ -86,7 +86,7 @@
                                 <controls:EntitySlotControl />
                                 <TextBlock VerticalAlignment="Center"
                                            Margin="5,0,0,0">
-                                    <Run Text="{Binding Probability, StringFormat='{}{0}%'}"
+                                    <Run Text="{Binding CountString}"
                                          FontSize="12"/>
                                     <Run Text="{Binding Title}" />
                                 </TextBlock>

@@ -24,7 +24,7 @@
                     .ToList();
             }
             this.OutputItemsVMList = recipe.OutputItems.Items
-                .Select(i => new ViewModelItemWithCount(i.ProtoItem, i.Count, i.CountRandom, i.Probability))
+                .Select(i => new ViewModelOutputItem(i.ProtoItem, i.Count, i.CountRandom, i.Probability))
                 .ToList();
             this.RecipeType = recipe.RecipeType;
             this.IsStationCraft = (this.RecipeType == RecipeType.Hand) ? Visibility.Collapsed : Visibility.Visible;
