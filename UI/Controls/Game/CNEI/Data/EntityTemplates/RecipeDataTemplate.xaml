@@ -12,6 +12,18 @@
 
     <system:Single x:Key="MaxItemListHeight">300</system:Single>
 
+    <DataTemplate DataType="{x:Type data:ViewModelEntityWithCount}">
+        <StackPanel Orientation="Horizontal">
+            <controls:EntitySlotControl DataContext="{Binding EntityViewModel}" />
+            <TextBlock VerticalAlignment="Center"
+                       Margin="5,0,0,0">
+                <Run Text="{Binding CountString}"
+                     FontSize="12" />
+                <Run Text="{Binding EntityViewModel.Title}" />
+            </TextBlock>
+        </StackPanel>
+    </DataTemplate>
+
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:RecipeViewModel}">
         <Grid>
@@ -62,38 +74,13 @@
                          Grid.Column="0"
                          Style="{StaticResource SimpleListBox}"
                          ItemsSource="{Binding InputItemsVMList}"
-                         MaxHeight="{StaticResource MaxItemListHeight}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <controls:EntitySlotControl />
-                                <TextBlock Text="{Binding Title}"
-                                           Margin="5,0,0,0"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                         MaxHeight="{StaticResource MaxItemListHeight}" />
 
                 <ListBox Grid.Row="1"
                          Grid.Column="1"
                          Style="{StaticResource SimpleListBox}"
                          ItemsSource="{Binding OutputItemsVMList}"
-                         MaxHeight="{StaticResource MaxItemListHeight}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <controls:EntitySlotControl />
-                                <TextBlock VerticalAlignment="Center"
-                                           Margin="5,0,0,0">
-                                    <Run Text="{Binding CountString}"
-                                         FontSize="12"/>
-                                    <Run Text="{Binding Title}" />
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                         MaxHeight="{StaticResource MaxItemListHeight}" />
             </Grid>
 
             <StackPanel Grid.Row="2"
@@ -159,33 +146,6 @@
             </StackPanel>
 
         </Grid>
-
-
-        <!--<StackPanel HorizontalAlignment="Center"
-                    Orientation="Vertical">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                </Style>
-            </StackPanel.Resources>
-            <TextBlock Text="{Binding Title}" />
-            <Border x:Name="Border"
-                    Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
-                    BorderThickness="0,0,0,3"
-                    CornerRadius="3,3,0,0"
-                    Padding="2,1,2,0"
-                    Width="256" Height="256">
-                <Rectangle Fill="{Binding Icon}"/>
-            </Border>
-            <TextBlock Text="{Binding Description}"
-                       TextWrapping="Wrap"/>
-            <TextBlock IsVisible="{Binding IsStackable, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Run Text="Max items per stack: " />
-                    <Run Text="{Binding MaxItemsPerStack}" />
-            </TextBlock>
-        </StackPanel>
-
-        </StackPanel>-->
     </DataTemplate>
 
 </ResourceDictionary>
