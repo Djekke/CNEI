@@ -4,14 +4,15 @@
     using AtomicTorch.CBND.CoreMod.StaticObjects.Loot;
     using JetBrains.Annotations;
     using System.Linq;
+    using AtomicTorch.CBND.GameApi.Scripting;
 
-    public class ProtoObjectLootViewModel : ProtoStaticWorldObjectViewModel
+    public class ProtoObjectLootContainerViewModel : ProtoStaticWorldObjectViewModel
     {
-        private IProtoObjectLoot loot;
+        private IProtoObjectLoot lootContainer;
 
-        public ProtoObjectLootViewModel([NotNull] IProtoObjectLoot loot) : base(loot)
+        public ProtoObjectLootContainerViewModel([NotNull] IProtoObjectLoot lootContainer) : base(lootContainer)
         {
-            this.loot = loot;
+            this.lootContainer = lootContainer;
         }
 
         /// <summary>
@@ -21,15 +22,15 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (this.loot == null)
+            if (this.lootContainer == null)
             {
                 return;
             }
 
-            if (this.loot.LootDroplist != null && this.loot.LootDroplist.EnumerateAllItems().Any())
+            if (this.lootContainer.LootDroplist != null && this.lootContainer.LootDroplist.EnumerateAllItems().Any())
             {
                 EntityViewModelsManager.AddRecipe(new RecipeViewModel(this,
-                    this.loot.LootDroplist.EnumerateAllItems()));
+                    this.lootContainer.LootDroplist.EnumerateAllItems()));
             }
         }
     }

@@ -62,13 +62,14 @@
             {
                 throw new Exception("CNEI: Build constructor used before all entity VMs sets.");
             }
-            this.InputItemsVMList =
-                new List<BaseViewModel>() {new ViewModelEntityWithCount(structureViewModel)}.AsReadOnly();
 
-            this.OutputItemsVMList = config.StageRequiredItems
+            this.InputItemsVMList = config.StageRequiredItems
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item.ProtoItem),
                     item.Count * config.StagesCount))
                 .ToList().AsReadOnly();
+
+            this.OutputItemsVMList =
+                new List<BaseViewModel>() {new ViewModelEntityWithCount(structureViewModel)}.AsReadOnly();
 
             // TODO: Add All VM's of toolboxes to StationsList
             //this.StationsList = new List<ProtoEntityViewModel>();
@@ -95,7 +96,8 @@
             {
                 throw new Exception("CNEI: Upgrade constructor used before all entity VMs sets.");
             }
-            var inputTempList = new List<BaseViewModel>() { structureViewModel };
+
+            var inputTempList = new List<BaseViewModel>() { new ViewModelEntityWithCount(structureViewModel) };
             inputTempList.AddRange(upgradeEntry.RequiredItems
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item.ProtoItem),
                     item.Count)));
@@ -138,7 +140,8 @@
             this.InputItemsVMList =
                 new List<BaseViewModel>() {new ViewModelEntityWithCount(entityViewModel)}.AsReadOnly();
 
-            this.OutputItemsVMList = droplist
+            HashSet<IProtoItem> uniqueDroplist = new HashSet<IProtoItem>(droplist);
+            this.OutputItemsVMList = uniqueDroplist
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item)))
                 .ToList().AsReadOnly();
 

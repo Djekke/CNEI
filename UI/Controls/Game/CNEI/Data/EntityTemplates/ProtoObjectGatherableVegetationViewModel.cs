@@ -30,6 +30,14 @@
             {
                 return;
             }
+
+            if (this.gatherableVegetation.DroplistOnDestroy != null &&
+                this.gatherableVegetation.DroplistOnDestroy.EnumerateAllItems().Any())
+            {
+                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this,
+                    this.gatherableVegetation.DroplistOnDestroy.EnumerateAllItems()));
+            }
+
             if (this.gatherableVegetation.GatherDroplist != null &&
                 this.gatherableVegetation.GatherDroplist.EnumerateAllItems().Any())
             {

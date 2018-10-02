@@ -101,7 +101,7 @@
                     switch (viewModel)
                     {
                         case ViewModelEntityWithCount viewModelEntityWithCount:
-                            viewModelEntityWithCount.EntityViewModel.AddRecipeLink(recipeViewModel, 1);
+                            viewModelEntityWithCount.EntityViewModel.AddRecipeLink(recipeViewModel, 2);
                             break;
                         case ProtoEntityViewModel protoEntityViewModel:
                             protoEntityViewModel.AddRecipeLink(recipeViewModel, 2);
