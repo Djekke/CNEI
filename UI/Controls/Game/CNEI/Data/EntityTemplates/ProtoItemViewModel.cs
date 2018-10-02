@@ -1,12 +1,11 @@
 ﻿namespace AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data
 {
     using AtomicTorch.CBND.GameApi.Data.Items;
-    using AtomicTorch.CBND.GameApi.Scripting;
-    using System.Collections.Generic;
+    using JetBrains.Annotations;
 
     public class ProtoItemViewModel : ProtoEntityViewModel
     {
-        public ProtoItemViewModel(IProtoItem item) : base(item, item.Icon)
+        public ProtoItemViewModel([NotNull] IProtoItem item) : base(item, item.Icon)
         {
             this.Description = item.Description;
             this.IsStackable = item.IsStackable;
@@ -18,9 +17,5 @@
         public bool IsStackable { get; }
 
         public ushort MaxItemsPerStack { get; }
-
-        public FilteredObservableWithPaging<RecipeViewModel> RecipeVMList { get; private set; }
-
-        public FilteredObservableWithPaging<RecipeViewModel> UsageVMList { get; private set; }
     }
 }

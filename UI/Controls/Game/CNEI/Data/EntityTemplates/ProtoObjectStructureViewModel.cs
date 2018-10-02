@@ -2,29 +2,31 @@
 {
     using AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Managers;
     using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
+    using JetBrains.Annotations;
     using System.Collections.Generic;
     using System.Linq;
 
     public class ProtoObjectStructureViewModel : ProtoStaticWorldObjectViewModel
     {
-        private IProtoObjectStructure structure = null;
+        private IProtoObjectStructure structure;
 
-        public ProtoObjectStructureViewModel(IProtoObjectStructure structure) : base(structure)
+        public ProtoObjectStructureViewModel([NotNull] IProtoObjectStructure structure) : base(structure)
         {
             this.structure = structure;
             this.Description = structure.Description;
             this.DescriptionUpgrade = structure.DescriptionUpgrade;
 
             this.IsAutoUnlocked = structure.IsAutoUnlocked;
+            this.ListedInTechNodes = new List<ProtoEntityViewModel>();
             //structure.IsInteractableObject
         }
 
         /// <summary>
         /// Initilize entity reletionships with each other - invoked after all entity view Models created,
-        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel{IProtoEntity}" /> and
-        /// <see cref="EntityViewModelsManager.GetAllEntityViewModels{}" />.
+        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel{IProtoEntity}" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels{}" />.
         /// </summary>
-        public override void InitEntityRelationships()
+        public override void InitAdditionalRecipes()
         {
             if (this.structure == null)
             {
@@ -35,14 +37,19 @@
                 .Select(EntityViewModelsManager.GetEntityViewModel)
                 .ToList().AsReadOnly();
 
-            if (structure.ConfigBuild.IsAllowed)
+            if (this.structure.ConfigBuild.IsAllowed &&
+                this.structure.ConfigBuild != null &&
+                this.structure.ConfigBuild.StageRequiredItems.Count > 0)
             {
-                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, structure.ConfigBuild));
+                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, this.structure.ConfigBuild));
             }
 
-            foreach (var upgradeEntry in structure.ConfigUpgrade.Entries)
+            if (this.structure.ConfigUpgrade != null)
             {
-                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, upgradeEntry));
+                foreach (var upgradeEntry in this.structure.ConfigUpgrade.Entries)
+                {
+                    EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, upgradeEntry));
+                }
             }
 
             //structure.ConfigRepair

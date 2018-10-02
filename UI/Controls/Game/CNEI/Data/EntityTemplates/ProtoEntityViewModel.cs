@@ -1,10 +1,13 @@
 ﻿namespace AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Data
 {
+    using AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI.Managers;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data;
     using AtomicTorch.CBND.GameApi.Resources;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
+    using JetBrains.Annotations;
+    using System.Collections.Generic;
     using System.Reflection;
     using System.Windows;
 
@@ -14,16 +17,22 @@
 
         private TextureBrush icon;
 
+        private List<RecipeViewModel> recipeVMList = new List<RecipeViewModel>();
+
+        private List<RecipeViewModel> usageVMList = new List<RecipeViewModel>();
+
         public virtual IProtoEntity ProtoEntity { get; }
 
-        public ProtoEntityViewModel(IProtoEntity entity)
+        public ProtoEntityViewModel([NotNull] IProtoEntity entity)
         {
             this.ProtoEntity = entity;
             this.Title = entity.Name;
             this.Type = entity.Id;
+            RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>();
+            UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>();
         }
 
-        public ProtoEntityViewModel(IProtoEntity entity, ITextureResource icon) : this(entity)
+        public ProtoEntityViewModel([NotNull] IProtoEntity entity, [NotNull] ITextureResource icon) : this(entity)
         {
             this.iconResource = icon;
         }
@@ -67,34 +76,56 @@
 
         /// <summary>
         /// Initilize entity reletionships with each other - invoked after all entity view Models created,
-        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel{IProtoEntity}" /> and
-        /// <see cref="EntityViewModelsManager.GetAllEntityViewModels{}" />.
+        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel{IProtoEntity}" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels{}" />.
         /// </summary>
-        public virtual void InitEntityRelationships()
+        public virtual void InitAdditionalRecipes()
         {
         }
 
+        // TODO: Add Linktype enum.
         /// <summary>
         /// Add recipe View Model reference to current View Model.
         /// Recipe View Model describe how this entity can be acquired.
         /// </summary>
         /// <param name="recipeViewModel">View Model for recipe.</param>
-        public virtual void AddRecipeLink(RecipeViewModel recipeViewModel)
+        /// <param name="linkType">Link type (1 - inputItem, 2 - outputItem, 3 - station, 4 - techNode)</param>
+        public virtual void AddRecipeLink([NotNull] RecipeViewModel recipeViewModel, byte linkType)
         {
-            Api.Logger.Warning(
-                "CNEI: Trying to add recipe [" + recipeViewModel + "] link to mere entity " + ProtoEntity);
+            //Api.Logger.Warning(
+            //    "CNEI: Trying to add recipe [" + recipeViewModel + "] link to mere entity " + ProtoEntity);
+            switch (linkType)
+            {
+                case 1:
+                    usageVMList.Add(recipeViewModel);
+                    break;
+                case 2:
+                    recipeVMList.Add(recipeViewModel);
+                    break;
+                case 3:
+                    usageVMList.Add(recipeViewModel);
+                    break;
+                case 4:
+                    usageVMList.Add(recipeViewModel);
+                    break;
+                default:
+                    Api.Logger.Error("CNEI: Wrong linkType " + linkType + " for " + recipeViewModel + " " + this);
+                    break;
+            }
         }
 
         /// <summary>
-        /// Add recipe View Model reference to current View Model.
-        /// Recipe View Model describe there current entity can be used.
+        /// Finalize Recipe Link creation and prepare recipe VM list to observation.
         /// </summary>
-        /// <param name="recipeViewModel">View Model for recipe.</param>
-        public virtual void AddUsesLink(RecipeViewModel recipeViewModel)
+        public virtual void FinalizeRecipeLinking()
         {
-            Api.Logger.Warning(
-                "CNEI: Trying to add uses [" + recipeViewModel + "] link to mere entity " + ProtoEntity);
+            RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>(recipeVMList);
+            UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>(usageVMList);
         }
+
+        public FilteredObservableWithPaging<RecipeViewModel> RecipeVMList { get; private set; }
+
+        public FilteredObservableWithPaging<RecipeViewModel> UsageVMList { get; private set; }
 
         private static object GetPropertyByName(object obj, string name)
         {

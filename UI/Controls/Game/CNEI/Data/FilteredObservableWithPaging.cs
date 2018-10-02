@@ -62,7 +62,7 @@
             {
                 this.items.Clear();
                 // Apply filters.
-                var tempCollection = this.BaseCollection.Where(x => this.Filters.All(f => f(x))).ToList();
+                var tempCollection = this.BaseCollection.Where(x => this.filters.All(f => f(x))).ToList();
                 this.EntityCount = tempCollection.Count;
                 this.RefreshPageCount();
                 // Apply pagination.
