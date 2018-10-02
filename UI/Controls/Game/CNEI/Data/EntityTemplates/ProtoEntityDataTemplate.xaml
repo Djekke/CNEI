@@ -13,14 +13,14 @@
                     VerticalAlignment="Center"
                     Orientation="Vertical">
             <TextBlock Text="{Binding Title}" 
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center" />
             <Border x:Name="Border"
                     Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
                     BorderThickness="0,0,0,3"
                     CornerRadius="3,3,0,0"
                     Padding="2,1,2,0"
                     Width="256" Height="256">
-                <Rectangle Fill="{Binding Icon}"/>
+                <Rectangle Fill="{Binding Icon}" />
             </Border>
         </StackPanel>
     </DataTemplate>

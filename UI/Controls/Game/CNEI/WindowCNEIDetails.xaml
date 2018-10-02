@@ -25,7 +25,7 @@
                      Height="{StaticResource GameMenuStandardWindowHeight}"
                      IsCached="True">
         <Grid>
-            <ContentControl Content="{Binding SelectedEntityViewModel}"/>
+            <ContentControl Content="{Binding SelectedEntityViewModel}" />
         </Grid>
     </core:GameWindow>
 </core:BaseUserControlWithWindow>
