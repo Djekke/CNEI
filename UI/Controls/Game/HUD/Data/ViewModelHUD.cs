@@ -3,13 +3,13 @@
     using AtomicTorch.CBND.CoreMod.Systems.Construction;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core.Menu;
-    using AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Map;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Player;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Quests;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Skills;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Social;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Technologies;
+    using CryoFall.CNEI.UI.Controls.Game.CNEImenu;
 
     public class ViewModelHUD : BaseViewModel
     {

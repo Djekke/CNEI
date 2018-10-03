@@ -1,10 +1,11 @@
-﻿namespace AtomicTorch.CBND.CNEI.Bootstrappers
+﻿namespace CryoFall.CNEI.Bootstrappers
 {
     using AtomicTorch.CBND.CoreMod.ClientComponents.Input;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core.Menu;
-    using AtomicTorch.CBND.CNEI.UI.Controls.Game.CNEI;
     using AtomicTorch.CBND.GameApi.Scripting;
-    using UI.Controls.Game.CNEI.Managers;
+    using CryoFall.CNEI.UI.Controls.Game.CNEImenu;
+    using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
+
 
     public class BootstrapperClientCNEI: BaseBootstrapper
     {
