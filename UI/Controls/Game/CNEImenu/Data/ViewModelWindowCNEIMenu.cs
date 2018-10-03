@@ -8,7 +8,7 @@
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
 
-    public class ViewModelWindowCNEIMenu : BaseViewModel
+    public class ViewModelWindowCNEImenu : BaseViewModel
     {
         private string searchText = string.Empty;
 
@@ -44,7 +44,7 @@
                     || entityVM.GetType().Name.ToLower().Contains(this.searchText.ToLower()));
         }
 
-        public ViewModelWindowCNEIMenu()
+        public ViewModelWindowCNEImenu()
         {
             this.FilteredEntityVMList =
                 new FilteredObservableWithPaging<ProtoEntityViewModel>(EntityViewModelsManager

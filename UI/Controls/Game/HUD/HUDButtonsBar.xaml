@@ -272,7 +272,7 @@
             <base:ToolTipServiceExtend.ToolTip>
                 <core:LabelWithButton Content="CryoFall NEI">
                     <core:LabelWithButton.Button>
-                        <core:GameButtonReference Button="CNEIMenu" />
+                        <core:GameButtonReference Button="CNEImenuOpen" />
                     </core:LabelWithButton.Button>
                 </core:LabelWithButton>
             </base:ToolTipServiceExtend.ToolTip>

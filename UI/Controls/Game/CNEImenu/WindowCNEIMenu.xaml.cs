@@ -3,9 +3,9 @@
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
 
-    public partial class WindowCNEIMenu : BaseWindowMenu
+    public partial class WindowCNEImenu : BaseWindowMenu
     {
-        private ViewModelWindowCNEIMenu viewModel;
+        private ViewModelWindowCNEImenu viewModel;
 
         protected override void DisposeMenu()
         {
@@ -17,7 +17,7 @@
 
         protected override void InitMenu()
         {
-            this.DataContext = this.viewModel = new ViewModelWindowCNEIMenu();
+            this.DataContext = this.viewModel = new ViewModelWindowCNEImenu();
         }
     }
 }

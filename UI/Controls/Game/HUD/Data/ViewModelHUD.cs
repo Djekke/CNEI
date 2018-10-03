@@ -35,7 +35,7 @@
             this.MenuSocial = Menu.Register<WindowSocial>();
             this.MenuTechTree = Menu.Register<WindowTechnologies>();
             this.MenuQuests = Menu.Register<WindowQuests>();
-            this.MenuCNEI = Menu.Register<WindowCNEIMenu>();
+            this.MenuCNEI = Menu.Register<WindowCNEImenu>();
         }
 
         public Menu MenuConstruction { get; }

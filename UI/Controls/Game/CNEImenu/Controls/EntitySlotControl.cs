@@ -7,6 +7,7 @@
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
+    using AtomicTorch.CBND.GameApi.Scripting;
 
     public class EntitySlotControl : BaseControl
     {
@@ -139,7 +140,14 @@
                 weakReferenceMousePressedControl = null;
                 if (lastMousePressedControl == this)
                 {
-                    WindowCNEIDetails.Open((ProtoEntityViewModel)entitySlotControl.DataContext);
+                    if (entitySlotControl.DataContext is ProtoEntityViewModel entityViewModel)
+                    {
+                        WindowCNEIdetails.Open(entityViewModel);
+                    }
+                    else
+                    {
+                        Api.Logger.Error("CNEI: Wrong view model for details window " + entitySlotControl.DataContext);
+                    }
                 }
             }
 

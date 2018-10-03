@@ -15,8 +15,8 @@
 
             ClientInputContext.Start("CNEI menu overlay")
                               .HandleButtonDown(
-                                  GameButton.CNEIMenu,
-                                  Menu.Toggle<WindowCNEIMenu>);
+                                  GameButton.CNEImenuOpen,
+                                  Menu.Toggle<WindowCNEImenu>);
         }
     }
 }

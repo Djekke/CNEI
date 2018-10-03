@@ -231,6 +231,13 @@ namespace AtomicTorch.CBND.CoreMod.ClientComponents.Input
             "Open CryoFall NEI",
             InputKey.I,
             Category = "CNEI")]
-        CNEIMenu,
+        CNEImenuOpen,
+
+        [ButtonInfo(
+            "Previous info",
+            "Show previous information in Details window or close it",
+            InputKey.Back,
+            Category = "CNEI")]
+        CNEImenuBack,
     }
 }

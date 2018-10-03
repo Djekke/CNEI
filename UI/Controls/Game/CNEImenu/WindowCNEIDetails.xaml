@@ -1,5 +1,5 @@
 ﻿<core:BaseUserControlWithWindow
-    x:Class="CryoFall.CNEI.UI.Controls.Game.CNEImenu.WindowCNEIDetails"
+    x:Class="CryoFall.CNEI.UI.Controls.Game.CNEImenu.WindowCNEIdetails"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=AtomicTorch.CBND.CoreMod"
@@ -21,9 +21,7 @@
     <core:GameWindow x:Name="GameWindow"
                      Width="{StaticResource GameMenuStandardWindowWidth}"
                      Height="{StaticResource GameMenuStandardWindowHeight}"
-                     IsCached="True">
-        <Grid>
-            <ContentControl Content="{Binding SelectedEntityViewModel}" />
-        </Grid>
+                     IsCached="False">
+        <ContentControl Content="{Binding}" />
     </core:GameWindow>
 </core:BaseUserControlWithWindow>
