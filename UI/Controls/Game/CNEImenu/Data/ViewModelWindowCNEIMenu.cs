@@ -1,23 +1,37 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
     using AtomicTorch.CBND.CoreMod.Characters;
+    using AtomicTorch.CBND.CoreMod.StaticObjects.Loot;
+    using AtomicTorch.CBND.CoreMod.StaticObjects.Minerals;
     using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
+    using AtomicTorch.CBND.CoreMod.StaticObjects.Vegetation;
     using AtomicTorch.CBND.CoreMod.Systems.ServerOperator;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class ViewModelWindowCNEImenu : BaseViewModel
     {
         private string searchText = string.Empty;
 
         // Default settings.
-        private bool isShowingItems = true;
-        private bool isShowingStructures = true;
-        private bool isShowingMobs = true;
-        private bool isShowingEntityWithTemplates = true; //TODO: change to false, true for debug
+        private bool isDefaultViewOn = true;
+        private bool isShowingEntityWithTemplates = false;
         private bool isShowingAll = false;
+
+        private static List<Type> defaultViewTypes = new List<Type>()
+        {
+            typeof(IProtoItem),
+            typeof(IProtoObjectStructure),
+            typeof(IProtoCharacterMob),
+            typeof(IProtoObjectMineral),
+            typeof(IProtoObjectLoot),
+            typeof(IProtoObjectVegetation),
+        };
 
         public FilteredObservableWithPaging<ProtoEntityViewModel> FilteredEntityVMList { get; }
 
@@ -32,9 +46,7 @@
         {
             return IsShowingAll ||
                    (IsShowingEntityWithTemplates && entityVM.GetType().IsSubclassOf(typeof(ProtoEntityViewModel))) ||
-                   (IsShowingItems && (entityVM.ProtoEntity is IProtoItem)) ||
-                   (IsShowingStructures && (entityVM.ProtoEntity is IProtoObjectStructure)) ||
-                   (IsShowingMobs && (entityVM.ProtoEntity is IProtoCharacterMob));
+                   (IsDefaultViewOn && (defaultViewTypes.Any(t => t.IsInstanceOfType(entityVM.ProtoEntity))));
         }
 
         private bool SearchFilter(ProtoEntityViewModel entityVM)
@@ -75,60 +87,22 @@
             }
         }
 
-        public bool IsShowingItems
+        public bool IsDefaultViewOn
         {
-            get => this.isShowingItems;
+            get => this.isDefaultViewOn;
             set
             {
-                if (value == this.isShowingItems)
+                if (value == this.isDefaultViewOn)
                 {
                     return;
                 }
-                this.isShowingItems = value;
-                if (!this.isShowingItems)
+                this.isDefaultViewOn = value;
+                if (!this.isDefaultViewOn)
                 {
-                    this.IsShowingEntityWithTemplates = false;
-                    this.IsShowingAll = false;
-                }
-                this.FilteredEntityVMList.Refresh();
-                this.NotifyThisPropertyChanged();
-            }
-        }
-
-        public bool IsShowingStructures
-        {
-            get => this.isShowingStructures;
-            set
-            {
-                if (value == this.isShowingStructures)
-                {
-                    return;
-                }
-                this.isShowingStructures = value;
-                if (!this.isShowingStructures)
-                {
-                    this.IsShowingEntityWithTemplates = false;
-                    this.IsShowingAll = false;
-                }
-                this.FilteredEntityVMList.Refresh();
-                this.NotifyThisPropertyChanged();
-            }
-        }
-
-        public bool IsShowingMobs
-        {
-            get => this.isShowingMobs;
-            set
-            {
-                if (value == this.isShowingMobs)
-                {
-                    return;
-                }
-                this.isShowingMobs = value;
-                if (!this.isShowingMobs)
-                {
-                    this.IsShowingEntityWithTemplates = false;
-                    this.IsShowingAll = false;
+                    this.isShowingEntityWithTemplates = false;
+                    this.NotifyPropertyChanged("IsShowingEntityWithTemplates");
+                    this.isShowingAll = false;
+                    this.NotifyPropertyChanged("IsShowingAll");
                 }
                 this.FilteredEntityVMList.Refresh();
                 this.NotifyThisPropertyChanged();
@@ -147,13 +121,12 @@
                 this.isShowingEntityWithTemplates = value;
                 if (isShowingEntityWithTemplates)
                 {
-                    this.IsShowingItems = true;
-                    this.IsShowingStructures = true;
-                    this.IsShowingMobs = true;
+                    this.IsDefaultViewOn = true;
                 }
                 else
                 {
-                    this.IsShowingAll = false;
+                    this.isShowingAll = false;
+                    this.NotifyPropertyChanged("IsShowingAll");
                 }
                 this.FilteredEntityVMList.Refresh();
                 this.NotifyThisPropertyChanged();
@@ -172,10 +145,10 @@
                 this.isShowingAll = value;
                 if (isShowingAll)
                 {
-                    this.IsShowingItems = true;
-                    this.IsShowingStructures = true;
-                    this.IsShowingMobs = true;
-                    this.IsShowingEntityWithTemplates = true;
+                    this.isDefaultViewOn = true;
+                    this.NotifyPropertyChanged("IsDefaultViewOn");
+                    this.isShowingEntityWithTemplates = true;
+                    this.NotifyPropertyChanged("IsShowingEntityWithTemplates");
                 }
                 this.FilteredEntityVMList.Refresh();
                 this.NotifyThisPropertyChanged();

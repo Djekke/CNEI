@@ -113,61 +113,6 @@
                     <TextBlock Text="Entity count: " />
                     <TextBlock Text="{Binding FilteredEntityVMList.EntityCount}" />
                 </StackPanel>
-
-            </Grid>
-
-            <Grid x:Name="TreeViewTypeHierarchyGrid"
-                  Grid.Row="1"
-                  Grid.Column="1"
-                  Visibility="Collapsed">
-                <!--<TreeView x:Name="TreeViewTypeHierarchy"
-                          ItemsSource="{Binding TypeHierarchy.Derivatives}"
-                          VirtualizingPanel.IsVirtualizing="True"
-                          Foreground="Yellow">
-                    <TreeView.ItemContainerStyle>
-                        <Style TargetType="{x:Type TreeViewItem}">
-                            <Setter Property="IsExpanded" Value="True"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsChild}" Value="True">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TreeView.ItemContainerStyle>
-                    <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type data:ViewModelTypeHierarchy}"
-                                                  ItemsSource = "{Binding Derivatives}">
-                            <ContentControl Content="{Binding}"
-                                            x:Name="TreeViewContent"/>
-                            <HierarchicalDataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding EndNode}" Value="False">
-                                    <Setter Property="ContentTemplate" TargetName="TreeViewContent">
-                                        <Setter.Value>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Name}" FontSize="10"/>
-                                            </DataTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding EndNode}" Value="True">
-                                    <Setter Property="ContentTemplate" TargetName="TreeViewContent">
-                                        <Setter.Value>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Vertical">
-                                                    <TextBlock Text="{Binding Name}" FontSize="10"/>
-                                                    <ListBox Style="{StaticResource DefaultListBox}"
-                                                             ItemsSource="{Binding EntityVMList}"
-                                                             MaxWidth="400"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                            </HierarchicalDataTemplate.Triggers>
-                        </HierarchicalDataTemplate>
-                    </TreeView.Resources>
-                </TreeView>-->
-
             </Grid>
 
             <Grid x:Name="SettingsGrid"
@@ -186,32 +131,13 @@
                 </Grid.Style>
 
                 <StackPanel Orientation="Vertical">
-                    <!--<GroupBox Header="View Type">
-                        <StackPanel>
-                            <RadioButton GroupName="ViewType" x:Name="ViewTypeSimpleList"
-                                         Content="Simple list" IsChecked="True"/>
-                            <RadioButton GroupName="ViewType" x:Name="ViewTypeGroup"
-                                         Content="Group by baseType"/>
-                            <CheckBox x:Name="ShowGroupName"
-                                      Content="Show group name"
-                                      IsChecked="True"
-                                      Margin="10,0,0,0"
-                                      IsEnabled="{Binding IsChecked, ElementName=ViewTypeGroup}"/>
-                        </StackPanel>
-                    </GroupBox>-->
                     <GroupBox Header="Content">
                         <StackPanel>
-                            <CheckBox x:Name="ShowItems"
-                                      Content="Show items"
-                                      IsChecked="{Binding IsShowingItems}"/>
-                            <CheckBox x:Name="ShowStructures"
-                                      Content="Show structures"
-                                      IsChecked="{Binding IsShowingStructures}"/>
-                            <CheckBox x:Name="ShowMobs"
-                                      Content="Show mobs"
-                                      IsChecked="{Binding IsShowingMobs}"/>
+                            <CheckBox x:Name="DefaultView"
+                                      Content="Default View (Items, structures, creatures)"
+                                      IsChecked="{Binding IsDefaultViewOn}"/>
                             <CheckBox x:Name="ShowEntityWithTemplates"
-                                      Content="Show entity with templates"
+                                      Content="Show all entity with templates"
                                       IsChecked="{Binding IsShowingEntityWithTemplates}"/>
                             <CheckBox x:Name="ShowAllEntity"
                                       IsChecked="{Binding IsShowingAll}">
