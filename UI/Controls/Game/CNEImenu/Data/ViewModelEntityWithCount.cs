@@ -7,13 +7,13 @@
     {
         public ViewModelEntityWithCount(ProtoEntityViewModel entityViewModel)
         {
-            this.EntityViewModel = entityViewModel;
-            this.CountString = "";
+            EntityViewModel = entityViewModel;
+            CountString = "";
         }
 
         public ViewModelEntityWithCount(ProtoEntityViewModel entityViewModel, int count) : this(entityViewModel)
         {
-            this.CountString += count + " x";
+            CountString += count + " x";
         }
 
         public ViewModelEntityWithCount(ProtoEntityViewModel entityViewModel, int count, int countRandom,
@@ -21,12 +21,12 @@
         {
             if (countRandom > 0)
             {
-                this.CountString = "(" + count + "-" + (count + countRandom) + ") x";
+                CountString = "(" + count + "-" + (count + countRandom) + ") x";
             }
 
             if (0 < probability && probability <= 1)
             {
-                this.CountString += " " + (probability * 100) + "%";
+                CountString += " " + (probability * 100) + "%";
             }
             else
             {

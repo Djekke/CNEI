@@ -12,21 +12,21 @@
 
         public BaseCommand GodModeToggle { get; }
 
-        private bool IsGodModeOn = false;
+        private bool isGodModeOn = false;
 
         public ViewModelCreativePanel()
         {
-            this.Heal = new ActionCommand(() => ExecuteCommand("/player.heal"));
-            this.SetTimeOfDay = new ActionCommandWithParameter(time =>
+            Heal = new ActionCommand(() => ExecuteCommand("/player.heal"));
+            SetTimeOfDay = new ActionCommandWithParameter(time =>
                     ExecuteCommand("/admin.setTimeOfDay " + time));
-            this.GodModeToggle = new ActionCommand(() =>
+            GodModeToggle = new ActionCommand(() =>
                 {
-                    this.IsGodModeOn = !this.IsGodModeOn;
-                    ExecuteCommand("/player.setInvincibility " + this.IsGodModeOn);
+                    isGodModeOn = !isGodModeOn;
+                    ExecuteCommand("/player.setInvincibility " + isGodModeOn);
                 });
         }
 
-        private void ExecuteCommand(string command)
+        private static void ExecuteCommand(string command)
         {
             ConsoleCommandsSystem.SharedExecuteConsoleCommand(command);
         }

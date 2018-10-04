@@ -16,62 +16,62 @@
 
         public int CurrentPage
         {
-            get => this.currentPage;
+            get => currentPage;
             private set
             {
-                if (value == this.currentPage)
+                if (value == currentPage)
                 {
                     return;
                 }
-                this.currentPage = value;
-                this.NotifyThisPropertyChanged();
-                this.Refresh();
+                currentPage = value;
+                NotifyThisPropertyChanged();
+                Refresh();
             }
         }
 
         public int PageCount
         {
-            get => this.pageCount;
+            get => pageCount;
             private set
             {
-                if (value == this.pageCount)
+                if (value == pageCount)
                 {
                     return;
                 }
-                this.pageCount = value;
-                if (this.CurrentPage > this.pageCount)
+                pageCount = value;
+                if (CurrentPage > pageCount)
                 {
-                    this.CurrentPage = this.pageCount;
+                    CurrentPage = pageCount;
                 }
-                this.NotifyThisPropertyChanged();
-                this.Refresh();
+                NotifyThisPropertyChanged();
+                Refresh();
             }
         }
 
-        public bool IsFirstPage => this.currentPage <= 1;
+        public bool IsFirstPage => currentPage <= 1;
 
-        public bool IsLastPage => this.currentPage == this.pageCount;
+        public bool IsLastPage => currentPage == pageCount;
 
-        public bool IsNotFirstPage => !this.IsFirstPage;
+        public bool IsNotFirstPage => !IsFirstPage;
 
-        public bool IsNotLastPage => !this.IsLastPage;
+        public bool IsNotLastPage => !IsLastPage;
 
         public override ObservableCollection<T> Items
         {
             get
             {
-                this.items.Clear();
+                items.Clear();
                 // Apply filters.
-                var tempCollection = this.BaseCollection.Where(x => this.filters.All(f => f(x))).ToList();
-                this.EntityCount = tempCollection.Count;
-                this.RefreshPageCount();
+                var tempCollection = BaseCollection.Where(x => filters.All(f => f(x))).ToList();
+                EntityCount = tempCollection.Count;
+                RefreshPageCount();
                 // Apply pagination.
-                if (this.EntityCount > 0)
+                if (EntityCount > 0)
                 {
-                    int offset = this.pageCapacity * (this.CurrentPage - 1);
-                    this.items = new ObservableCollection<T>(tempCollection
-                            .GetRange(0 + offset, Math.Min(this.pageCapacity, this.EntityCount - offset)));
-                    return this.items;
+                    int offset = pageCapacity * (CurrentPage - 1);
+                    items = new ObservableCollection<T>(tempCollection
+                            .GetRange(0 + offset, Math.Min(pageCapacity, EntityCount - offset)));
+                    return items;
                 }
                 return items;
             }
@@ -79,32 +79,32 @@
 
         public override void Refresh()
         {
-            this.NotifyPropertyChange("Items");
+            NotifyPropertyChange("Items");
         }
 
         private void RefreshPageCount()
         {
-            var newCount = this.EntityCount / this.pageCapacity +
-                (this.EntityCount % this.pageCapacity == 0 ? 0 : 1);
-            if (this.PageCount != newCount)
+            var newCount = EntityCount / pageCapacity +
+                (EntityCount % pageCapacity == 0 ? 0 : 1);
+            if (PageCount != newCount)
             {
-                this.pageCount = newCount;
-                this.NotifyPropertyChange("PageCount");
-                if (this.CurrentPage > this.pageCount)
+                pageCount = newCount;
+                NotifyPropertyChange("PageCount");
+                if (CurrentPage > pageCount)
                 {
-                    this.currentPage = this.pageCount;
-                    this.NotifyPropertyChange("CurrentPage");
+                    currentPage = pageCount;
+                    NotifyPropertyChange("CurrentPage");
                 }
-                if (this.CurrentPage == 0 && this.pageCount > 0 )
+                if (CurrentPage == 0 && pageCount > 0 )
                 {
-                    this.currentPage = 1;
-                    this.NotifyPropertyChange("CurrentPage");
+                    currentPage = 1;
+                    NotifyPropertyChange("CurrentPage");
                 }
             }
-            this.NotifyPropertyChange("IsFirstPage");
-            this.NotifyPropertyChange("IsLastPage");
-            this.NotifyPropertyChange("IsNotFirstPage");
-            this.NotifyPropertyChange("IsNotLastPage");
+            NotifyPropertyChange("IsFirstPage");
+            NotifyPropertyChange("IsLastPage");
+            NotifyPropertyChange("IsNotFirstPage");
+            NotifyPropertyChange("IsNotLastPage");
         }
 
         public void SetPageCapacity(int capacity)
@@ -114,26 +114,26 @@
                 Api.Logger.Error("What idiot set page capacity for " + this + " to zero?");
                 return;
             }
-            if (this.pageCapacity != capacity)
+            if (pageCapacity != capacity)
             {
-                this.pageCapacity = capacity;
-                this.Refresh();
+                pageCapacity = capacity;
+                Refresh();
             }
         }
 
         public void NextPage()
         {
-            if (this.currentPage < this.PageCount)
+            if (currentPage < PageCount)
             {
-                this.CurrentPage += 1;
+                CurrentPage += 1;
             }
         }
 
         public void PrevPage()
         {
-            if (this.currentPage > 0)
+            if (currentPage > 0)
             {
-                this.CurrentPage -= 1;
+                CurrentPage -= 1;
             }
         }
 

@@ -22,42 +22,41 @@
 
         public ObservableCollection<ViewModelTypeHierarchy> Derivatives { get; private set; }
 
-        public List<ProtoEntityViewModel> EntityVMList => this.Derivatives.Select(d => d.EntityVM).ToList();
+        public List<ProtoEntityViewModel> EntityVMList => Derivatives.Select(d => d.EntityVM).ToList();
 
-        public bool EndNode => this.Derivatives.All(n => n.IsChild);
+        public bool EndNode => Derivatives.All(n => n.IsChild);
 
         public ViewModelTypeHierarchy()
         {
-            this.Derivatives = new ObservableCollection<ViewModelTypeHierarchy>();
-            this.Name = GetTypeNameWithoutGenericArity(this.MyType);
-            this.IsChild = true;
+            Derivatives = new ObservableCollection<ViewModelTypeHierarchy>();
+            Name = GetTypeNameWithoutGenericArity(MyType);
+            IsChild = true;
         }
 
         public ViewModelTypeHierarchy(Type type)
         {
-            this.Derivatives = new ObservableCollection<ViewModelTypeHierarchy>();
-            this.MyType = type;
-            this.Name = GetTypeNameWithoutGenericArity(type);
-            this.IsChild = true;
+            Derivatives = new ObservableCollection<ViewModelTypeHierarchy>();
+            MyType = type;
+            Name = GetTypeNameWithoutGenericArity(type);
+            IsChild = true;
         }
 
         public void Add(Type type, ProtoEntityViewModel entityVM)
         {
-            if (GetTypeNameWithoutGenericArity(type) == this.Name)
+            if (GetTypeNameWithoutGenericArity(type) == Name)
             {
                 return;
             }
             var localNode = this;
             var tempType = type.BaseType;
             while (GetTypeNameWithoutGenericArity(type.BaseType) != localNode.Name)
-            {                
+            {
                 while(GetTypeNameWithoutGenericArity(tempType.BaseType) != localNode.Name)
                 {
                     tempType = tempType.BaseType;
                 }
                 var tempNode = localNode.Derivatives
-                    .Where(n => n.Name == GetTypeNameWithoutGenericArity(tempType))
-                    .FirstOrDefault();
+                    .FirstOrDefault(n => n.Name == GetTypeNameWithoutGenericArity(tempType));
                 if (tempNode == null)
                 {
                     tempNode = new ViewModelTypeHierarchy(tempType) { Parent = localNode };
@@ -75,13 +74,13 @@
         protected override void DisposeViewModel()
         {
             base.DisposeViewModel();
-            foreach (var viewModelTypeHierarchy in this.Derivatives)
+            foreach (var viewModelTypeHierarchy in Derivatives)
             {
                 viewModelTypeHierarchy.Dispose();
             }
         }
 
-        private string GetTypeNameWithoutGenericArity(Type t)
+        private static string GetTypeNameWithoutGenericArity(Type t)
         {
             int index = t.ToString().IndexOf('`');
             return index == -1 ? t.ToString() : t.ToString().Substring(0, index);

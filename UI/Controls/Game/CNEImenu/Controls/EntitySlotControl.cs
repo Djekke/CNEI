@@ -1,5 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Controls
 {
+    using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
     using System;
@@ -7,7 +8,6 @@
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
-    using AtomicTorch.CBND.GameApi.Scripting;
 
     public class EntitySlotControl : BaseControl
     {
@@ -36,8 +36,8 @@
 
         public bool IsBackgroundEnabled
         {
-            get => (bool)this.GetValue(IsBackgroundEnabledProperty);
-            set => this.SetValue(IsBackgroundEnabledProperty, value);
+            get => (bool)GetValue(IsBackgroundEnabledProperty);
+            set => SetValue(IsBackgroundEnabledProperty, value);
         }
 
 
@@ -45,12 +45,12 @@
 
         public void SetupCustomMouseClickHandler(EntitySlotControlEventsHelper.EntitySlotMouseClickDelegate handler)
         {
-            this.itemSlotControlEventsHelper.CustomMouseClickHandler = handler;
+            itemSlotControlEventsHelper.CustomMouseClickHandler = handler;
         }
 
         protected override void InitControl()
         {
-            this.itemSlotControlEventsHelper = new EntitySlotControlEventsHelper(this);
+            itemSlotControlEventsHelper = new EntitySlotControlEventsHelper(this);
         }
 
         protected override void OnLoaded()
@@ -64,9 +64,9 @@
 
             // this cannot be done in InitControl, as later control might be removed and re-added
             var templateRoot = (FrameworkElement)VisualTreeHelper.GetChild(this, 0);
-            this.border = templateRoot.GetByName<Border>("Border");
+            border = templateRoot.GetByName<Border>("Border");
 
-            this.ResetStates();
+            ResetStates();
         }
 
         protected override void OnUnloaded()
@@ -81,18 +81,18 @@
 
         private void ResetStates()
         {
-            this.SetCurrentSecondaryState("Normal", false);
+            SetCurrentSecondaryState("Normal", false);
         }
 
         private void SetCurrentSecondaryState(string stateName, bool withTransition)
         {
-            if (this.currentSecondaryStateName == stateName)
+            if (currentSecondaryStateName == stateName)
             {
                 return;
             }
 
-            VisualStateManager.GoToElementState(this.border, stateName, withTransition);
-            this.currentSecondaryStateName = stateName;
+            VisualStateManager.GoToElementState(border, stateName, withTransition);
+            currentSecondaryStateName = stateName;
         }
 
         public class EntitySlotControlEventsHelper
@@ -106,10 +106,10 @@
             public EntitySlotControlEventsHelper(EntitySlotControl entitySlotControl)
             {
                 this.entitySlotControl = entitySlotControl;
-                entitySlotControl.MouseLeftButtonDown += this.SlotMouseButtonDownHandler;
-                entitySlotControl.MouseLeftButtonUp += this.SlotMouseButtonUpHandler;
-                entitySlotControl.MouseEnter += this.SlotMouseEnterHandler;
-                entitySlotControl.MouseLeave += this.SlotMouseLeaveHandler;
+                entitySlotControl.MouseLeftButtonDown += SlotMouseButtonDownHandler;
+                entitySlotControl.MouseLeftButtonUp += SlotMouseButtonUpHandler;
+                entitySlotControl.MouseEnter += SlotMouseEnterHandler;
+                entitySlotControl.MouseLeave += SlotMouseLeaveHandler;
             }
 
             public delegate bool EntitySlotMouseClickDelegate(bool isDown);
@@ -118,7 +118,7 @@
             {
                 e.Handled = true;
 
-                if (this.CustomMouseClickHandler?.Invoke(isDown: true) ?? false)
+                if (CustomMouseClickHandler?.Invoke(isDown: true) ?? false)
                 {
                     return;
                 }
@@ -131,7 +131,7 @@
             {
                 e.Handled = true;
 
-                if (this.CustomMouseClickHandler?.Invoke(isDown: false) ?? false)
+                if (CustomMouseClickHandler?.Invoke(isDown: false) ?? false)
                 {
                     return;
                 }
@@ -153,12 +153,12 @@
 
             private void SlotMouseEnterHandler(object sender, MouseEventArgs e)
             {
-                this.entitySlotControl.SetCurrentSecondaryState("MouseOver", true);
+                entitySlotControl.SetCurrentSecondaryState("MouseOver", true);
             }
 
             private void SlotMouseLeaveHandler(object sender, MouseEventArgs e)
             {
-                this.entitySlotControl.SetCurrentSecondaryState("Normal", true);
+                entitySlotControl.SetCurrentSecondaryState("Normal", true);
             }
         }
     }

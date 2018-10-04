@@ -10,9 +10,9 @@
 
         public ProtoItemViewModel([NotNull] IProtoItem item) : base(item, item.Icon)
         {
-            this.Description = item.Description;
-            this.IsStackable = item.IsStackable;
-            this.MaxItemsPerStack = item.MaxItemsPerStack;
+            Description = item.Description;
+            IsStackable = item.IsStackable;
+            MaxItemsPerStack = item.MaxItemsPerStack;
         }
 
         /// <summary>
@@ -21,10 +21,10 @@
         public override void FinalizeRecipeLinking()
         {
             base.FinalizeRecipeLinking();
-            this.RecipePrevPage = new ActionCommand(() => this.RecipeVMList.PrevPage());
-            this.RecipeNextPage = new ActionCommand(() => this.RecipeVMList.NextPage());
-            this.UsagePrevPage = new ActionCommand(() => this.UsageVMList.PrevPage());
-            this.UsageNextPage = new ActionCommand(() => this.UsageVMList.NextPage());
+            RecipePrevPage = new ActionCommand(() => RecipeVMList.PrevPage());
+            RecipeNextPage = new ActionCommand(() => RecipeVMList.NextPage());
+            UsagePrevPage = new ActionCommand(() => UsageVMList.PrevPage());
+            UsageNextPage = new ActionCommand(() => UsageVMList.NextPage());
         }
 
         public BaseCommand RecipePrevPage { get; private set; }

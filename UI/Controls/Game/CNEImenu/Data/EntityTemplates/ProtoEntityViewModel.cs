@@ -27,16 +27,16 @@
 
         public ProtoEntityViewModel([NotNull] IProtoEntity entity)
         {
-            this.ProtoEntity = entity;
-            this.Title = entity.Name;
-            this.Type = entity.Id;
+            ProtoEntity = entity;
+            Title = entity.Name;
+            Type = entity.Id;
             RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>();
             UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>();
         }
 
         public ProtoEntityViewModel([NotNull] IProtoEntity entity, [NotNull] ITextureResource icon) : this(entity)
         {
-            this.iconResource = icon;
+            iconResource = icon;
         }
 
         public virtual ITextureResource IconResource
@@ -45,9 +45,9 @@
             {
                 if (iconResource == null)
                 {
-                    this.iconResource = GetPropertyByName(this.ProtoEntity, "Icon") as ITextureResource;
+                    iconResource = GetPropertyByName(ProtoEntity, "Icon") as ITextureResource;
                 }
-                return this.iconResource;
+                return iconResource;
             }
         }
 
@@ -55,16 +55,16 @@
         {
             get
             {
-                if (this.icon == null)
+                if (icon == null)
                 {
-                    if (this.IconResource == null)
+                    if (IconResource == null)
                     {
                         // Default icon.
-                        this.iconResource = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
+                        iconResource = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
                     }
-                    this.icon = Api.Client.UI.GetTextureBrush(this.IconResource);
+                    icon = Api.Client.UI.GetTextureBrush(IconResource);
                 }
-                return this.icon;
+                return icon;
             }
         }
 
@@ -76,10 +76,14 @@
 
         public virtual Visibility CountVisibility => Visibility.Collapsed;
 
+        public FilteredObservableWithPaging<RecipeViewModel> RecipeVMList { get; private set; }
+
+        public FilteredObservableWithPaging<RecipeViewModel> UsageVMList { get; private set; }
+
         /// <summary>
         /// Initilize entity reletionships with each other - invoked after all entity view Models created,
-        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel{IProtoEntity}" />
-        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels{}" />.
+        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
         public virtual void InitAdditionalRecipes()
         {
@@ -124,10 +128,6 @@
             RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>(recipeVMList);
             UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>(usageVMList);
         }
-
-        public FilteredObservableWithPaging<RecipeViewModel> RecipeVMList { get; private set; }
-
-        public FilteredObservableWithPaging<RecipeViewModel> UsageVMList { get; private set; }
 
         private static object GetPropertyByName(object obj, string name)
         {

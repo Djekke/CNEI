@@ -10,14 +10,14 @@
         protected override void DisposeMenu()
         {
             base.DisposeMenu();
-            this.DataContext = null;
-            this.viewModel.Dispose();
-            this.viewModel = null;
+            DataContext = null;
+            viewModel.Dispose();
+            viewModel = null;
         }
 
         protected override void InitMenu()
         {
-            this.DataContext = this.viewModel = new ViewModelWindowCNEImenu();
+            DataContext = viewModel = new ViewModelWindowCNEImenu();
         }
     }
 }

@@ -7,7 +7,7 @@
 
     public class ProtoObjectLootViewModel : ProtoStaticWorldObjectViewModel
     {
-        private IProtoObjectLoot loot;
+        private readonly IProtoObjectLoot loot;
 
         public ProtoObjectLootViewModel([NotNull] IProtoObjectLoot loot) : base(loot)
         {
@@ -16,20 +16,19 @@
 
         /// <summary>
         /// Initilize entity reletionships with each other - invoked after all entity view Models created,
-        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel{IProtoEntity}" />
-        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels{}" />.
+        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (this.loot == null)
+            if (loot == null)
             {
                 return;
             }
 
-            if (this.loot.LootDroplist != null && this.loot.LootDroplist.EnumerateAllItems().Any())
+            if (loot.LootDroplist != null && loot.LootDroplist.EnumerateAllItems().Any())
             {
-                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this,
-                    this.loot.LootDroplist.EnumerateAllItems()));
+                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, loot.LootDroplist.EnumerateAllItems()));
             }
         }
     }

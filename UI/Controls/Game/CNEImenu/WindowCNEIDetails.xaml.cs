@@ -38,30 +38,30 @@
         protected override void OnLoaded()
         {
             base.OnLoaded();
-            this.Resources.MergedDictionaries.Add(EntityViewModelsManager.AllEntityTemplatesResourceDictionary);
-            this.DataContext = this.entityVMStack.Peek();
+            Resources.MergedDictionaries.Add(EntityViewModelsManager.AllEntityTemplatesResourceDictionary);
+            DataContext = entityVMStack.Peek();
             windowInputContext = ClientInputContext.Start("CNEI details")
-                .HandleButtonDown(GameButton.CNEImenuBack, this.OnBackButtonDown);
+                .HandleButtonDown(GameButton.CNEImenuBack, OnBackButtonDown);
         }
 
         private protected void OnBackButtonDown()
         {
-            if (this.entityVMStack.Count > 1)
+            if (entityVMStack.Count > 1)
             {
-                this.entityVMStack.Pop();
-                this.DataContext = this.entityVMStack.Peek();
+                entityVMStack.Pop();
+                DataContext = entityVMStack.Peek();
             }
             else
             {
-                this.CloseWindow();
+                CloseWindow();
             }
         }
 
         protected override void OnUnloaded()
         {
             base.OnUnloaded();
-            this.DataContext = null;
-            this.entityVMStack.Clear();
+            DataContext = null;
+            entityVMStack.Clear();
             windowInputContext?.Stop();
             windowInputContext = null;
             if (Instance == this)

@@ -21,10 +21,10 @@
 
         private RecipeViewModel([NotNull] IProtoEntity entity, [NotNull] ITextureResource icon) : base(entity, icon)
         {
-            this.InputItemsVMList = new List<BaseViewModel>();
-            this.OutputItemsVMList = new List<BaseViewModel>();
-            this.StationsList = new List<ProtoEntityViewModel>();
-            this.ListedInTechNodes = new List<ProtoEntityViewModel>();
+            InputItemsVMList = new List<BaseViewModel>();
+            OutputItemsVMList = new List<BaseViewModel>();
+            StationsList = new List<ProtoEntityViewModel>();
+            ListedInTechNodes = new List<ProtoEntityViewModel>();
         }
 
         /// <summary>
@@ -33,21 +33,21 @@
         public RecipeViewModel([NotNull] Recipe recipe) : this(recipe, recipe.Icon)
         {
             this.recipe = recipe;
-            this.RecipeType = recipe.RecipeType;
+            RecipeType = recipe.RecipeType;
 
-            this.IsByproduct = this.RecipeType == RecipeType.StationByproduct
+            IsByproduct = RecipeType == RecipeType.StationByproduct
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-            this.IsStationCraft = (this.RecipeType == RecipeType.Hand)
+            IsStationCraft = (RecipeType == RecipeType.Hand)
                 ? Visibility.Collapsed
                 : Visibility.Visible;
-            this.IsHandCraft = (this.RecipeType == RecipeType.Hand)
+            IsHandCraft = (RecipeType == RecipeType.Hand)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
 
-            this.OriginalDuration = recipe.OriginalDuration;
-            this.IsDisabled = !recipe.IsEnabled;
-            this.IsAutoUnlocked = recipe.IsAutoUnlocked;
+            OriginalDuration = recipe.OriginalDuration;
+            IsDisabled = !recipe.IsEnabled;
+            IsAutoUnlocked = recipe.IsAutoUnlocked;
         }
 
         /// <summary>
@@ -65,23 +65,23 @@
                 throw new Exception("CNEI: Build constructor used before all entity VMs sets.");
             }
 
-            this.InputItemsVMList = config.StageRequiredItems
+            InputItemsVMList = config.StageRequiredItems
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item.ProtoItem),
                     item.Count * config.StagesCount))
                 .ToList().AsReadOnly();
 
-            this.OutputItemsVMList =
+            OutputItemsVMList =
                 new List<BaseViewModel>() {new ViewModelEntityWithCount(structureViewModel)}.AsReadOnly();
 
             // TODO: Add All VM's of toolboxes to StationsList
             //this.StationsList = new List<ProtoEntityViewModel>();
-            this.ListedInTechNodes = structureViewModel.ListedInTechNodes;
-            this.IsByproduct = Visibility.Collapsed;
-            this.IsStationCraft = Visibility.Collapsed;
-            this.IsHandCraft = Visibility.Collapsed;
-            this.IsDisabled = false;
-            this.IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
-            this.OriginalDuration = config.StageDurationSeconds * config.StagesCount;
+            ListedInTechNodes = structureViewModel.ListedInTechNodes;
+            IsByproduct = Visibility.Collapsed;
+            IsStationCraft = Visibility.Collapsed;
+            IsHandCraft = Visibility.Collapsed;
+            IsDisabled = false;
+            IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
+            OriginalDuration = config.StageDurationSeconds * config.StagesCount;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@
             inputTempList.AddRange(upgradeEntry.RequiredItems
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item.ProtoItem),
                     item.Count)));
-            this.InputItemsVMList = inputTempList.AsReadOnly();
+            InputItemsVMList = inputTempList.AsReadOnly();
 
             if (!(EntityViewModelsManager.GetEntityViewModel(upgradeEntry.ProtoStructure)
                 is ProtoObjectStructureViewModel newStructureViewModel))
@@ -111,19 +111,19 @@
                 throw new Exception("CNEI: Can not find ProtoObjectStructureViewModel for " +
                                     upgradeEntry.ProtoStructure);
             }
-            this.OutputItemsVMList = new List<BaseViewModel>()
+            OutputItemsVMList = new List<BaseViewModel>()
                 {
                     new ViewModelEntityWithCount(newStructureViewModel)
                 }.AsReadOnly();
 
-            this.StationsList = new List<ProtoEntityViewModel>() { structureViewModel };
-            this.ListedInTechNodes = newStructureViewModel.ListedInTechNodes;
-            this.IsByproduct = Visibility.Collapsed;
-            this.IsStationCraft = Visibility.Collapsed;
-            this.IsHandCraft = Visibility.Collapsed;
-            this.IsDisabled = false;
-            this.IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
-            this.OriginalDuration = 0;
+            StationsList = new List<ProtoEntityViewModel>() { structureViewModel };
+            ListedInTechNodes = newStructureViewModel.ListedInTechNodes;
+            IsByproduct = Visibility.Collapsed;
+            IsStationCraft = Visibility.Collapsed;
+            IsHandCraft = Visibility.Collapsed;
+            IsDisabled = false;
+            IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
+            OriginalDuration = 0;
         }
 
         /// <summary>
@@ -139,39 +139,39 @@
             {
                 throw new Exception("CNEI: Droplist constructor used before all entity VMs sets.");
             }
-            this.InputItemsVMList =
+            InputItemsVMList =
                 new List<BaseViewModel>() {new ViewModelEntityWithCount(entityViewModel)}.AsReadOnly();
 
             HashSet<IProtoItem> uniqueDroplist = new HashSet<IProtoItem>(droplist);
-            this.OutputItemsVMList = uniqueDroplist
+            OutputItemsVMList = uniqueDroplist
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item)))
                 .ToList().AsReadOnly();
 
             //this.StationsList = new List<ProtoEntityViewModel>();
             //this.ListedInTechNodes = new List<ProtoEntityViewModel>();
-            this.IsByproduct = Visibility.Collapsed;
-            this.IsStationCraft = Visibility.Collapsed;
-            this.IsHandCraft = Visibility.Collapsed;
-            this.IsDisabled = false;
-            this.IsAutoUnlocked = true;
-            this.OriginalDuration = 0;
+            IsByproduct = Visibility.Collapsed;
+            IsStationCraft = Visibility.Collapsed;
+            IsHandCraft = Visibility.Collapsed;
+            IsDisabled = false;
+            IsAutoUnlocked = true;
+            OriginalDuration = 0;
         }
 
         /// <summary>
-        /// Initilize entity reletionships with each other - invoked after all entity view Models created.
-        /// <para>You can access them by using <see cref="M:CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers.EntityViewModelsManager.GetEntityViewModel(AtomicTorch.CBND.GameApi.Data.IProtoEntity)" /> and
-        /// <see cref="M:CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers.EntityViewModelsManager.GetAllEntityViewModels" />.</para>
+        /// Initilize entity reletionships with each other - invoked after all entity view Models created,
+        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (this.recipe == null)
+            if (recipe == null)
             {
                 return;
             }
 
             if (recipe is Recipe.RecipeForStationByproduct byproductRecipe)
             {
-                this.InputItemsVMList = new List<BaseViewModel>()
+                InputItemsVMList = new List<BaseViewModel>()
                 {
                     new ViewModelEntityWithCount(
                         EntityViewModelsManager.GetEntityViewModel(byproductRecipe.ProtoItemFuel))
@@ -179,24 +179,24 @@
             }
             else
             {
-                this.InputItemsVMList = recipe.InputItems
+                InputItemsVMList = recipe.InputItems
                     .Select(i =>
                         new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem), i.Count))
                     .ToList().AsReadOnly();
             }
 
-            this.OutputItemsVMList = recipe.OutputItems.Items
+            OutputItemsVMList = recipe.OutputItems.Items
                 .Select(i => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem),
                     i.Count, i.CountRandom, i.Probability))
                 .ToList().AsReadOnly();
 
-            this.ListedInTechNodes = recipe.ListedInTechNodes
+            ListedInTechNodes = recipe.ListedInTechNodes
                 .Select(EntityViewModelsManager.GetEntityViewModel)
                 .ToList().AsReadOnly();
 
             if (recipe is Recipe.BaseRecipeForStation stationsRecipe)
             {
-                this.StationsList = stationsRecipe.StationTypes
+                StationsList = stationsRecipe.StationTypes
                     .Select(EntityViewModelsManager.GetEntityViewModel)
                     .ToList().AsReadOnly();
             }

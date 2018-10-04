@@ -51,107 +51,105 @@
 
         private bool SearchFilter(ProtoEntityViewModel entityVM)
         {
-            return (entityVM.Title.ToLower().Contains(this.searchText.ToLower())
-                    || entityVM.GetType().ToString().ToLower().Contains(this.searchText.ToLower())
-                    || entityVM.GetType().Name.ToLower().Contains(this.searchText.ToLower()));
+            return (entityVM.Title.ToLower().Contains(searchText.ToLower())
+                    || entityVM.GetType().ToString().ToLower().Contains(searchText.ToLower())
+                    || entityVM.GetType().Name.ToLower().Contains(searchText.ToLower()));
         }
 
         public ViewModelWindowCNEImenu()
         {
-            this.FilteredEntityVMList =
+            FilteredEntityVMList =
                 new FilteredObservableWithPaging<ProtoEntityViewModel>(EntityViewModelsManager
                     .GetAllEntityViewModels());
-            this.FilteredEntityVMList.AddFilter(SettingsFilter);
-            this.FilteredEntityVMList.AddFilter(SearchFilter);
-            this.FilteredEntityVMList.SetPageCapacity(this.PageCapacity);
+            FilteredEntityVMList.AddFilter(SettingsFilter);
+            FilteredEntityVMList.AddFilter(SearchFilter);
+            FilteredEntityVMList.SetPageCapacity(PageCapacity);
 
-            this.NextPage = new ActionCommand(() => this.FilteredEntityVMList.NextPage());
-            this.PrevPage = new ActionCommand(() => this.FilteredEntityVMList.PrevPage());
+            NextPage = new ActionCommand(() => FilteredEntityVMList.NextPage());
+            PrevPage = new ActionCommand(() => FilteredEntityVMList.PrevPage());
         }
 
         public string SearchText
         {
-            get => this.searchText;
+            get => searchText;
             set
             {
                 value = value?.TrimStart() ?? string.Empty;
-                if (this.searchText == value)
+                if (searchText == value)
                 {
                     return;
                 }
-
-                this.searchText = value;
-                this.NotifyThisPropertyChanged();
-
-                this.FilteredEntityVMList.Refresh();
+                searchText = value;
+                NotifyThisPropertyChanged();
+                FilteredEntityVMList.Refresh();
             }
         }
 
         public bool IsDefaultViewOn
         {
-            get => this.isDefaultViewOn;
+            get => isDefaultViewOn;
             set
             {
-                if (value == this.isDefaultViewOn)
+                if (value == isDefaultViewOn)
                 {
                     return;
                 }
-                this.isDefaultViewOn = value;
-                if (!this.isDefaultViewOn)
+                isDefaultViewOn = value;
+                if (!isDefaultViewOn)
                 {
-                    this.isShowingEntityWithTemplates = false;
-                    this.NotifyPropertyChanged("IsShowingEntityWithTemplates");
-                    this.isShowingAll = false;
-                    this.NotifyPropertyChanged("IsShowingAll");
+                    isShowingEntityWithTemplates = false;
+                    NotifyPropertyChanged("IsShowingEntityWithTemplates");
+                    isShowingAll = false;
+                    NotifyPropertyChanged("IsShowingAll");
                 }
-                this.FilteredEntityVMList.Refresh();
-                this.NotifyThisPropertyChanged();
+                FilteredEntityVMList.Refresh();
+                NotifyThisPropertyChanged();
             }
         }
 
         public bool IsShowingEntityWithTemplates
         {
-            get => this.isShowingEntityWithTemplates;
+            get => isShowingEntityWithTemplates;
             set
             {
-                if (value == this.isShowingEntityWithTemplates)
+                if (value == isShowingEntityWithTemplates)
                 {
                     return;
                 }
-                this.isShowingEntityWithTemplates = value;
+                isShowingEntityWithTemplates = value;
                 if (isShowingEntityWithTemplates)
                 {
-                    this.IsDefaultViewOn = true;
+                    IsDefaultViewOn = true;
                 }
                 else
                 {
-                    this.isShowingAll = false;
-                    this.NotifyPropertyChanged("IsShowingAll");
+                    isShowingAll = false;
+                    NotifyPropertyChanged("IsShowingAll");
                 }
-                this.FilteredEntityVMList.Refresh();
-                this.NotifyThisPropertyChanged();
+                FilteredEntityVMList.Refresh();
+                NotifyThisPropertyChanged();
             }
         }
 
         public bool IsShowingAll
         {
-            get => this.isShowingAll;
+            get => isShowingAll;
             set
             {
-                if (value == this.isShowingAll)
+                if (value == isShowingAll)
                 {
                     return;
                 }
-                this.isShowingAll = value;
+                isShowingAll = value;
                 if (isShowingAll)
                 {
-                    this.isDefaultViewOn = true;
-                    this.NotifyPropertyChanged("IsDefaultViewOn");
-                    this.isShowingEntityWithTemplates = true;
-                    this.NotifyPropertyChanged("IsShowingEntityWithTemplates");
+                    isDefaultViewOn = true;
+                    NotifyPropertyChanged("IsDefaultViewOn");
+                    isShowingEntityWithTemplates = true;
+                    NotifyPropertyChanged("IsShowingEntityWithTemplates");
                 }
-                this.FilteredEntityVMList.Refresh();
-                this.NotifyThisPropertyChanged();
+                FilteredEntityVMList.Refresh();
+                NotifyThisPropertyChanged();
             }
         }
 

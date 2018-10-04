@@ -163,7 +163,7 @@
             {
                 throw new Exception("CNEI: Call GetEntityViewModel before all entity VMs sets.");
             }
-            if (entity != null && allEntityDictonary.ContainsKey(entity))
+            if (allEntityDictonary.ContainsKey(entity))
             {
                 return allEntityDictonary[entity];
             }

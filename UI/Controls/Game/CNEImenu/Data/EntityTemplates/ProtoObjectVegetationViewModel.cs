@@ -7,7 +7,7 @@
 
     public class ProtoObjectVegetationViewModel : ProtoStaticWorldObjectViewModel
     {
-        private IProtoObjectVegetation vegetation;
+        private readonly IProtoObjectVegetation vegetation;
 
         public ProtoObjectVegetationViewModel([NotNull] IProtoObjectVegetation vegetation) : base(vegetation)
         {
@@ -20,21 +20,21 @@
 
         /// <summary>
         /// Initilize entity reletionships with each other - invoked after all entity view Models created,
-        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel{IProtoEntity}" />
-        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels{}" />.
+        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (this.vegetation == null)
+            if (vegetation == null)
             {
                 return;
             }
 
-            if (this.vegetation.DroplistOnDestroy != null &&
-                this.vegetation.DroplistOnDestroy.EnumerateAllItems().Any())
+            if (vegetation.DroplistOnDestroy != null &&
+                vegetation.DroplistOnDestroy.EnumerateAllItems().Any())
             {
                 EntityViewModelsManager.AddRecipe(new RecipeViewModel(this,
-                    this.vegetation.DroplistOnDestroy.EnumerateAllItems()));
+                    vegetation.DroplistOnDestroy.EnumerateAllItems()));
             }
         }
     }

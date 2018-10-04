@@ -24,18 +24,18 @@
         /// </summary>
         public ObservableCollection<T> BaseCollection
         {
-            get => this.baseCollection;
+            get => baseCollection;
             set
             {
                 // emulate VB's "with events" properties.
-                if (null != this.baseCollection)
-                    this.baseCollection.CollectionChanged -= this.BaseCollectionOnChange;
+                if (null != baseCollection)
+                    baseCollection.CollectionChanged -= BaseCollectionOnChange;
 
-                this.baseCollection = value;
-                this.baseCollection.CollectionChanged += this.BaseCollectionOnChange;
+                baseCollection = value;
+                baseCollection.CollectionChanged += BaseCollectionOnChange;
 
-                this.NotifyThisPropertyChanged();
-                this.NotifyPropertyChange("Items");
+                NotifyThisPropertyChanged();
+                NotifyPropertyChange("Items");
             }
         }
 
@@ -46,10 +46,10 @@
         {
             get
             {
-                this.items.Clear();
-                this.items = new ObservableCollection<T>(this.baseCollection.Where(x => this.filters.All(f => f(x))));
-                this.EntityCount = this.items.Count;
-                return this.items;
+                items.Clear();
+                items = new ObservableCollection<T>(baseCollection.Where(x => filters.All(f => f(x))));
+                EntityCount = items.Count;
+                return items;
             }
         }
 
@@ -59,7 +59,7 @@
         /// <param name="item"></param>
         public void Add(T item)
         {
-            this.baseCollection.Add(item);
+            baseCollection.Add(item);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@
         /// <returns></returns>
         public bool Contains([NotNull] T item)
         {
-            return this.baseCollection.Contains(item);
+            return baseCollection.Contains(item);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@
         /// <returns></returns>
         public bool Remove([CanBeNull] T item)
         {
-            return this.baseCollection.Remove(item);
+            return baseCollection.Remove(item);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@
         /// <returns>Return the number of elements in base collection.</returns>
         public int Count()
         {
-            return this.baseCollection.Count;
+            return baseCollection.Count;
         }
 
         /// <summary>
@@ -96,15 +96,15 @@
         /// </summary>
         public int EntityCount
         {
-            get => this.entityCount;
+            get => entityCount;
             private protected set
             {
-                if (value == this.entityCount)
+                if (value == entityCount)
                 {
                     return;
                 }
-                this.entityCount = value;
-                this.NotifyThisPropertyChanged();
+                entityCount = value;
+                NotifyThisPropertyChanged();
             }
         }
 
@@ -115,9 +115,9 @@
         /// <returns>False if this filter already exist.</returns>
         public bool AddFilter(Predicate<T> filter)
         {
-            if (!this.filters.Contains(filter))
+            if (!filters.Contains(filter))
             {
-                this.filters.Add(filter);
+                filters.Add(filter);
                 Refresh();
                 return true;
             }
@@ -131,7 +131,7 @@
         /// <returns>False if this filter not used.</returns>
         public bool RemoveFilter(Predicate<T> filter)
         {
-            bool removed = this.filters.Remove(filter);
+            bool removed = filters.Remove(filter);
             if (removed)
             {
                 Refresh();
@@ -155,19 +155,19 @@
 
         public FilteredObservable(ObservableCollection<T> collection)
         {
-            this.BaseCollection = collection;
-            this.EntityCount = collection.Count;
+            BaseCollection = collection;
+            EntityCount = collection.Count;
         }
 
         public FilteredObservable(IEnumerable<T> collection)
         {
-            this.BaseCollection = new ObservableCollection<T>(collection);
-            this.EntityCount = this.BaseCollection.Count;
+            BaseCollection = new ObservableCollection<T>(collection);
+            EntityCount = BaseCollection.Count;
         }
 
         public FilteredObservable()
         {
-            this.BaseCollection = new ObservableCollection<T>();
+            BaseCollection = new ObservableCollection<T>();
         }
 
         protected void NotifyPropertyChange(string propertyName)

@@ -7,7 +7,7 @@
 
     public class ProtoObjectGatherableVegetationViewModel : ProtoObjectVegetationViewModel
     {
-        private IProtoObjectGatherableVegetation gatherableVegetation;
+        private readonly IProtoObjectGatherableVegetation gatherableVegetation;
 
         public ProtoObjectGatherableVegetationViewModel([NotNull] IProtoObjectGatherableVegetation gatherableVegetation)
             : base(gatherableVegetation)
@@ -26,23 +26,23 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (this.gatherableVegetation == null)
+            if (gatherableVegetation == null)
             {
                 return;
             }
 
-            if (this.gatherableVegetation.DroplistOnDestroy != null &&
-                this.gatherableVegetation.DroplistOnDestroy.EnumerateAllItems().Any())
+            if (gatherableVegetation.DroplistOnDestroy != null &&
+                gatherableVegetation.DroplistOnDestroy.EnumerateAllItems().Any())
             {
                 EntityViewModelsManager.AddRecipe(new RecipeViewModel(this,
-                    this.gatherableVegetation.DroplistOnDestroy.EnumerateAllItems()));
+                    gatherableVegetation.DroplistOnDestroy.EnumerateAllItems()));
             }
 
-            if (this.gatherableVegetation.GatherDroplist != null &&
-                this.gatherableVegetation.GatherDroplist.EnumerateAllItems().Any())
+            if (gatherableVegetation.GatherDroplist != null &&
+                gatherableVegetation.GatherDroplist.EnumerateAllItems().Any())
             {
                 EntityViewModelsManager.AddRecipe(new RecipeViewModel(this,
-                    this.gatherableVegetation.GatherDroplist.EnumerateAllItems()));
+                    gatherableVegetation.GatherDroplist.EnumerateAllItems()));
             }
         }
     }

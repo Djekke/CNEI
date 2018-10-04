@@ -11,9 +11,9 @@
 
         public ViewModelEntityCategory(string title, List<ProtoEntityViewModel> entitiesVMList)
         {
-            this.Title = title;
+            Title = title;
             //this.allEntitiesInCurrentCategory = entitiesVMList;
-            this.EntityVMList = new ObservableCollection<ProtoEntityViewModel>(entitiesVMList);
+            EntityVMList = new ObservableCollection<ProtoEntityViewModel>(entitiesVMList);
         }
 
         public string Title { get; }

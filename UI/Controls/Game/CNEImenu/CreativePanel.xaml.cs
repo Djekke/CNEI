@@ -9,19 +9,18 @@
 
         public CreativePanel()
         {
-
         }
 
         protected override void InitControl()
         {
-            this.DataContext = this.viewModel = new ViewModelCreativePanel();
+            DataContext = viewModel = new ViewModelCreativePanel();
         }
 
         protected override void DisposeControl()
         {
-            this.DataContext = null;
-            this.viewModel.Dispose();
-            this.viewModel = null;
+            DataContext = null;
+            viewModel.Dispose();
+            viewModel = null;
         }
     }
 }
