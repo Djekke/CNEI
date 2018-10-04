@@ -8,6 +8,7 @@
     using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
+    using System.Windows;
 
     public static class EntityViewModelsManager
     {
@@ -15,6 +16,10 @@
             new Dictionary<IProtoEntity, ProtoEntityViewModel>();
 
         private static List<RecipeViewModel> recipeList = new List<RecipeViewModel>();
+
+        private static HashSet<string> resourceDictionaryNames = new HashSet<string>();
+
+        public static ResourceDictionary AllEntityTemplatesResourceDictionary = new ResourceDictionary();
 
         /// <summary>
         /// Return substring before ` symbol.
@@ -59,7 +64,8 @@
                             {
                                 AddRecipe(newRecipeViewModel);
                             }
-                            allEntityDictonary.Add(entity ,newEntityViewModel);
+                            allEntityDictonary.Add(entity, newEntityViewModel);
+                            resourceDictionaryNames.Add(newEntityViewModel.ResourceDictonaryName);
                             templateFound = true;
                         }
                     }
@@ -70,6 +76,7 @@
                     Api.Logger.Warning("CNEI: Template for " + entity + "not found");
                     newEntityViewModel = new ProtoEntityViewModel(entity);
                     allEntityDictonary.Add(entity ,newEntityViewModel);
+                    resourceDictionaryNames.Add(newEntityViewModel.ResourceDictonaryName);
                 }
             }
         }
@@ -122,6 +129,29 @@
             }
         }
 
+        /// <summary>
+        /// Assemble all DataTemplates for different entities in one ResourceDictionary.
+        /// </summary>
+        private static void AssembleAllTemplates()
+        {
+            foreach (string resourceDictionaryName in resourceDictionaryNames)
+            {
+                ResourceDictionary newDict = null;
+#if GAME
+                newDict = (ResourceDictionary)Noesis.GUI.LoadXaml(
+                    "UI/Controls/Game/CNEImenu/Data/EntityTemplates/" + resourceDictionaryName);
+#endif
+                if (newDict != null)
+                {
+                    AllEntityTemplatesResourceDictionary.MergedDictionaries.Add(newDict);
+                }
+                else
+                {
+                    Api.Logger.Error("CNEI: Cannot load template " + resourceDictionaryName);
+                }
+            }
+        }
+
         public static bool EntityDictonaryCreated = false;
 
         /// <summary>
@@ -165,6 +195,7 @@
         {
             SetAllEntitiesViewModels();
             EntityDictonaryCreated = true;
+            AssembleAllTemplates();
 
             foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
             {

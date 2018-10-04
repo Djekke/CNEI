@@ -1,11 +1,11 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu
 {
-    using System.Collections.Generic;
-    using System.Windows.Input;
     using AtomicTorch.CBND.CoreMod.ClientComponents.Input;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Scripting;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
+    using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
+    using System.Collections.Generic;
 
     public partial class WindowCNEIdetails : BaseUserControlWithWindow
     {
@@ -35,15 +35,10 @@
             return Instance;
         }
 
-        protected override void InitControlWithWindow()
-        {
-            base.InitControlWithWindow();
-            this.Window.IsCached = false;
-        }
-
         protected override void OnLoaded()
         {
             base.OnLoaded();
+            this.Resources.MergedDictionaries.Add(EntityViewModelsManager.AllEntityTemplatesResourceDictionary);
             this.DataContext = this.entityVMStack.Peek();
             windowInputContext = ClientInputContext.Start("CNEI details")
                 .HandleButtonDown(GameButton.CNEImenuBack, this.OnBackButtonDown);

@@ -9,11 +9,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
-                <ResourceDictionary Source="Data/EntityTemplates/ProtoEntityDataTemplate.xaml" />
-                <ResourceDictionary Source="Data/EntityTemplates/ProtoItemDataTemplate.xaml" />
-                <ResourceDictionary Source="Data/EntityTemplates/ProtoObjectStructureDataTemplate.xaml" />
-                <ResourceDictionary Source="Data/EntityTemplates/ProtoCharacterMobDataTemplate.xaml" />
-                <ResourceDictionary Source="Data/EntityTemplates/RecipeDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </base:BaseUserControl.Resources>

@@ -17,6 +17,8 @@
     {
         private readonly Recipe recipe;
 
+        public override string ResourceDictonaryName => "RecipeDataTemplate.xaml";
+
         private RecipeViewModel([NotNull] IProtoEntity entity, [NotNull] ITextureResource icon) : base(entity, icon)
         {
             this.InputItemsVMList = new List<BaseViewModel>();
