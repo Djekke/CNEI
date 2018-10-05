@@ -3,6 +3,7 @@
     using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using JetBrains.Annotations;
+    using System.Windows;
 
     public class ProtoItemViewModel : ProtoEntityViewModel
     {
@@ -21,6 +22,16 @@
         public override void FinalizeRecipeLinking()
         {
             base.FinalizeRecipeLinking();
+            if (RecipeVMList.EntityCount == 0)
+            {
+                RecipesVisibility = Visibility.Collapsed;
+                IsRecipesExpanded = false;
+            }
+            if (UsageVMList.EntityCount == 0)
+            {
+                UsageVisibility = Visibility.Collapsed;
+                IsUsageExpanded = false;
+            }
             RecipePrevPage = new ActionCommand(() => RecipeVMList.PrevPage());
             RecipeNextPage = new ActionCommand(() => RecipeVMList.NextPage());
             UsagePrevPage = new ActionCommand(() => UsageVMList.PrevPage());
@@ -40,5 +51,15 @@
         public bool IsStackable { get; }
 
         public ushort MaxItemsPerStack { get; }
+
+        public Visibility RecipesVisibility { get; private set; } = Visibility.Visible;
+
+        public Visibility UsageVisibility { get; private set; } = Visibility.Visible;
+
+        public bool IsInfoExpanded { get; set; } = true;
+
+        public bool IsRecipesExpanded { get; set; } = true;
+
+        public bool IsUsageExpanded { get; set; } = true;
     }
 }
