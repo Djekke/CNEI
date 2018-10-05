@@ -8,6 +8,7 @@
     using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
 
     public static class EntityViewModelsManager
@@ -167,7 +168,22 @@
             {
                 return allEntityDictonary[entity];
             }
-            return null;
+            else
+            {
+                throw new Exception("CNEI: Unknown entity type " + entity);
+            }
+        }
+
+        /// <summary>
+        /// Gets view models of proto-classes of the specified type. For example, use IItemType as type parameter
+        /// to get all view models of IItemType.
+        /// </summary>
+        /// <typeparam name="TProtoEntity">Type of proto entity.</typeparam>
+        /// <returns>Collection of view models of instances which implements specified prototype.</returns>
+        public static List<ProtoEntityViewModel> GetAllEntityViewModelsByType<TProtoEntity>()
+            where TProtoEntity : class, IProtoEntity
+        {
+            return Api.FindProtoEntities<TProtoEntity>().Select(GetEntityViewModel).ToList();
         }
 
         /// <summary>

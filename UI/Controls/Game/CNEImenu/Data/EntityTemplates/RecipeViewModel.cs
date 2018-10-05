@@ -1,11 +1,10 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
+    using AtomicTorch.CBND.CoreMod.Items.Tools.Toolboxes;
     using AtomicTorch.CBND.CoreMod.Systems.Construction;
     using AtomicTorch.CBND.CoreMod.Systems.Crafting;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
-    using AtomicTorch.CBND.GameApi.Data;
     using AtomicTorch.CBND.GameApi.Data.Items;
-    using AtomicTorch.CBND.GameApi.Resources;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System;
@@ -19,23 +18,15 @@
 
         public override string ResourceDictonaryName => "RecipeDataTemplate.xaml";
 
-        private RecipeViewModel([NotNull] IProtoEntity entity, [NotNull] ITextureResource icon) : base(entity, icon)
-        {
-            InputItemsVMList = new List<BaseViewModel>();
-            OutputItemsVMList = new List<BaseViewModel>();
-            StationsList = new List<ProtoEntityViewModel>();
-            ListedInTechNodes = new List<ProtoEntityViewModel>();
-        }
-
         /// <summary>
         /// Constructor for basic recipes.
         /// </summary>
-        public RecipeViewModel([NotNull] Recipe recipe) : this(recipe, recipe.Icon)
+        public RecipeViewModel([NotNull] Recipe recipe) : base(recipe, recipe.Icon)
         {
             this.recipe = recipe;
             RecipeType = recipe.RecipeType;
 
-            IsByproduct = RecipeType == RecipeType.StationByproduct
+            IsByproduct = (RecipeType == RecipeType.StationByproduct)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
             IsStationCraft = (RecipeType == RecipeType.Hand)
@@ -44,10 +35,11 @@
             IsHandCraft = (RecipeType == RecipeType.Hand)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-
+            TimeVisibility = Visibility.Visible;
             OriginalDuration = recipe.OriginalDuration;
             IsDisabled = !recipe.IsEnabled;
             IsAutoUnlocked = recipe.IsAutoUnlocked;
+            OriginText = (RecipeType == RecipeType.Hand) ? "Made by:" : "Made in:";
         }
 
         /// <summary>
@@ -58,7 +50,7 @@
         /// <param name="config">Building config.</param>
         public RecipeViewModel([NotNull] ProtoObjectStructureViewModel structureViewModel,
             [NotNull] IConstructionStageConfigReadOnly config)
-            : this(structureViewModel.ProtoEntity, structureViewModel.IconResource)
+            : base(structureViewModel.ProtoEntity, structureViewModel.IconResource)
         {
             if (!EntityViewModelsManager.EntityDictonaryCreated)
             {
@@ -73,15 +65,12 @@
             OutputItemsVMList =
                 new List<BaseViewModel>() {new ViewModelEntityWithCount(structureViewModel)}.AsReadOnly();
 
-            // TODO: Add All VM's of toolboxes to StationsList
-            //this.StationsList = new List<ProtoEntityViewModel>();
+            OriginText = "Build by:";
+            IsStationCraft = Visibility.Visible;
+            StationsList = EntityViewModelsManager.GetAllEntityViewModelsByType<IProtoItemToolToolbox>().AsReadOnly();
             ListedInTechNodes = structureViewModel.ListedInTechNodes;
-            IsByproduct = Visibility.Collapsed;
-            IsStationCraft = Visibility.Collapsed;
-            IsHandCraft = Visibility.Collapsed;
-            IsDisabled = false;
+
             IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
-            OriginalDuration = config.StageDurationSeconds * config.StagesCount;
         }
 
         /// <summary>
@@ -92,7 +81,7 @@
         /// <param name="upgradeEntry">Entry of upgrade config.</param>
         public RecipeViewModel([NotNull] ProtoObjectStructureViewModel structureViewModel,
             [NotNull] IConstructionUpgradeEntryReadOnly upgradeEntry)
-            : this(structureViewModel.ProtoEntity, structureViewModel.IconResource)
+            : base(upgradeEntry.ProtoStructure, upgradeEntry.ProtoStructure.Icon)
         {
             if (!EntityViewModelsManager.EntityDictonaryCreated)
             {
@@ -116,14 +105,15 @@
                     new ViewModelEntityWithCount(newStructureViewModel)
                 }.AsReadOnly();
 
-            StationsList = new List<ProtoEntityViewModel>() { structureViewModel };
-            ListedInTechNodes = newStructureViewModel.ListedInTechNodes;
-            IsByproduct = Visibility.Collapsed;
-            IsStationCraft = Visibility.Collapsed;
-            IsHandCraft = Visibility.Collapsed;
-            IsDisabled = false;
+            OriginText = "Upgrade from:";
+            IsStationCraft = Visibility.Visible;
+            StationsList = new List<ProtoEntityViewModel>() { structureViewModel }.AsReadOnly();
+            // Can not simply get it from result entityVM because it can has not initilized Tech.
+            //ListedInTechNodes = newStructureViewModel.ListedInTechNodes;
+            ListedInTechNodes = upgradeEntry.ProtoStructure.ListedInTechNodes
+                .Select(EntityViewModelsManager.GetEntityViewModel)
+                .ToList().AsReadOnly();
             IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
-            OriginalDuration = 0;
         }
 
         /// <summary>
@@ -133,7 +123,7 @@
         /// <param name="entityViewModel">View Model of entity with droplist.</param>
         /// <param name="droplist">Droplist</param>
         public RecipeViewModel([NotNull] ProtoEntityViewModel entityViewModel, [NotNull] IEnumerable<IProtoItem> droplist)
-            : this(entityViewModel.ProtoEntity, entityViewModel.IconResource)
+            : base(entityViewModel.ProtoEntity, entityViewModel.IconResource)
         {
             if (!EntityViewModelsManager.EntityDictonaryCreated)
             {
@@ -147,14 +137,8 @@
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item)))
                 .ToList().AsReadOnly();
 
-            //this.StationsList = new List<ProtoEntityViewModel>();
-            //this.ListedInTechNodes = new List<ProtoEntityViewModel>();
-            IsByproduct = Visibility.Collapsed;
-            IsStationCraft = Visibility.Collapsed;
-            IsHandCraft = Visibility.Collapsed;
-            IsDisabled = false;
-            IsAutoUnlocked = true;
-            OriginalDuration = 0;
+            OriginVisibility = Visibility.Collapsed;
+            TechVisibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -202,26 +186,34 @@
             }
         }
 
-        public IReadOnlyList<BaseViewModel> InputItemsVMList { get; private set; }
+        public IReadOnlyList<BaseViewModel> InputItemsVMList { get; private set; } = new List<BaseViewModel>();
 
-        public IReadOnlyList<BaseViewModel> OutputItemsVMList { get; private set; }
+        public IReadOnlyList<BaseViewModel> OutputItemsVMList { get; private set; } = new List<BaseViewModel>();
 
-        public double OriginalDuration  { get; }
+        public IReadOnlyList<ProtoEntityViewModel> StationsList { get; private set; } = new List<ProtoEntityViewModel>();
 
-        public bool IsDisabled  { get; }
+        public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; private set; } = new List<ProtoEntityViewModel>();
+
+        public double OriginalDuration { get; } = 0d;
+
+        public bool IsDisabled { get; } = false;
 
         public bool IsAutoUnlocked { get; }
 
-        public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; private set; }
-
         public RecipeType RecipeType { get; }
 
-        public Visibility IsStationCraft { get; }
+        public string OriginText { get; }
 
-        public Visibility IsHandCraft { get; }
+        public Visibility IsStationCraft { get; } = Visibility.Collapsed;
 
-        public Visibility IsByproduct { get; }
+        public Visibility IsHandCraft { get; } = Visibility.Collapsed;
 
-        public IReadOnlyList<ProtoEntityViewModel> StationsList { get; private set; }
+        public Visibility IsByproduct { get; } = Visibility.Collapsed;
+
+        public Visibility TechVisibility { get; } = Visibility.Visible;
+
+        public Visibility OriginVisibility { get; } = Visibility.Visible;
+
+        public Visibility TimeVisibility { get; } = Visibility.Collapsed;
     }
 }

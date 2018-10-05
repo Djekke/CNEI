@@ -283,31 +283,35 @@
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxColumnItems}" />
     </Style>
 
-    <Style x:Key="SimpleListBoxItems"  TargetType="{x:Type ListBoxItem}">
+    <Style x:Key="IngredientListBoxItems"  TargetType="{x:Type ListBoxItem}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                     <Border Margin="2"
+                            CornerRadius="2"
                             BorderThickness="0"
                             Background="{StaticResource BrushColorAlt3}">
-                        <ContentPresenter />
+                        <ContentPresenter VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="SimpleListBox" TargetType="{x:Type ListBox}">
+    <Style x:Key="IngredientListBox" TargetType="{x:Type ListBox}">
         <Setter Property="VerticalAlignment"  Value="Stretch"/>
         <Setter Property="HorizontalAlignment"  Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBox}">
-                    <ItemsPresenter />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  Margin="1,0,1,0">
+                        <ItemsPresenter />
+                    </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ItemContainerStyle" Value="{StaticResource SimpleListBoxItems}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource IngredientListBoxItems}" />
     </Style>
 
     <!-- TabControl Styles -->
@@ -381,7 +385,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource ItemSlotControlBorderBrush}" />
         <Setter Property="Width" Value="{StaticResource EntityItemSize}" />
         <Setter Property="Height" Value="{StaticResource EntityItemSize}" />
-        <Setter Property="Margin" Value="0,0,1,1" />
+        <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="1" />
         <Setter Property="Template">
             <Setter.Value>

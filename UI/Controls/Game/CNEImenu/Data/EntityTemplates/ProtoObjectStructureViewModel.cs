@@ -17,7 +17,6 @@
             DescriptionUpgrade = structure.DescriptionUpgrade;
 
             IsAutoUnlocked = structure.IsAutoUnlocked;
-            ListedInTechNodes = new List<ProtoEntityViewModel>();
             //structure.IsInteractableObject
         }
 
@@ -61,10 +60,7 @@
 
         public bool IsAutoUnlocked { get; }
 
-        public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; private set; }
-
-        public RecipeViewModel BuildRecipe { get; }
-
-        public RecipeViewModel UpgradeRecipe { get; }
+        public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; private set; } =
+            new List<ProtoEntityViewModel>();
     }
 }

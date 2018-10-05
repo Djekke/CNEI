@@ -10,7 +10,8 @@
         <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <system:Single x:Key="MaxItemListHeight">300</system:Single>
+    <!-- 7 rows: 32 * 7 + 6 * 4 = 248 -->
+    <system:Single x:Key="MaxItemListHeight">248</system:Single>
 
     <DataTemplate DataType="{x:Type data:ViewModelEntityWithCount}">
         <StackPanel Orientation="Horizontal">
@@ -72,13 +73,13 @@
 
                 <ListBox Grid.Row="1"
                          Grid.Column="0"
-                         Style="{StaticResource SimpleListBox}"
+                         Style="{StaticResource IngredientListBox}"
                          ItemsSource="{Binding InputItemsVMList}"
                          MaxHeight="{StaticResource MaxItemListHeight}" />
 
                 <ListBox Grid.Row="1"
                          Grid.Column="1"
-                         Style="{StaticResource SimpleListBox}"
+                         Style="{StaticResource IngredientListBox}"
                          ItemsSource="{Binding OutputItemsVMList}"
                          MaxHeight="{StaticResource MaxItemListHeight}" />
             </Grid>
@@ -86,6 +87,7 @@
             <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
+                        Visibility="{Binding TimeVisibility}"
                         MinHeight="40">
                 <TextBlock VerticalAlignment="Center">
                     <Run Text="Base craft time: " />
@@ -101,8 +103,9 @@
             <StackPanel Grid.Row="3"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
+                        Visibility="{Binding OriginVisibility}"
                         MinHeight="40">
-                <TextBlock Text="Made in:"
+                <TextBlock Text="{Binding OriginText}"
                            Margin="0,0,20,0"
                            VerticalAlignment="Center" />
 
@@ -130,6 +133,7 @@
             <StackPanel Grid.Row="4"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
+                        Visibility="{Binding TechVisibility}"
                         MinHeight="40">
                 <TextBlock Text="Technologies:"
                            Margin="0,0,20,0"
