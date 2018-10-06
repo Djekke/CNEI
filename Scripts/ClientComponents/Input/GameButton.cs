@@ -229,9 +229,16 @@ namespace AtomicTorch.CBND.CoreMod.ClientComponents.Input
         [ButtonInfo(
             "Open CNEI",
             "Open CryoFall NEI",
-            InputKey.I,
+            InputKey.N,
             Category = "CNEI")]
         CNEImenuOpen,
+
+        [ButtonInfo(
+            "Show item info",
+            "Open CryoFall NEI Details window with information about item under mouse coursor",
+            InputKey.I,
+            Category = "CNEI")]
+        CNEImenuDetails,
 
         [ButtonInfo(
             "Previous info",
