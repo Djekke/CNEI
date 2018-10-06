@@ -8,7 +8,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->
-    <DataTemplate DataType="{x:Type data:ProtoCharacterMobViewModel}">
+    <DataTemplate DataType="{x:Type data:ProtoObjectLootContainerViewModel}">
         <ScrollViewer>
             <StackPanel Margin="6,0,0,0">
                 <Expander Header="Information"
@@ -21,9 +21,18 @@
                             </Style>
                         </StackPanel.Resources>
                         <TextBlock Text="{Binding Title}" />
+                        <Border x:Name="Border"
+                                Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
+                                BorderThickness="0,0,0,3"
+                                CornerRadius="3,3,0,0"
+                                Padding="2,1,2,0"
+                                Width="256" Height="256">
+                            <Rectangle Fill="{Binding Icon}" />
+                        </Border>
                     </StackPanel>
                 </Expander>
-                <Expander Header="Drop on death"
+                <Expander Header="Droplist"
+                          Visibility="{Binding DroplistVisibility}"
                           IsExpanded="{Binding IsRecipesExpanded}">
                     <ContentControl Content="{Binding Droplist}" />
                 </Expander>

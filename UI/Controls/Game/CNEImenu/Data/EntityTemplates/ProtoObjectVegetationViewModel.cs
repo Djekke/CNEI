@@ -4,10 +4,13 @@
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Linq;
+    using System.Windows;
 
     public class ProtoObjectVegetationViewModel : ProtoStaticWorldObjectViewModel
     {
         private readonly IProtoObjectVegetation vegetation;
+
+        public override string ResourceDictonaryName => "ProtoObjectVegetationDataTemplate.xaml";
 
         public ProtoObjectVegetationViewModel([NotNull] IProtoObjectVegetation vegetation) : base(vegetation)
         {
@@ -33,9 +36,18 @@
             if (vegetation.DroplistOnDestroy != null &&
                 vegetation.DroplistOnDestroy.EnumerateAllItems().Any())
             {
-                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this,
-                    vegetation.DroplistOnDestroy.EnumerateAllItems()));
+                DroplistOnDestroy = new RecipeViewModel(this, vegetation.DroplistOnDestroy.EnumerateAllItems());
+                DroplistOnDestroyVisibility = Visibility.Visible;
+                EntityViewModelsManager.AddRecipe(DroplistOnDestroy);
             }
         }
+
+        public RecipeViewModel DroplistOnDestroy { get; private set; }
+
+        public Visibility DroplistOnDestroyVisibility { get; private set; } = Visibility.Collapsed;
+
+        public bool IsInfoExpanded { get; set; } = true;
+
+        public bool IsDroplistOnDestroyExpanded { get; set; } = true;
     }
 }

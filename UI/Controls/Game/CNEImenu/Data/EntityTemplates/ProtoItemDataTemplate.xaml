@@ -7,29 +7,6 @@
         <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="ListBoxItemsOnlyOne"  TargetType="{x:Type ListBoxItem}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <ContentPresenter />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ListBoxOneItem" TargetType="{x:Type ListBox}">
-        <Setter Property="VerticalAlignment"  Value="Stretch" />
-        <Setter Property="HorizontalAlignment"  Value="Stretch" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBox}">
-                    <ItemsPresenter />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemsOnlyOne}" />
-    </Style>
-
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:ProtoItemViewModel}">
         <ScrollViewer>
@@ -63,8 +40,9 @@
                     </StackPanel>
                 </Expander>
                 <Expander Header="How to get"
+                          Visibility="{Binding RecipesVisibility}"
                           IsExpanded="{Binding IsRecipesExpanded}">
-                    <Grid Visibility="{Binding RecipesVisibility}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -102,15 +80,16 @@
                         </DockPanel>
 
                         <ListBox Grid.Row="1"
-                                 Style="{StaticResource ListBoxOneItem}"
+                                 Style="{StaticResource ListBoxSimpleWrapper}"
                                  ItemsSource="{Binding RecipeVMList.Items}" />
 
                         <!--<ContentControl Content="{Binding RecipeVMList.Items/}" />-->
                     </Grid>
                 </Expander>
                 <Expander Header="Usage"
+                          Visibility="{Binding UsageVisibility}"
                           IsExpanded="{Binding IsUsageExpanded}">
-                    <Grid Visibility="{Binding UsageVisibility}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -148,7 +127,7 @@
                         </DockPanel>
 
                         <ListBox Grid.Row="1"
-                                 Style="{StaticResource ListBoxOneItem}"
+                                 Style="{StaticResource ListBoxSimpleWrapper}"
                                  ItemsSource="{Binding UsageVMList.Items}" />
 
                         <!--<ContentControl Content="{Binding RecipeVMList.Items/}" />-->

@@ -13,6 +13,8 @@
 
         private readonly IProtoCharacterMob creature;
 
+        public override string ResourceDictonaryName => "ProtoCharacterMobDataTemplate.xaml";
+
         public ProtoCharacterMobViewModel([NotNull] IProtoCharacterMob creature) : base(creature, DefaultIcon)
         {
             this.creature = creature;
@@ -32,10 +34,16 @@
 
             if (creature.LootDroplist != null && creature.LootDroplist.EnumerateAllItems().Any())
             {
-                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this,
-                    creature.LootDroplist.EnumerateAllItems()));
+                Droplist = new RecipeViewModel(this, creature.LootDroplist.EnumerateAllItems());
+                EntityViewModelsManager.AddRecipe(Droplist);
             }
         }
+
+        public RecipeViewModel Droplist { get; private set; }
+
+        public bool IsInfoExpanded { get; set; } = true;
+
+        public bool IsRecipesExpanded { get; set; } = true;
 
         // TODO: Prewiew from skeleton
         //public override TextureBrush Icon

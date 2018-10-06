@@ -6,10 +6,13 @@
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Collections.Generic;
+    using System.Windows;
 
     public class ProtoObjectMineralViewModel : ProtoStaticWorldObjectViewModel
     {
         private readonly IProtoObjectMineral mineral;
+
+        public override string ResourceDictonaryName => "ProtoObjectMineralDataTemplate.xaml";
 
         public ProtoObjectMineralViewModel([NotNull] IProtoObjectMineral mineral) : base(mineral)
         {
@@ -34,8 +37,18 @@
             droplist.AddRange(mineral.DropItemsConfig.Stage4.EnumerateAllItems());
             if (droplist.Count > 0)
             {
-                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, droplist));
+                Droplist = new RecipeViewModel(this, droplist);
+                DroplistVisibility = Visibility.Visible;
+                EntityViewModelsManager.AddRecipe(Droplist);
             }
         }
+
+        public RecipeViewModel Droplist { get; private set; }
+
+        public Visibility DroplistVisibility { get; private set; } = Visibility.Collapsed;
+
+        public bool IsInfoExpanded { get; set; } = true;
+
+        public bool IsRecipesExpanded { get; set; } = true;
     }
 }

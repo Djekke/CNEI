@@ -4,10 +4,13 @@
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Linq;
+    using System.Windows;
 
     public class ProtoObjectLootViewModel : ProtoStaticWorldObjectViewModel
     {
         private readonly IProtoObjectLoot loot;
+
+        public override string ResourceDictonaryName => "ProtoObjectLootDataTemplate.xaml";
 
         public ProtoObjectLootViewModel([NotNull] IProtoObjectLoot loot) : base(loot)
         {
@@ -28,8 +31,18 @@
 
             if (loot.LootDroplist != null && loot.LootDroplist.EnumerateAllItems().Any())
             {
-                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, loot.LootDroplist.EnumerateAllItems()));
+                Droplist = new RecipeViewModel(this, loot.LootDroplist.EnumerateAllItems());
+                DroplistVisibility = Visibility.Visible;
+                EntityViewModelsManager.AddRecipe(Droplist);
             }
         }
+
+        public RecipeViewModel Droplist { get; private set; }
+
+        public Visibility DroplistVisibility { get; private set; } = Visibility.Collapsed;
+
+        public bool IsInfoExpanded { get; set; } = true;
+
+        public bool IsRecipesExpanded { get; set; } = true;
     }
 }
