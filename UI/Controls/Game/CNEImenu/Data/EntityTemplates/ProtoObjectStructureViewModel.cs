@@ -1,12 +1,12 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
     using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
+    using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
-    using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
 
     public class ProtoObjectStructureViewModel : ProtoStaticWorldObjectViewModel
     {

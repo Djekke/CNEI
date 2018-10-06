@@ -17,9 +17,9 @@
 
         private TextureBrush icon;
 
-        private List<RecipeViewModel> recipeVMList = new List<RecipeViewModel>();
+        private HashSet<RecipeViewModel> recipeVMList = new HashSet<RecipeViewModel>();
 
-        private List<RecipeViewModel> usageVMList = new List<RecipeViewModel>();
+        private HashSet<RecipeViewModel> usageVMList = new HashSet<RecipeViewModel>();
 
         public virtual IProtoEntity ProtoEntity { get; }
 
