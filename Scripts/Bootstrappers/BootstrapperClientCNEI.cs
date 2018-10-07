@@ -5,6 +5,7 @@
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Items.Controls;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
+    using CryoFall.CNEI.ClientComponents.Input;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Controls;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
@@ -15,16 +16,18 @@
     {
         public override void ClientInitialize()
         {
+            ClientInputManager.RegisterButtonsEnum<CNEIbutton>();
+
             EntityViewModelsManager.Init();
 
             ClientInputContext.Start("CNEI menu overlay")
                               .HandleButtonDown(
-                                  GameButton.CNEImenuOpen,
+                                  CNEIbutton.MenuOpen,
                                   Menu.Toggle<WindowCNEImenu>);
 
             ClientInputContext.Start("CNEI context info")
                 .HandleButtonDown(
-                    GameButton.CNEImenuDetails,
+                    CNEIbutton.MenuDetails,
                     () =>
                     {
                         var hitTestResult = Api.Client.UI.GetVisualInPointedPosition();

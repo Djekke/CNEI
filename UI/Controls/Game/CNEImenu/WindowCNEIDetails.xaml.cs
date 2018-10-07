@@ -3,6 +3,7 @@
     using AtomicTorch.CBND.CoreMod.ClientComponents.Input;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Scripting;
+    using CryoFall.CNEI.ClientComponents.Input;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using System.Collections.Generic;
@@ -41,7 +42,7 @@
             Resources.MergedDictionaries.Add(EntityViewModelsManager.AllEntityTemplatesResourceDictionary);
             DataContext = entityVMStack.Peek();
             windowInputContext = ClientInputContext.Start("CNEI details")
-                .HandleButtonDown(GameButton.CNEImenuBack, OnBackButtonDown);
+                .HandleButtonDown(CNEIbutton.MenuBack, OnBackButtonDown);
         }
 
         private protected void OnBackButtonDown()

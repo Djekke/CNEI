@@ -8,6 +8,7 @@
     xmlns:data="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Game.HUD.Data;assembly=AtomicTorch.CBND.CoreMod"
     xmlns:hud="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Game.HUD;assembly=AtomicTorch.CBND.CoreMod"
     xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=AtomicTorch.CBND.CoreMod"
+    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls.Game.CNEImenu.Controls"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance data:ViewModelHUD, IsDesignTimeCreatable=True}">
 
@@ -272,7 +273,7 @@
             <base:ToolTipServiceExtend.ToolTip>
                 <core:LabelWithButton Content="CryoFall NEI">
                     <core:LabelWithButton.Button>
-                        <core:GameButtonReference Button="CNEImenuOpen" />
+                        <controls:CNEIbuttonReference Button="MenuOpen" />
                     </core:LabelWithButton.Button>
                 </core:LabelWithButton>
             </base:ToolTipServiceExtend.ToolTip>
