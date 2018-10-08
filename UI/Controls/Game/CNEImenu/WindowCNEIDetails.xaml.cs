@@ -16,7 +16,7 @@
 
         public static WindowCNEIdetails Instance { get; private set; }
 
-        public static WindowCNEIdetails Open(ProtoEntityViewModel entityViewModel)
+        public static void Open(ProtoEntityViewModel entityViewModel)
         {
             if (Instance == null)
             {
@@ -33,7 +33,14 @@
                     Instance.DataContext = Instance.entityVMStack.Peek();
                 }
             }
-            return Instance;
+        }
+
+        public static void Close()
+        {
+            if (Instance?.IsOpened == true)
+            {
+                Instance.CloseWindow();
+            }
         }
 
         protected override void OnLoaded()
