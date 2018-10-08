@@ -2,10 +2,17 @@
 {
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
+    using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
 
     public partial class WindowCNEImenu : BaseWindowMenu
     {
         private ViewModelWindowCNEImenu viewModel;
+
+        protected override void WindowOpening()
+        {
+            base.WindowOpening();
+            CreativePanelManager.RefreshCreativeModeStatus();
+        }
 
         protected override void DisposeMenu()
         {

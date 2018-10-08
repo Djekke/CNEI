@@ -1,8 +1,8 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
-    using AtomicTorch.CBND.CoreMod.Systems.Console;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
+    using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
 
     public class ViewModelCreativePanel : BaseViewModel
     {
@@ -10,25 +10,44 @@
 
         public BaseCommand SetTimeOfDay { get; }
 
-        public BaseCommand GodModeToggle { get; }
+        public bool IsGodModeOn
+        {
+            get => CreativePanelManager.IsGodModeOn;
+            set
+            {
+                if (value == CreativePanelManager.IsGodModeOn)
+                {
+                    return;
+                }
 
-        private bool isGodModeOn = false;
+                CreativePanelManager.IsGodModeOn = value;
+                CreativePanelManager.ExecuteCommand("/player.setInvincibility " + value);
+                NotifyThisPropertyChanged();
+            }
+        }
+
+        public bool IsCreativeModeOn
+        {
+            get => CreativePanelManager.IsCreativeModeOn;
+            set
+            {
+                if (value == CreativePanelManager.IsCreativeModeOn)
+                {
+                    return;
+                }
+
+                CreativePanelManager.IsCreativeModeOn = value;
+                CreativePanelManager.ExecuteCommand("/admin.setCreativeMode " + value);
+                NotifyThisPropertyChanged();
+            }
+        }
 
         public ViewModelCreativePanel()
         {
-            Heal = new ActionCommand(() => ExecuteCommand("/player.heal"));
+            Heal = new ActionCommand(() =>
+                CreativePanelManager.ExecuteCommand("/player.heal"));
             SetTimeOfDay = new ActionCommandWithParameter(time =>
-                    ExecuteCommand("/admin.setTimeOfDay " + time));
-            GodModeToggle = new ActionCommand(() =>
-                {
-                    isGodModeOn = !isGodModeOn;
-                    ExecuteCommand("/player.setInvincibility " + isGodModeOn);
-                });
-        }
-
-        private static void ExecuteCommand(string command)
-        {
-            ConsoleCommandsSystem.SharedExecuteConsoleCommand(command);
+                CreativePanelManager.ExecuteCommand("/admin.setTimeOfDay " + time));
         }
     }
 }

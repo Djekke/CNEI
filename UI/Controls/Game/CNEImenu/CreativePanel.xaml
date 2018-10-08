@@ -64,10 +64,16 @@
                     <Image Source="/UI/Images/Icons/CNEI/icon_heart.png" />
                 </Button.Content>
             </Button>
-            <ToggleButton Command="{Binding GodModeToggle}"
+            <ToggleButton IsChecked="{Binding IsGodModeOn}"
                           base:ToolTipServiceExtend.ToolTip="Toggle god mode">
                 <ToggleButton.Content>
                     <Image Source="/UI/Images/Icons/CNEI/icon_godmod.png" />
+                </ToggleButton.Content>
+            </ToggleButton>
+            <ToggleButton IsChecked="{Binding IsCreativeModeOn}"
+                          base:ToolTipServiceExtend.ToolTip="Toggle creative mode">
+                <ToggleButton.Content>
+                    <Image Source="/UI/Images/Icons/CNEI/icon_creative.png" />
                 </ToggleButton.Content>
             </ToggleButton>
         </WrapPanel>

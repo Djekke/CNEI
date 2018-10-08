@@ -1,8 +1,12 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Controls
 {
+    using AtomicTorch.CBND.CoreMod.Characters;
+    using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.CBND.GameApi.Scripting;
+    using AtomicTorch.CBND.GameApi.ServicesClient;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
+    using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using System;
     using System.Windows;
     using System.Windows.Controls;
@@ -138,16 +142,39 @@
 
                 var lastMousePressedControl = weakReferenceMousePressedControl?.Target;
                 weakReferenceMousePressedControl = null;
-                if (lastMousePressedControl == this)
+                if (lastMousePressedControl != this)
                 {
-                    if (entitySlotControl.DataContext is ProtoEntityViewModel entityViewModel)
+                    return;
+                }
+
+                if (entitySlotControl.DataContext is ProtoEntityViewModel entityViewModel)
+                {
+                    if (CreativePanelManager.IsCreativeModeOn)
                     {
-                        WindowCNEIdetails.Open(entityViewModel);
+                        switch (entityViewModel.ProtoEntity)
+                        {
+                            case IProtoItem item:
+                                var itemCount = Api.Client.Input.IsKeyHeld(InputKey.Control, evenIfHandled: true)
+                                    ? item.MaxItemsPerStack
+                                    : 1;
+                                CreativePanelManager.ExecuteCommand("/items.add " + item.ShortId + " " + itemCount);
+                                break;
+                            case IProtoCharacterMob mob:
+                                CreativePanelManager.ExecuteCommand("/mobs.spawn " + mob.ShortId);
+                                break;
+                            default:
+                                WindowCNEIdetails.Open(entityViewModel);
+                                break;
+                        }
                     }
                     else
                     {
-                        Api.Logger.Error("CNEI: Wrong view model for details window " + entitySlotControl.DataContext);
+                        WindowCNEIdetails.Open(entityViewModel);
                     }
+                }
+                else
+                {
+                    Api.Logger.Error("CNEI: Wrong view model for details window " + entitySlotControl.DataContext);
                 }
             }
 
