@@ -150,6 +150,13 @@
                             </CheckBox>
                         </StackPanel>
                     </GroupBox>
+                    <GroupBox Header="View">
+                        <StackPanel>
+                            <CheckBox x:Name="ShowTypeInTooltip"
+                                      Content="Show type in tooltip"
+                                      IsChecked="{Binding IsTypeVisible}"/>
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </Grid>
 

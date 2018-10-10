@@ -74,6 +74,8 @@
 
         public virtual Visibility Visibility => Visibility.Visible;
 
+        public Visibility TypeVisibility => EntityViewModelsManager.TypeVisibility;
+
         public virtual Visibility CountVisibility => Visibility.Collapsed;
 
         public FilteredObservableWithPaging<RecipeViewModel> RecipeVMList { get; private set; }

@@ -13,6 +13,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows;
 
     public class ViewModelWindowCNEImenu : BaseViewModel
     {
@@ -148,6 +149,22 @@
                     isShowingEntityWithTemplates = true;
                     NotifyPropertyChanged("IsShowingEntityWithTemplates");
                 }
+                FilteredEntityVMList.Refresh();
+                NotifyThisPropertyChanged();
+            }
+        }
+
+        public bool IsTypeVisible
+        {
+            get => (EntityViewModelsManager.TypeVisibility == Visibility.Visible);
+            set
+            {
+                if (value == IsTypeVisible)
+                {
+                    return;
+                }
+
+                EntityViewModelsManager.TypeVisibility = value ? Visibility.Visible : Visibility.Collapsed;
                 FilteredEntityVMList.Refresh();
                 NotifyThisPropertyChanged();
             }

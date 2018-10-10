@@ -22,6 +22,8 @@
 
         public static ResourceDictionary AllEntityTemplatesResourceDictionary = new ResourceDictionary();
 
+        public static Visibility TypeVisibility = Visibility.Collapsed;
+
         /// <summary>
         /// Return substring before ` symbol.
         /// </summary>

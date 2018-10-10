@@ -234,7 +234,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <controls:EntitySlotControl />
+                    <controls:EntitySlotControl IsBackgroundEnabled="False" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -391,6 +391,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:EntitySlotControl}">
                     <Border x:Name="Border"
+                            CornerRadius="2"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Background="{TemplateBinding Background}">
@@ -416,7 +417,8 @@
                             <base:ToolTipServiceExtend.ToolTip>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding Title}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Type}" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding Type}" FontWeight="Bold"
+                                               Visibility="{Binding TypeVisibility}" />
                                 </StackPanel>
                             </base:ToolTipServiceExtend.ToolTip>
                             <Rectangle x:Name="BackgroundTexture" Fill="{StaticResource WidgetBackgroundImageTexture}" />
@@ -429,19 +431,14 @@
                                 <TextBlock Text="{Binding Count}"
                                            Visibility="{Binding CountVisibility}"
                                            Style="{StaticResource ItemCountTextBlockStyle}" />
-                                <ItemsControl
-                                    Visibility="{Binding OverlayControls, Converter={StaticResource NullToVisibilityConverter}}"
-                                    ItemsSource="{Binding OverlayControls}"
-                                    Style="{StaticResource ItemIconOverlayItemsControlStyle}" />
                             </Grid>
-                            <Rectangle x:Name="RectanglePlaceOverlay" Fill="#00000000" />
                             <Rectangle x:Name="RectangleMouseOver" Fill="#00FFFFFF" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsBackgroundEnabled" Value="False">
                             <Setter TargetName="BackgroundTexture" Property="Visibility" Value="Collapsed" />
-                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Background" Value="#FF262626" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
