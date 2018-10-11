@@ -139,11 +139,8 @@
         {
             foreach (string resourceDictionaryName in resourceDictionaryNames)
             {
-                ResourceDictionary newDict = null;
-#if GAME
-                newDict = (ResourceDictionary)Noesis.GUI.LoadXaml(
+                ResourceDictionary newDict = Api.Client.UI.LoadResourceDictionary(
                     "UI/Controls/Game/CNEImenu/Data/EntityTemplates/" + resourceDictionaryName);
-#endif
                 if (newDict != null)
                 {
                     AllEntityTemplatesResourceDictionary.MergedDictionaries.Add(newDict);
