@@ -1,16 +1,15 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
-    using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
 
-    public class ViewModelTypeHierarchy : BaseViewModel
+    public class TypeHierarchy
     {
         private static readonly Type MainNode = typeof(object);
 
-        private ViewModelTypeHierarchy Parent = null;
+        private TypeHierarchy Parent = null;
 
         public bool IsChild { get; private set; }
 
@@ -18,30 +17,30 @@
 
         public string Name { get; }
 
-        public ProtoEntityViewModel EntityVM { get; private set; }
+        public ProtoEntityViewModel EntityViewModel { get; private set; }
 
-        public ObservableCollection<ViewModelTypeHierarchy> Derivatives { get; private set; }
+        public ObservableCollection<TypeHierarchy> Derivatives { get; private set; }
 
-        public List<ProtoEntityViewModel> EntityVMList => Derivatives.Select(d => d.EntityVM).ToList();
+        public List<ProtoEntityViewModel> EntityViewModelsList => Derivatives.Select(d => d.EntityViewModel).ToList();
 
         public bool EndNode => Derivatives.All(n => n.IsChild);
 
-        public ViewModelTypeHierarchy()
+        public TypeHierarchy()
         {
-            Derivatives = new ObservableCollection<ViewModelTypeHierarchy>();
+            Derivatives = new ObservableCollection<TypeHierarchy>();
             Name = GetTypeNameWithoutGenericArity(MyType);
             IsChild = true;
         }
 
-        public ViewModelTypeHierarchy(Type type)
+        public TypeHierarchy(Type type)
         {
-            Derivatives = new ObservableCollection<ViewModelTypeHierarchy>();
+            Derivatives = new ObservableCollection<TypeHierarchy>();
             MyType = type;
             Name = GetTypeNameWithoutGenericArity(type);
             IsChild = true;
         }
 
-        public void Add(Type type, ProtoEntityViewModel entityVM)
+        public void Add(Type type, ProtoEntityViewModel entityViewModel)
         {
             if (GetTypeNameWithoutGenericArity(type) == Name)
             {
@@ -51,33 +50,24 @@
             var tempType = type.BaseType;
             while (GetTypeNameWithoutGenericArity(type.BaseType) != localNode.Name)
             {
-                while(GetTypeNameWithoutGenericArity(tempType.BaseType) != localNode.Name)
+                while(GetTypeNameWithoutGenericArity(tempType?.BaseType) != localNode.Name)
                 {
-                    tempType = tempType.BaseType;
+                    tempType = tempType?.BaseType;
                 }
                 var tempNode = localNode.Derivatives
                     .FirstOrDefault(n => n.Name == GetTypeNameWithoutGenericArity(tempType));
                 if (tempNode == null)
                 {
-                    tempNode = new ViewModelTypeHierarchy(tempType) { Parent = localNode };
+                    tempNode = new TypeHierarchy(tempType) { Parent = localNode };
                     localNode.Derivatives.Add(tempNode);
                     localNode.IsChild = false;
                 }
                 localNode = tempNode;
                 tempType = type.BaseType;
             }
-            var newNode = new ViewModelTypeHierarchy(type) { Parent = localNode, EntityVM = entityVM };
+            var newNode = new TypeHierarchy(type) { Parent = localNode, EntityViewModel = entityViewModel };
             localNode.Derivatives.Add(newNode);
             localNode.IsChild = false;
-        }
-
-        protected override void DisposeViewModel()
-        {
-            base.DisposeViewModel();
-            foreach (var viewModelTypeHierarchy in Derivatives)
-            {
-                viewModelTypeHierarchy.Dispose();
-            }
         }
 
         private static string GetTypeNameWithoutGenericArity(Type t)

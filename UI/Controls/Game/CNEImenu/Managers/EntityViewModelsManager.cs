@@ -20,6 +20,8 @@
 
         private static HashSet<string> resourceDictionaryNames = new HashSet<string>();
 
+        public static TypeHierarchy EntityTypeHierarchy = new TypeHierarchy();
+
         public static ResourceDictionary AllEntityTemplatesResourceDictionary = new ResourceDictionary();
 
         public static Visibility TypeVisibility = Visibility.Collapsed;
@@ -67,6 +69,7 @@
                             {
                                 AddRecipe(newRecipeViewModel);
                             }
+                            EntityTypeHierarchy.Add(entity.GetType(), newEntityViewModel);
                             allEntityDictonary.Add(entity, newEntityViewModel);
                             resourceDictionaryNames.Add(newEntityViewModel.ResourceDictonaryName);
                             templateFound = true;
@@ -78,7 +81,8 @@
                 {
                     Api.Logger.Warning("CNEI: Template for " + entity + "not found");
                     newEntityViewModel = new ProtoEntityViewModel(entity);
-                    allEntityDictonary.Add(entity ,newEntityViewModel);
+                    EntityTypeHierarchy.Add(entity.GetType(), newEntityViewModel);
+                    allEntityDictonary.Add(entity, newEntityViewModel);
                     resourceDictionaryNames.Add(newEntityViewModel.ResourceDictonaryName);
                 }
             }
