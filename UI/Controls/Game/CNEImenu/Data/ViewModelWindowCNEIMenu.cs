@@ -24,7 +24,7 @@
         private bool isShowingEntityWithTemplates = false;
         private bool isShowingAll = false;
 
-        private static List<Type> defaultViewTypes = new List<Type>()
+        public static List<Type> defaultViewTypes = new List<Type>()
         {
             typeof(IProtoItem),
             typeof(IProtoObjectStructure),
@@ -41,6 +41,8 @@
         public BaseCommand NextPage { get; }
 
         public BaseCommand PrevPage { get; }
+
+        public BaseCommand ChangeViewPreset { get; }
 
         // TODO: rewrite settings filtering (listbox of comboxes to select what types to show)
         private bool SettingsFilter(ProtoEntityViewModel entityVM)
@@ -68,6 +70,7 @@
 
             NextPage = new ActionCommand(() => FilteredEntityVMList.NextPage());
             PrevPage = new ActionCommand(() => FilteredEntityVMList.PrevPage());
+            ChangeViewPreset = new ActionCommand(TypeHierarchySelectView.Open);
         }
 
         public string SearchText

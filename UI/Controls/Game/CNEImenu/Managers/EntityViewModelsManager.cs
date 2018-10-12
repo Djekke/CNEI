@@ -8,6 +8,7 @@
     using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
 
@@ -22,7 +23,22 @@
 
         public static TypeHierarchy EntityTypeHierarchy = new TypeHierarchy();
 
+        public static ObservableCollection<TypeHierarchy> TypeHierarchyPlaneCollection;
+
+        public static List<TypeHierarchy> DefaultViewPreset = new List<TypeHierarchy>();
+
+        public static ObservableCollection<ProtoEntityViewModel> DefaultView =
+            new ObservableCollection<ProtoEntityViewModel>();
+
+        public static ObservableCollection<ProtoEntityViewModel> AllEntity;
+
+        public static ObservableCollection<ProtoEntityViewModel> AllEntityWithTemplates;
+
+        public static ObservableCollection<ProtoEntityViewModel> CurrentView;
+
         public static ResourceDictionary AllEntityTemplatesResourceDictionary = new ResourceDictionary();
+
+        public static bool EntityDictonaryCreated = false;
 
         public static Visibility TypeVisibility = Visibility.Collapsed;
 
@@ -86,6 +102,75 @@
                     resourceDictionaryNames.Add(newEntityViewModel.ResourceDictonaryName);
                 }
             }
+        }
+
+        /// <summary>
+        /// Get plane represantation from tree TypeHierarchy to list.
+        /// </summary>
+        private static void GetPlaneListOfAllTypesHierarchy()
+        {
+            List<TypeHierarchy> tempList = new List<TypeHierarchy>();
+            RecursiveTypeListBuilder(EntityTypeHierarchy.Derivatives.FirstOrDefault());
+            void RecursiveTypeListBuilder(TypeHierarchy t)
+            {
+                if (t.IsChild)
+                {
+                    return;
+                }
+                tempList.Add(t);
+                foreach (TypeHierarchy derivative in t.Derivatives)
+                {
+                    RecursiveTypeListBuilder(derivative);
+                }
+            }
+            TypeHierarchyPlaneCollection = new ObservableCollection<TypeHierarchy>(tempList);
+        }
+
+
+        /// <summary>
+        /// Convert TypeHierarchy tree view IsChecked states to list of global selected nodes.
+        /// </summary>
+        public static void SaveViewPreset()
+        {
+            List<TypeHierarchy> tempList = new List<TypeHierarchy>();
+            RecursiveStringListBuilder(EntityTypeHierarchy.Derivatives.FirstOrDefault());
+            void RecursiveStringListBuilder(TypeHierarchy t)
+            {
+                switch (t.IsCheckedSavedState)
+                {
+                    case true:
+                        tempList.Add(t);
+                        break;
+                    case false:
+                        return;
+                    case null:
+                        foreach (TypeHierarchy derivative in t.Derivatives)
+                        {
+                            if (t.IsCheckedSavedState != false)
+                            {
+                                RecursiveStringListBuilder(derivative);
+                            }
+                        }
+                        break;
+                    default:
+                        throw new Exception("And how it happened?");
+                }
+            }
+
+            DefaultViewPreset = tempList;
+        }
+
+        /// <summary>
+        /// Collect all ProtoEntityViewModel from selected nodes in DefaultViewPreset to DefaultView.
+        /// </summary>
+        public static void AssembleDefaultView()
+        {
+            List<ProtoEntityViewModel> tempList = new List<ProtoEntityViewModel>();
+            foreach (TypeHierarchy node in DefaultViewPreset)
+            {
+                tempList.AddRange(node.EntityViewModelsList);
+            }
+            DefaultView = new ObservableCollection<ProtoEntityViewModel>(tempList);
         }
 
         /// <summary>
@@ -156,8 +241,6 @@
             }
         }
 
-        public static bool EntityDictonaryCreated = false;
-
         /// <summary>
         /// Return reference to existed View Model.
         /// </summary>
@@ -213,7 +296,9 @@
         public static void Init()
         {
             SetAllEntitiesViewModels();
+            GetPlaneListOfAllTypesHierarchy();
             EntityDictonaryCreated = true;
+
             AssembleAllTemplates();
 
             foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)

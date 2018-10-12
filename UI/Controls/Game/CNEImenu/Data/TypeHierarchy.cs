@@ -1,79 +1,224 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
+    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
-    public class TypeHierarchy
+    public class TypeHierarchy : INotifyPropertyChanged
     {
+        private const int IndentSize = 20;
+
+        private const int WindowWidth = 465; // 500 - 35
+
         private static readonly Type MainNode = typeof(object);
 
-        private TypeHierarchy Parent = null;
+        private bool? isChecked = false;
 
-        public bool IsChild { get; private set; }
+        public TypeHierarchy Parent { get; } = null;
 
-        public Type MyType = MainNode;
+        public bool IsChild { get; private set; } = true;
 
-        public string Name { get; }
+        public Type MyType { get; }
 
-        public ProtoEntityViewModel EntityViewModel { get; private set; }
+        public string FullName { get; }
 
-        public ObservableCollection<TypeHierarchy> Derivatives { get; private set; }
+        public string ShortName { get; }
 
-        public List<ProtoEntityViewModel> EntityViewModelsList => Derivatives.Select(d => d.EntityViewModel).ToList();
+        // First node is 'object' type and never shown.
+        public int Indent { get; } = -IndentSize;
 
-        public bool EndNode => Derivatives.All(n => n.IsChild);
+        public int ListMaxWidth => WindowWidth - Indent;
 
-        public TypeHierarchy()
-        {
-            Derivatives = new ObservableCollection<TypeHierarchy>();
-            Name = GetTypeNameWithoutGenericArity(MyType);
-            IsChild = true;
-        }
+        public bool? IsCheckedSavedState { get; set; } = false;
+
+        public ProtoEntityViewModel EntityViewModel { get; }
+
+        public List<TypeHierarchy> Derivatives { get; } =
+            new List<TypeHierarchy>();
+
+        /// <summary>
+        /// List of view models from derivatives 1 level down.
+        /// </summary>
+        public List<ProtoEntityViewModel> EntityViewModelsList { get; } =
+            new List<ProtoEntityViewModel>();
+
+        /// <summary>
+        /// List of all view models from all derivatives all the way down.
+        /// </summary>
+        public List<ProtoEntityViewModel> EntityViewModelsFullList { get; } =
+            new List<ProtoEntityViewModel>();
+
+        public bool EndNode => Derivatives.All(d => d.IsChild);
 
         public TypeHierarchy(Type type)
         {
-            Derivatives = new ObservableCollection<TypeHierarchy>();
             MyType = type;
-            Name = GetTypeNameWithoutGenericArity(type);
-            IsChild = true;
+            FullName = GetNameWithoutGenericArity(MyType.ToString());
+            ShortName = GetNameWithoutGenericArity(MyType.Name);
+        }
+
+        public TypeHierarchy() : this(MainNode)
+        {
+        }
+
+        public TypeHierarchy(Type type, TypeHierarchy parent) : this(type)
+        {
+            Parent = parent;
+            Indent = parent.Indent + IndentSize;
+        }
+
+        public TypeHierarchy(Type type, TypeHierarchy parent, ProtoEntityViewModel entityViewModel)
+            : this(type, parent)
+        {
+            EntityViewModel = entityViewModel;
         }
 
         public void Add(Type type, ProtoEntityViewModel entityViewModel)
         {
-            if (GetTypeNameWithoutGenericArity(type) == Name)
+            if (GetNameWithoutGenericArity(type.ToString()) == FullName)
             {
                 return;
             }
+
             var localNode = this;
             var tempType = type.BaseType;
-            while (GetTypeNameWithoutGenericArity(type.BaseType) != localNode.Name)
+            while (GetNameWithoutGenericArity(type.BaseType?.ToString()) != localNode.FullName)
             {
-                while(GetTypeNameWithoutGenericArity(tempType?.BaseType) != localNode.Name)
+                while (GetNameWithoutGenericArity(tempType?.BaseType?.ToString()) != localNode.FullName)
                 {
                     tempType = tempType?.BaseType;
                 }
+
                 var tempNode = localNode.Derivatives
-                    .FirstOrDefault(n => n.Name == GetTypeNameWithoutGenericArity(tempType));
+                    .FirstOrDefault(n => n.FullName == GetNameWithoutGenericArity(tempType?.ToString()));
                 if (tempNode == null)
                 {
-                    tempNode = new TypeHierarchy(tempType) { Parent = localNode };
+                    tempNode = new TypeHierarchy(tempType, localNode);
                     localNode.Derivatives.Add(tempNode);
                     localNode.IsChild = false;
                 }
+
                 localNode = tempNode;
                 tempType = type.BaseType;
             }
-            var newNode = new TypeHierarchy(type) { Parent = localNode, EntityViewModel = entityViewModel };
+
+            var newNode = new TypeHierarchy(type, localNode, entityViewModel);
             localNode.Derivatives.Add(newNode);
             localNode.IsChild = false;
+            localNode.EntityViewModelsList.Add(entityViewModel);
+            do
+            {
+                localNode.EntityViewModelsFullList.Add(entityViewModel);
+                localNode = localNode.Parent;
+            } while (localNode != null);
         }
 
-        private static string GetTypeNameWithoutGenericArity(Type t)
+        public bool? IsChecked
         {
-            int index = t.ToString().IndexOf('`');
-            return index == -1 ? t.ToString() : t.ToString().Substring(0, index);
+            get => isChecked;
+            set
+            {
+                if (IsChecked == value)
+                {
+                    return;
+                }
+
+                // Do not care about value, we have our own logic here.
+                if (isChecked == true)
+                {
+                    isChecked = false;
+                    // Set All children false.
+                    foreach (TypeHierarchy derivative in Derivatives)
+                    {
+                        derivative.SetAllDerivativesIsChecked(false);
+                    }
+
+                    Parent?.RecalculateParentIsChecked();
+                }
+                else
+                {
+                    isChecked = true;
+                    // Set all children true.
+                    foreach (TypeHierarchy derivative in Derivatives)
+                    {
+                        derivative.SetAllDerivativesIsChecked(true);
+                    }
+
+                    Parent?.RecalculateParentIsChecked();
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public void SetAllDerivativesIsChecked(bool? value)
+        {
+            isChecked = value;
+            OnPropertyChanged(nameof(IsChecked));
+            foreach (TypeHierarchy derivative in Derivatives)
+            {
+                derivative.SetAllDerivativesIsChecked(value);
+            }
+        }
+
+        public void RecalculateParentIsChecked()
+        {
+            var allTrue = true;
+            isChecked = false;
+            foreach (TypeHierarchy derivative in Derivatives)
+            {
+                if (derivative.IsChecked == true)
+                {
+                    isChecked = null;
+                }
+                else if (derivative.IsChecked == false)
+                {
+                    allTrue = false;
+                }
+                else if (derivative.IsChecked == null)
+                {
+                    allTrue = false;
+                    isChecked = null;
+                    break;
+                }
+            }
+
+            if (allTrue)
+            {
+                isChecked = true;
+            }
+            OnPropertyChanged(nameof(IsChecked));
+
+            Parent?.RecalculateParentIsChecked();
+        }
+
+        /// <summary>
+        /// Call this on main node to reset whole tree to previus saved state.
+        /// </summary>
+        public void ResetState()
+        {
+            isChecked = IsCheckedSavedState;
+            OnPropertyChanged(nameof(IsChecked));
+            foreach (TypeHierarchy derivative in Derivatives)
+            {
+                derivative.ResetState();
+            }
+        }
+
+        private static string GetNameWithoutGenericArity(string s)
+        {
+            int index = s.IndexOf('`');
+            return index == -1 ? s : s.Substring(0, index);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

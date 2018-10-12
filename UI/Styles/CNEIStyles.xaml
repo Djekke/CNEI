@@ -4,7 +4,8 @@
     xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=AtomicTorch.CBND.CoreMod"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
     xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls.Game.CNEImenu.Controls"
-    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:helpers="clr-namespace:CryoFall.CNEI.UI.Helpers">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="DefaultStyles.xaml" />
@@ -17,6 +18,9 @@
     <Thickness x:Key="SidePanelMarginLeft">-200,0,0,0</Thickness>
 
     <system:Double x:Key="EntityItemSize">32</system:Double>
+
+    <!-- Converters -->
+    <helpers:MarginLeftConverter x:Key="MarginLeftConverter" />
 
     <!-- Panel Styles -->
     <Style x:Key="BottomPanel" TargetType="{x:Type StackPanel}">
@@ -185,27 +189,22 @@
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListBoxItems}" />
     </Style>
 
-    <Style x:Key="ListBoxItemsCategory"  TargetType="{x:Type ListBoxItem}">
+
+    <Style x:Key="ListBoxColumnItems"  TargetType="{x:Type ListBoxItem}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource BrushColor7}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="Margin" Value="0,1,0,1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Border"
-                            Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="0"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <ContentPresenter />
-                    </Border>
+                    <ContentPresenter />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="ListBoxCategory" TargetType="{x:Type ListBox}">
+    <Style x:Key="ListBoxColumn" TargetType="{x:Type ListBox}">
         <Setter Property="VerticalAlignment"  Value="Stretch"/>
         <Setter Property="HorizontalAlignment"  Value="Stretch"/>
         <Setter Property="Template">
@@ -226,8 +225,9 @@
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemsCategory}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxColumnItems}" />
     </Style>
+
 
     <Style x:Key="ListBoxRowItems"  TargetType="{x:Type ListBoxItem}">
         <Setter Property="Margin" Value="2" />
@@ -260,7 +260,8 @@
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxRowItems}" />
     </Style>
 
-    <Style x:Key="ListBoximpleWrapperItems"  TargetType="{x:Type ListBoxItem}">
+
+    <Style x:Key="ListBoxSimpleWrapperItems"  TargetType="{x:Type ListBoxItem}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -280,8 +281,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoximpleWrapperItems}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxSimpleWrapperItems}" />
     </Style>
+
 
     <Style x:Key="IngredientListBoxItems"  TargetType="{x:Type ListBoxItem}">
         <Setter Property="Template">

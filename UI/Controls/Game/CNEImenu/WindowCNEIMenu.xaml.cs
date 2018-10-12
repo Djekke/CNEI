@@ -14,6 +14,12 @@
             CreativePanelManager.RefreshCreativeModeStatus();
         }
 
+        protected override void WindowClosing()
+        {
+            base.WindowClosing();
+            TypeHierarchySelectView.Close();
+        }
+
         protected override void DisposeMenu()
         {
             base.DisposeMenu();
