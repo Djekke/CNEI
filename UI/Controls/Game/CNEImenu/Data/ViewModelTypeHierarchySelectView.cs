@@ -1,7 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
-    using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using System.Collections.ObjectModel;
@@ -12,8 +11,7 @@
 
         public ViewModelTypeHierarchySelectView()
         {
-            TypeHierarchyPlaneList =
-                new ObservableCollection<TypeHierarchy>(EntityViewModelsManager.TypeHierarchyPlaneCollection);
+            TypeHierarchyPlaneList = EntityViewModelsManager.TypeHierarchyPlaneCollection;
             Save = new ActionCommand(SaveChanges);
             Cancel = new ActionCommand(TypeHierarchySelectView.Close);
         }
@@ -22,15 +20,18 @@
 
         public BaseCommand Cancel { get; }
 
-        public void SaveChanges()
+        /// <summary>
+        /// Save changes in IsChecked state for every node in TypeHierarchy.
+        /// </summary>
+        public static void SaveChanges()
         {
-            Api.Logger.Dev("Save");
-            foreach (TypeHierarchy node in TypeHierarchyPlaneList)
+            foreach (TypeHierarchy node in EntityViewModelsManager.TypeHierarchyPlaneCollection)
             {
                 node.IsCheckedSavedState = node.IsChecked;
             }
 
             EntityViewModelsManager.SaveViewPreset();
+            TypeHierarchySelectView.Close();
         }
     }
 }

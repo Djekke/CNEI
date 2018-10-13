@@ -3,6 +3,7 @@
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data;
     using AtomicTorch.CBND.GameApi.Scripting;
+    using AtomicTorch.CBND.GameApi.ServicesClient;
     using AtomicTorch.GameEngine.Common.Extensions;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
     using JetBrains.Annotations;
@@ -21,7 +22,13 @@
 
         private static HashSet<string> resourceDictionaryNames = new HashSet<string>();
 
+        private static IClientStorage settingsStorage;
+
+        private static Settings settingsInstance;
+
         public static TypeHierarchy EntityTypeHierarchy = new TypeHierarchy();
+
+        public static Dictionary<string, TypeHierarchy> TypeHierarchyDictionary;
 
         public static ObservableCollection<TypeHierarchy> TypeHierarchyPlaneCollection;
 
@@ -124,8 +131,8 @@
                 }
             }
             TypeHierarchyPlaneCollection = new ObservableCollection<TypeHierarchy>(tempList);
+            TypeHierarchyDictionary = tempList.ToDictionary(t => t.ShortName, t => t);
         }
-
 
         /// <summary>
         /// Convert TypeHierarchy tree view IsChecked states to list of global selected nodes.
@@ -153,11 +160,16 @@
                         }
                         break;
                     default:
-                        throw new Exception("And how it happened?");
+                        throw new Exception("CNEI: And how it happened?");
                 }
             }
 
+            // TODO: Check for changes.
+            tempList.Sort();
             DefaultViewPreset = tempList;
+
+            SaveDefaultViewToSettings();
+            AssembleDefaultView();
         }
 
         /// <summary>
@@ -168,9 +180,76 @@
             List<ProtoEntityViewModel> tempList = new List<ProtoEntityViewModel>();
             foreach (TypeHierarchy node in DefaultViewPreset)
             {
-                tempList.AddRange(node.EntityViewModelsList);
+                tempList.AddRange(node.EntityViewModelsFullList);
             }
+            DefaultView.Clear();
             DefaultView = new ObservableCollection<ProtoEntityViewModel>(tempList);
+        }
+
+        /// <summary>
+        /// Try to load settings from client storage or init deafult one.
+        /// </summary>
+        public static void InitSettings()
+        {
+            settingsStorage = Api.Client.Storage.GetStorage("Mods/CNEI.Settings");
+            settingsStorage.RegisterType(typeof(Settings));
+            if (settingsStorage.TryLoad(out settingsInstance))
+            {
+                // LoadSettings.
+            }
+            else
+            {
+                // Default settings.
+                settingsInstance.IsDefaultViewOn = true;
+                settingsInstance.IsShowingEntityWithTemplates = false;
+                settingsInstance.IsShowingAll = false;
+
+                settingsInstance.DefaultViewPreset = new List<string>();
+
+                settingsInstance.IsTypeVisibile = false;
+            }
+
+            LoadDefaultViewFromSettings();
+        }
+
+        /// <summary>
+        /// Save settings in ClientStorage.
+        /// </summary>
+        public static void SaveSettings()
+        {
+            // TODO: Check if settings changed.
+            settingsStorage.Save(settingsInstance);
+        }
+
+        /// <summary>
+        /// Load default view preset from settings (convert list from string to TypeHierarhy).
+        /// And set corresponding nodes IsChecked state.
+        /// </summary>
+        private static void LoadDefaultViewFromSettings()
+        {
+            foreach (string s in settingsInstance.DefaultViewPreset)
+            {
+                if (TypeHierarchyDictionary.ContainsKey(s))
+                {
+                    TypeHierarchyDictionary[s].IsChecked = true;
+                }
+                else
+                {
+                    Api.Logger.Error("CNEI: Error during loading default view, can not find corresponding type " + s);
+                }
+            }
+            ViewModelTypeHierarchySelectView.SaveChanges();
+        }
+
+        /// <summary>
+        /// Save default view preset to settings (convert list from TypeHierarhy to string).
+        /// </summary>
+        private static void SaveDefaultViewToSettings()
+        {
+            var tempList = DefaultViewPreset.Select(t => t.ShortName).ToList();
+
+            //TODO: Check for changes.
+            settingsInstance.DefaultViewPreset = tempList;
         }
 
         /// <summary>
@@ -297,6 +376,7 @@
         {
             SetAllEntitiesViewModels();
             GetPlaneListOfAllTypesHierarchy();
+            InitSettings();
             EntityDictonaryCreated = true;
 
             AssembleAllTemplates();
@@ -312,6 +392,19 @@
             {
                 entityViewModel.FinalizeRecipeLinking();
             }
+        }
+
+
+        // Settings that save\load from\to ClientStorage.
+        public struct Settings
+        {
+            public bool IsDefaultViewOn;
+            public bool IsShowingEntityWithTemplates;
+            public bool IsShowingAll;
+
+            public List<string> DefaultViewPreset;
+
+            public bool IsTypeVisibile;
         }
     }
 }

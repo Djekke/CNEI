@@ -44,6 +44,8 @@
 
         public BaseCommand ChangeViewPreset { get; }
 
+        public BaseCommand ToggleSettings { get; }
+
         // TODO: rewrite settings filtering (listbox of comboxes to select what types to show)
         private bool SettingsFilter(ProtoEntityViewModel entityVM)
         {
@@ -71,6 +73,13 @@
             NextPage = new ActionCommand(() => FilteredEntityVMList.NextPage());
             PrevPage = new ActionCommand(() => FilteredEntityVMList.PrevPage());
             ChangeViewPreset = new ActionCommand(TypeHierarchySelectView.Open);
+            ToggleSettings = new ActionCommandWithParameter(isChecked =>
+            {
+                if ((bool) isChecked == false)
+                {
+                    EntityViewModelsManager.SaveSettings();
+                }
+            });
         }
 
         public string SearchText

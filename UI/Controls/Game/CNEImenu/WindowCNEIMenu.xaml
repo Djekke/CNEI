@@ -35,6 +35,8 @@
 
                 <ToggleButton DockPanel.Dock="Right"
                               x:Name="SettingsButton"
+                              Command="{Binding ToggleSettings}"
+                              CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
                               IsTabStop="False"
                               Margin="4,0,0,0">
                     <StackPanel Orientation="Horizontal">
@@ -182,7 +184,7 @@
 
             <ContentControl Template="{StaticResource SidePanelTemplate}"
                             Visibility="{Binding IsCreativePanelVisibile, 
-                                         Converter={StaticResource BoolToVisibilityConverter}}"
+                                                 Converter={StaticResource BoolToVisibilityConverter}}"
                             Grid.Row="0" Grid.RowSpan="2"
                             Grid.Column="0">
                 <cnei:CreativePanel />
