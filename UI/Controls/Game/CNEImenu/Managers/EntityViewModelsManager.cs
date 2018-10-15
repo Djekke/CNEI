@@ -1,6 +1,7 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers
 {
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
+    using AtomicTorch.CBND.GameApi;
     using AtomicTorch.CBND.GameApi.Data;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.CBND.GameApi.ServicesClient;
@@ -26,6 +27,13 @@
 
         private static Settings settingsInstance;
 
+        private static bool isSettingsChanged = false;
+
+        /// <summary>
+        /// Temp variable to determine if settings really changed.
+        /// </summary>
+        private static ViewType tempView;
+
         public static TypeHierarchy EntityTypeHierarchy = new TypeHierarchy();
 
         public static Dictionary<string, TypeHierarchy> TypeHierarchyDictionary;
@@ -41,13 +49,18 @@
 
         public static ObservableCollection<ProtoEntityViewModel> AllEntityWithTemplates;
 
-        public static ObservableCollection<ProtoEntityViewModel> CurrentView;
+        /// <summary>
+        /// Current View collection that shows in main menu.
+        /// </summary>
+        public static FilteredObservableWithPaging<ProtoEntityViewModel> CurrentView =
+            new FilteredObservableWithPaging<ProtoEntityViewModel>();
 
         public static ResourceDictionary AllEntityTemplatesResourceDictionary = new ResourceDictionary();
 
         public static bool EntityDictonaryCreated = false;
 
-        public static Visibility TypeVisibility = Visibility.Collapsed;
+        public static Visibility TypeVisibility =>
+            settingsInstance.IsTypeVisibile ? Visibility.Visible : Visibility.Collapsed;
 
         /// <summary>
         /// Return substring before ` symbol.
@@ -109,6 +122,10 @@
                     resourceDictionaryNames.Add(newEntityViewModel.ResourceDictonaryName);
                 }
             }
+
+            AllEntity = new ObservableCollection<ProtoEntityViewModel>(allEntityDictonary.Values);
+            AllEntityWithTemplates = new ObservableCollection<ProtoEntityViewModel>(
+                AllEntity.Where(vm => vm.GetType().IsSubclassOf(typeof(ProtoEntityViewModel))));
         }
 
         /// <summary>
@@ -164,12 +181,14 @@
                 }
             }
 
-            // TODO: Check for changes.
-            tempList.Sort();
-            DefaultViewPreset = tempList;
+            tempList.Sort((t1,t2) => string.Compare(t1.ShortName, t2.ShortName, StringComparison.OrdinalIgnoreCase));
+            if (!tempList.SequenceEqual(DefaultViewPreset))
+            {
+                DefaultViewPreset = tempList;
 
-            SaveDefaultViewToSettings();
-            AssembleDefaultView();
+                SaveDefaultViewToSettings();
+                AssembleDefaultView();
+            }
         }
 
         /// <summary>
@@ -182,8 +201,13 @@
             {
                 tempList.AddRange(node.EntityViewModelsFullList);
             }
+            var tempCollection = new ObservableCollection<ProtoEntityViewModel>(tempList);
+            if (settingsInstance.View == ViewType.Default)
+            {
+                CurrentView.BaseCollection = tempCollection;
+            }
             DefaultView.Clear();
-            DefaultView = new ObservableCollection<ProtoEntityViewModel>(tempList);
+            DefaultView = tempCollection;
         }
 
         /// <summary>
@@ -192,23 +216,35 @@
         public static void InitSettings()
         {
             settingsStorage = Api.Client.Storage.GetStorage("Mods/CNEI.Settings");
+            settingsStorage.RegisterType(typeof(ViewType));
             settingsStorage.RegisterType(typeof(Settings));
-            if (settingsStorage.TryLoad(out settingsInstance))
-            {
-                // LoadSettings.
-            }
-            else
+
+            if (!settingsStorage.TryLoad(out settingsInstance))
             {
                 // Default settings.
-                settingsInstance.IsDefaultViewOn = true;
-                settingsInstance.IsShowingEntityWithTemplates = false;
-                settingsInstance.IsShowingAll = false;
+                settingsInstance.View = ViewType.Default;
 
-                settingsInstance.DefaultViewPreset = new List<string>();
+                settingsInstance.DefaultViewPreset = new List<string>()
+                {
+                    "ProtoCharacterMob",
+                    "ProtoItem",
+                    "ProtoObjectLoot",
+                    "ProtoObjectLootContainer",
+                    "ProtoObjectMineral",
+                    "ProtoObjectStructure",
+                    "ProtoObjectVegetation"
+                };
 
                 settingsInstance.IsTypeVisibile = false;
+
+                isSettingsChanged = true;
             }
 
+            // Temp settings values to check if they changed.
+            tempView = settingsInstance.View;
+            IsTypeVisible = settingsInstance.IsTypeVisibile;
+
+            ChangeCurrentView();
             LoadDefaultViewFromSettings();
         }
 
@@ -217,8 +253,49 @@
         /// </summary>
         public static void SaveSettings()
         {
-            // TODO: Check if settings changed.
-            settingsStorage.Save(settingsInstance);
+            // Check if content settings changed.
+            if (tempView != settingsInstance.View)
+            {
+                settingsInstance.View = tempView;
+                isSettingsChanged = true;
+                ChangeCurrentView();
+            }
+
+            // Check if type visibilty changed.
+            if (IsTypeVisible != settingsInstance.IsTypeVisibile)
+            {
+                settingsInstance.IsTypeVisibile = IsTypeVisible;
+                isSettingsChanged = true;
+                CurrentView.Refresh();
+            }
+
+            // If settings changed - save to local storage.
+            if (isSettingsChanged)
+            {
+                settingsStorage.Save(settingsInstance);
+                isSettingsChanged = false;
+            }
+        }
+
+        /// <summary>
+        /// Change current view depending on current settings.
+        /// </summary>
+        private static void ChangeCurrentView()
+        {
+            switch (settingsInstance.View)
+            {
+                case ViewType.Default:
+                    CurrentView.BaseCollection = DefaultView;
+                    break;
+                case ViewType.EntityWithTemplates:
+                    CurrentView.BaseCollection = AllEntityWithTemplates;
+                    break;
+                case ViewType.ShowAll:
+                    CurrentView.BaseCollection = AllEntity;
+                    break;
+                default:
+                    throw new Exception("CNEI: Did I forgot something?");
+            }
         }
 
         /// <summary>
@@ -238,6 +315,7 @@
                     Api.Logger.Error("CNEI: Error during loading default view, can not find corresponding type " + s);
                 }
             }
+            // Save IsChecked state to IsCheckedSaved and generate corresponding DefaultView.
             ViewModelTypeHierarchySelectView.SaveChanges();
         }
 
@@ -247,9 +325,12 @@
         private static void SaveDefaultViewToSettings()
         {
             var tempList = DefaultViewPreset.Select(t => t.ShortName).ToList();
-
-            //TODO: Check for changes.
-            settingsInstance.DefaultViewPreset = tempList;
+            // tempList already sorted, as DefaultViewPreset sorted by ShortName
+            if (!tempList.SequenceEqual(settingsInstance.DefaultViewPreset))
+            {
+                settingsInstance.DefaultViewPreset = tempList;
+                isSettingsChanged = true;
+            }
         }
 
         /// <summary>
@@ -372,6 +453,44 @@
             recipeList.AddIfNotContains(recipeViewModel);
         }
 
+        public static bool IsDefaultViewOn
+        {
+            get => tempView == ViewType.Default;
+            set
+            {
+                if (value)
+                {
+                    tempView = ViewType.Default;
+                }
+            }
+        }
+
+        public static bool IsShowingEntityWithTemplates
+        {
+            get => tempView == ViewType.EntityWithTemplates;
+            set
+            {
+                if (value)
+                {
+                    tempView = ViewType.EntityWithTemplates;
+                }
+            }
+        }
+
+        public static bool IsShowingAll
+        {
+            get => tempView == ViewType.ShowAll;
+            set
+            {
+                if (value)
+                {
+                    tempView = ViewType.ShowAll;
+                }
+            }
+        }
+
+        public static bool IsTypeVisible { get; set; }
+
         public static void Init()
         {
             SetAllEntitiesViewModels();
@@ -398,13 +517,19 @@
         // Settings that save\load from\to ClientStorage.
         public struct Settings
         {
-            public bool IsDefaultViewOn;
-            public bool IsShowingEntityWithTemplates;
-            public bool IsShowingAll;
+            public ViewType View;
 
             public List<string> DefaultViewPreset;
 
             public bool IsTypeVisibile;
+        }
+
+        [NotPersistent]
+        public enum ViewType
+        {
+            Default,
+            EntityWithTemplates,
+            ShowAll
         }
     }
 }
