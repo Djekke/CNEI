@@ -29,7 +29,9 @@
         {
             ProtoEntity = entity;
             Title = entity.Name;
+            TitleLower = entity.Name.ToLower();
             Type = entity.Id;
+            TypeLower = entity.Id.ToLower();
             RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>();
             UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>();
         }
@@ -68,9 +70,19 @@
             }
         }
 
+        /// <summary>
+        /// Entity name.
+        /// </summary>
         public virtual string Title { get; }
 
+        public string TitleLower;
+
+        /// <summary>
+        /// C# type full name (with namespace).
+        /// </summary>
         public virtual string Type { get; }
+
+        public string TypeLower;
 
         public virtual Visibility Visibility => Visibility.Visible;
 

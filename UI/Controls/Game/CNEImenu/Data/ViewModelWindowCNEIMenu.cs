@@ -23,9 +23,9 @@
 
         private bool SearchFilter(ProtoEntityViewModel entityViewModel)
         {
-            return (entityViewModel.Title.ToLower().Contains(searchText.ToLower())
-                    || entityViewModel.GetType().ToString().ToLower().Contains(searchText.ToLower())
-                    || entityViewModel.GetType().Name.ToLower().Contains(searchText.ToLower()));
+            var searchTextLowCase = searchText.ToLower();
+            return entityViewModel.TypeLower.Contains(searchTextLowCase)
+                || entityViewModel.TitleLower.Contains(searchTextLowCase);
         }
 
         public ViewModelWindowCNEImenu()
