@@ -9,9 +9,12 @@
     {
         public ObservableCollection<TypeHierarchy> TypeHierarchyPlaneList { get; }
 
+        public TypeHierarchy MainNode { get; }
+
         public ViewModelTypeHierarchySelectView()
         {
             TypeHierarchyPlaneList = EntityViewModelsManager.TypeHierarchyPlaneCollection;
+            MainNode = EntityViewModelsManager.EntityTypeHierarchy;
             Save = new ActionCommand(SaveChanges);
             Cancel = new ActionCommand(TypeHierarchySelectView.Close);
         }

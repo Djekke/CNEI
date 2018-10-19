@@ -9,7 +9,8 @@
 
     public class TypeHierarchy : INotifyPropertyChanged
     {
-        private const int IndentSize = 20;
+        private const int IndentSize = 20;  // For listbox.
+        //private const int IndentSize = 22;  // For treeview.
 
         private const int WindowWidth = 465; // 500 - 35
 
@@ -28,7 +29,8 @@
         public string ShortName { get; }
 
         // First node is 'object' type and never shown.
-        public int Indent { get; } = -IndentSize;
+        public int Indent { get; } = -IndentSize;  // For listbox.
+        //public int Indent { get; } = 0;  // For treeview.
 
         public int ListMaxWidth => WindowWidth - Indent;
 
