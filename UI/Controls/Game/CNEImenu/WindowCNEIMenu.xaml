@@ -35,11 +35,42 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DockPanel Grid.Row="0"
-                       Grid.Column="1"
-                       Margin="0,0,0,3">
+            <Grid Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="0,0,0,3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!--<ColumnDefinition Width="*"/>-->
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <ToggleButton DockPanel.Dock="Right"
+                <Border BorderThickness="0,0,0,1"
+                        BorderBrush="{StaticResource ItemBorderNormalBrush}"
+                        Background="{StaticResource ItemBackgroundNormalBrush}"
+                        VerticalAlignment="Center">
+                    <core:TextBoxSearch
+                        SearchText="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="1" />
+                </Border>
+
+                <!--<ComboBox Grid.Column="1"
+                          ItemsSource="{Binding CurrentViewTypesCollection}"
+                          IsEditable="True"
+                          FontSize="10"
+                          Background="Green"
+                          IsDropDownOpen="True"
+                          StaysOpenOnEdit="True"
+                          IsTabStop="False">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ShortName}"
+                                       Margin="{Binding Indent, Converter={StaticResource MarginLeftConverter}}"
+                                       FontSize="10"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>-->
+
+                <ToggleButton Grid.Column="2"
                               x:Name="SettingsButton"
                               Command="{Binding ToggleSettings}"
                               CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
@@ -52,18 +83,7 @@
                         <TextBlock Text="Settings" />
                     </StackPanel>
                 </ToggleButton>
-
-                <Grid>
-                    <Border BorderThickness="0,0,0,1"
-                            BorderBrush="{StaticResource ItemBorderNormalBrush}"
-                            Background="{StaticResource ItemBackgroundNormalBrush}"
-                            VerticalAlignment="Center">
-                        <core:TextBoxSearch
-                            SearchText="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="1" />
-                    </Border>
-                </Grid>
-            </DockPanel>
+            </Grid>
 
             <Grid x:Name="EntityListGrid"
                   Grid.Row="1"

@@ -29,25 +29,39 @@
 
         private static bool isSettingsChanged = false;
 
-        /// <summary>
-        /// Temp variable to determine if settings really changed.
-        /// </summary>
         private static ViewType tempView;
 
-        public static TypeHierarchy EntityTypeHierarchy = new TypeHierarchy();
-
-        public static Dictionary<string, TypeHierarchy> TypeHierarchyDictionary;
-
-        public static ObservableCollection<TypeHierarchy> TypeHierarchyPlaneCollection;
-
-        public static List<TypeHierarchy> DefaultViewPreset = new List<TypeHierarchy>();
-
-        public static ObservableCollection<ProtoEntityViewModel> DefaultView =
+        private static ObservableCollection<ProtoEntityViewModel> defaultViewCollection =
             new ObservableCollection<ProtoEntityViewModel>();
 
-        public static ObservableCollection<ProtoEntityViewModel> AllEntity;
+        private static ObservableCollection<ProtoEntityViewModel> allEntityCollection;
 
-        public static ObservableCollection<ProtoEntityViewModel> AllEntityWithTemplates;
+        private static ObservableCollection<ProtoEntityViewModel> allEntityWithTemplatesCollection;
+
+        /// <summary>
+        /// Main node of TypeHierarchy tree.
+        /// </summary>
+        public static TypeHierarchy EntityTypeHierarchy = new TypeHierarchy();
+
+        /// <summary>
+        /// Dictionary for all nodes of TypeHierarchy tree with node ShortNames as keys.
+        /// </summary>
+        public static Dictionary<string, TypeHierarchy> TypeHierarchyDictionary;
+
+        /// <summary>
+        /// Observable coolction with all nodes of TypeHierarchy tree.
+        /// </summary>
+        public static ObservableCollection<TypeHierarchy> TypeHierarchyPlaneCollection;
+
+        /// <summary>
+        /// Default preset, selected in settings, of main nodes from TypeHierarchy tree.
+        /// </summary>
+        public static List<TypeHierarchy> DefaultViewPreset = new List<TypeHierarchy>();
+
+        /// <summary>
+        /// Collection of types presenting in current view.
+        /// </summary>
+        public static ObservableCollection<TypeHierarchy> CurrentViewTypesCollection;
 
         /// <summary>
         /// Current View collection that shows in main menu.
@@ -55,12 +69,15 @@
         public static FilteredObservableWithPaging<ProtoEntityViewModel> CurrentView =
             new FilteredObservableWithPaging<ProtoEntityViewModel>();
 
+        /// <summary>
+        /// Resource dictionary containing all entity templates as merged dictionary.
+        /// </summary>
         public static ResourceDictionary AllEntityTemplatesResourceDictionary = new ResourceDictionary();
 
+        /// <summary>
+        /// Is it safe to work with entity view models.
+        /// </summary>
         public static bool EntityDictonaryCreated = false;
-
-        public static Visibility TypeVisibility =>
-            settingsInstance.IsTypeVisibile ? Visibility.Visible : Visibility.Collapsed;
 
         /// <summary>
         /// Return substring before ` symbol.
@@ -123,9 +140,9 @@
                 }
             }
 
-            AllEntity = new ObservableCollection<ProtoEntityViewModel>(allEntityDictonary.Values);
-            AllEntityWithTemplates = new ObservableCollection<ProtoEntityViewModel>(
-                AllEntity.Where(vm => vm.GetType().IsSubclassOf(typeof(ProtoEntityViewModel))));
+            allEntityCollection = new ObservableCollection<ProtoEntityViewModel>(allEntityDictonary.Values);
+            allEntityWithTemplatesCollection = new ObservableCollection<ProtoEntityViewModel>(
+                allEntityCollection.Where(vm => vm.GetType().IsSubclassOf(typeof(ProtoEntityViewModel))));
         }
 
         /// <summary>
@@ -206,8 +223,8 @@
             {
                 CurrentView.BaseCollection = tempCollection;
             }
-            DefaultView.Clear();
-            DefaultView = tempCollection;
+            defaultViewCollection.Clear();
+            defaultViewCollection = tempCollection;
         }
 
         /// <summary>
@@ -285,13 +302,13 @@
             switch (settingsInstance.View)
             {
                 case ViewType.Default:
-                    CurrentView.BaseCollection = DefaultView;
+                    CurrentView.BaseCollection = defaultViewCollection;
                     break;
                 case ViewType.EntityWithTemplates:
-                    CurrentView.BaseCollection = AllEntityWithTemplates;
+                    CurrentView.BaseCollection = allEntityWithTemplatesCollection;
                     break;
                 case ViewType.ShowAll:
-                    CurrentView.BaseCollection = AllEntity;
+                    CurrentView.BaseCollection = allEntityCollection;
                     break;
                 default:
                     throw new Exception("CNEI: Did I forgot something?");
@@ -433,15 +450,16 @@
         }
 
         /// <summary>
-        /// Return enumerator to View Models for all entities in game.
+        /// Return collection of View Models for all entities in game.
         /// </summary>
-        public static IEnumerable<ProtoEntityViewModel> GetAllEntityViewModels()
+        public static ObservableCollection<ProtoEntityViewModel> GetAllEntityViewModels()
         {
             if (!EntityDictonaryCreated)
             {
                 throw new Exception("CNEI: Call GetAllEntityViewModels before all entity VMs sets.");
             }
-            return allEntityDictonary.Values;
+
+            return allEntityCollection;
         }
 
         /// <summary>
@@ -452,6 +470,32 @@
         {
             recipeList.AddIfNotContains(recipeViewModel);
         }
+
+        /// <summary>
+        /// Main function, called on game start.
+        /// </summary>
+        public static void Init()
+        {
+            SetAllEntitiesViewModels();
+            GetPlaneListOfAllTypesHierarchy();
+            InitSettings();
+            EntityDictonaryCreated = true;
+
+            AssembleAllTemplates();
+
+            foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
+            {
+                entityViewModel.InitAdditionalRecipes();
+            }
+
+            InitAllRecipesLinks();
+
+            foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
+            {
+                entityViewModel.FinalizeRecipeLinking();
+            }
+        }
+
 
         public static bool IsDefaultViewOn
         {
@@ -491,28 +535,8 @@
 
         public static bool IsTypeVisible { get; set; }
 
-        public static void Init()
-        {
-            SetAllEntitiesViewModels();
-            GetPlaneListOfAllTypesHierarchy();
-            InitSettings();
-            EntityDictonaryCreated = true;
-
-            AssembleAllTemplates();
-
-            foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
-            {
-                entityViewModel.InitAdditionalRecipes();
-            }
-
-            InitAllRecipesLinks();
-
-            foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
-            {
-                entityViewModel.FinalizeRecipeLinking();
-            }
-        }
-
+        public static Visibility TypeVisibility =>
+            settingsInstance.IsTypeVisibile ? Visibility.Visible : Visibility.Collapsed;
 
         // Settings that save\load from\to ClientStorage.
         public struct Settings

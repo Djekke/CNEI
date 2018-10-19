@@ -4,12 +4,15 @@
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
+    using System.Collections.ObjectModel;
 
     public class ViewModelWindowCNEImenu : BaseViewModel
     {
         private string searchText = string.Empty;
 
         public FilteredObservableWithPaging<ProtoEntityViewModel> EntityViewModelCollection { get; }
+
+        public ObservableCollection<TypeHierarchy> CurrentViewTypesCollection { get; }
 
         public int PageCapacity = 154;
 
@@ -33,6 +36,8 @@
             EntityViewModelCollection = EntityViewModelsManager.CurrentView;
             EntityViewModelCollection.AddFilter(SearchFilter);
             EntityViewModelCollection.SetPageCapacity(PageCapacity);
+
+            CurrentViewTypesCollection = EntityViewModelsManager.TypeHierarchyPlaneCollection;
 
             NextPage = new ActionCommand(() => EntityViewModelCollection.NextPage());
             PrevPage = new ActionCommand(() => EntityViewModelCollection.PrevPage());
