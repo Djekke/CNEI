@@ -1,5 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
+    using AtomicTorch.CBND.CoreMod.Items;
     using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
@@ -26,7 +27,12 @@
         public override void InitInformation()
         {
             base.InitInformation();
+
             EntityInformation.Add(new ViewModelEntityInformation("Stack size", item.MaxItemsPerStack.ToString()));
+            if (item is IProtoItemWithDurablity itemWithDurablity)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Durability max", itemWithDurablity.DurabilityMax));
+            }
         }
 
         /// <summary>

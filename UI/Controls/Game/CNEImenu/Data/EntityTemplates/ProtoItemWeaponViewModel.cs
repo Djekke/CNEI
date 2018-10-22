@@ -22,7 +22,7 @@
         public override void InitInformation()
         {
             base.InitInformation();
-            EntityInformation.Add(new ViewModelEntityInformation("Durability max", itemWeapon.DurabilityMax));
+
             EntityInformation.Add(new ViewModelEntityInformation("Fire interval", itemWeapon.FireInterval));
             EntityInformation.Add(new ViewModelEntityInformation("Reload time", itemWeapon.ReloadDuration));
 
@@ -43,9 +43,10 @@
 
             if (itemWeapon.IsUseAmmo)
             {
-                EntityInformation.Add(
-                    new ViewModelEntityInformation("Ammo per shot", itemWeapon.AmmoConsumptionPerShot));
-                EntityInformation.Add(new ViewModelEntityInformation("Magazine capacity", itemWeapon.MagazineCapacity));
+                EntityInformation.Add(new ViewModelEntityInformation("Ammo per shot",
+                    itemWeapon.AmmoConsumptionPerShot));
+                EntityInformation.Add(new ViewModelEntityInformation("Magazine capacity",
+                    itemWeapon.MagazineCapacity));
                 EntityInformation.Add(new ViewModelEntityInformation("Compatible ammo",
                     itemWeapon.CompatibleAmmoProtos.Select(EntityViewModelsManager.GetEntityViewModel)));
             }
