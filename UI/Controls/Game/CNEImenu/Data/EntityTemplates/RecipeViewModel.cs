@@ -14,8 +14,6 @@
 
     public class RecipeViewModel : ProtoEntityViewModel
     {
-        private readonly Recipe recipe;
-
         public override string ResourceDictonaryName => "RecipeDataTemplate.xaml";
 
         /// <summary>
@@ -23,7 +21,6 @@
         /// </summary>
         public RecipeViewModel([NotNull] Recipe recipe) : base(recipe, recipe.Icon)
         {
-            this.recipe = recipe;
             RecipeType = recipe.RecipeType;
 
             IsByproduct = (RecipeType == RecipeType.StationByproduct)
@@ -148,7 +145,7 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (recipe == null)
+            if (!(ProtoEntity is Recipe recipe))
             {
                 return;
             }

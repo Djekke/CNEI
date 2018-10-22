@@ -7,11 +7,8 @@
 
     public class ProtoItemWeaponViewModel : ProtoItemViewModel
     {
-        private readonly IProtoItemWeapon itemWeapon;
-
         public ProtoItemWeaponViewModel([NotNull] IProtoItemWeapon itemWeapon) : base(itemWeapon)
         {
-            this.itemWeapon = itemWeapon;
         }
 
         /// <summary>
@@ -23,32 +20,35 @@
         {
             base.InitInformation();
 
-            EntityInformation.Add(new ViewModelEntityInformation("Fire interval", itemWeapon.FireInterval));
-            EntityInformation.Add(new ViewModelEntityInformation("Reload time", itemWeapon.ReloadDuration));
-
-            // WeaponSkillProto not existed for ProtoItemToolAxe and ProtoItemToolPickaxe
-            if (itemWeapon?.WeaponSkillProto != null)
+            if (ProtoEntity is IProtoItemWeapon itemWeapon)
             {
-                EntityInformation.Add(new ViewModelEntityInformation("Corresponding skill",
-                    EntityViewModelsManager.GetEntityViewModel(itemWeapon.WeaponSkillProto)));
-            }
+                EntityInformation.Add(new ViewModelEntityInformation("Fire interval", itemWeapon.FireInterval));
+                EntityInformation.Add(new ViewModelEntityInformation("Reload time", itemWeapon.ReloadDuration));
 
-            if (itemWeapon.OverrideDamageDescription != null)
-            {
-                EntityInformation.Add(new ViewModelEntityInformation("Weapon range",
-                    itemWeapon.OverrideDamageDescription.RangeMax));
-                EntityInformation.Add(new ViewModelEntityInformation("Raw damage",
-                    itemWeapon.OverrideDamageDescription.DamageValue));
-            }
+                // WeaponSkillProto not existed for ProtoItemToolAxe and ProtoItemToolPickaxe
+                if (itemWeapon?.WeaponSkillProto != null)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation("Corresponding skill",
+                        EntityViewModelsManager.GetEntityViewModel(itemWeapon.WeaponSkillProto)));
+                }
 
-            if (itemWeapon.IsUseAmmo)
-            {
-                EntityInformation.Add(new ViewModelEntityInformation("Ammo per shot",
-                    itemWeapon.AmmoConsumptionPerShot));
-                EntityInformation.Add(new ViewModelEntityInformation("Magazine capacity",
-                    itemWeapon.MagazineCapacity));
-                EntityInformation.Add(new ViewModelEntityInformation("Compatible ammo",
-                    itemWeapon.CompatibleAmmoProtos.Select(EntityViewModelsManager.GetEntityViewModel)));
+                if (itemWeapon.OverrideDamageDescription != null)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation("Weapon range",
+                        itemWeapon.OverrideDamageDescription.RangeMax));
+                    EntityInformation.Add(new ViewModelEntityInformation("Raw damage",
+                        itemWeapon.OverrideDamageDescription.DamageValue));
+                }
+
+                if (itemWeapon.IsUseAmmo)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation("Ammo per shot",
+                        itemWeapon.AmmoConsumptionPerShot));
+                    EntityInformation.Add(new ViewModelEntityInformation("Magazine capacity",
+                        itemWeapon.MagazineCapacity));
+                    EntityInformation.Add(new ViewModelEntityInformation("Compatible ammo",
+                        itemWeapon.CompatibleAmmoProtos.Select(EntityViewModelsManager.GetEntityViewModel)));
+                }
             }
         }
     }

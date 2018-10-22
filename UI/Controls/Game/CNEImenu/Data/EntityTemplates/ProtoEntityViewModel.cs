@@ -105,7 +105,6 @@
         /// </summary>
         public virtual void InitAdditionalRecipes()
         {
-            InitInformation();
         }
 
         /// <summary>

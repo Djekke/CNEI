@@ -486,6 +486,7 @@
             foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
             {
                 entityViewModel.InitAdditionalRecipes();
+                entityViewModel.InitInformation();
             }
 
             InitAllRecipesLinks();

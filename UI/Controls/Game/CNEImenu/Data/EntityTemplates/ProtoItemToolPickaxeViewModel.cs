@@ -6,11 +6,8 @@
 
     public class ProtoItemToolPickaxeViewModel : ProtoItemWeaponViewModel
     {
-        private readonly IProtoItemToolMining pickaxe;
-
         public ProtoItemToolPickaxeViewModel([NotNull] IProtoItemToolMining pickaxe) : base(pickaxe)
         {
-            this.pickaxe = pickaxe;
         }
 
         /// <summary>
@@ -22,7 +19,10 @@
         {
             base.InitInformation();
 
-            EntityInformation.Add(new ViewModelEntityInformation("Damage to rocks", pickaxe.DamageToRocks));
+            if (ProtoEntity is IProtoItemToolMining pickaxe)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Damage to rocks", pickaxe.DamageToRocks));
+            }
         }
     }
 }

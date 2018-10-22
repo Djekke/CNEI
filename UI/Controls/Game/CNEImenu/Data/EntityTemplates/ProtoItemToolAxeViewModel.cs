@@ -6,11 +6,8 @@
 
     public class ProtoItemToolAxeViewModel : ProtoItemWeaponViewModel
     {
-        private readonly IProtoItemToolWoodcutting axe;
-
         public ProtoItemToolAxeViewModel([NotNull] IProtoItemToolWoodcutting axe) : base(axe)
         {
-            this.axe = axe;
         }
 
         /// <summary>
@@ -21,8 +18,10 @@
         public override void InitInformation()
         {
             base.InitInformation();
-
-            EntityInformation.Add(new ViewModelEntityInformation("Damage to tree", axe.DamageToTree));
+            if (ProtoEntity is IProtoItemToolWoodcutting axe)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Damage to tree", axe.DamageToTree));
+            }
         }
     }
 }

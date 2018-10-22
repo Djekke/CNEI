@@ -6,11 +6,8 @@
 
     public class ProtoItemToolToolboxViewModel : ProtoItemViewModel
     {
-        private readonly IProtoItemToolToolbox toolbox;
-
         public ProtoItemToolToolboxViewModel([NotNull] IProtoItemToolToolbox toolbox) : base(toolbox)
         {
-            this.toolbox = toolbox;
         }
 
         /// <summary>
@@ -22,8 +19,11 @@
         {
             base.InitInformation();
 
-            EntityInformation.Add(new ViewModelEntityInformation("Construction speed multiplier",
+            if (ProtoEntity is IProtoItemToolToolbox toolbox)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Construction speed multiplier",
                 toolbox.ConstructionSpeedMultiplier));
+            }
         }
     }
 }

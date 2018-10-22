@@ -11,13 +11,10 @@
         private static readonly ITextureResource DefaultIcon =
             new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
 
-        private readonly IProtoCharacterMob creature;
-
         public override string ResourceDictonaryName => "ProtoCharacterMobDataTemplate.xaml";
 
         public ProtoCharacterMobViewModel([NotNull] IProtoCharacterMob creature) : base(creature, DefaultIcon)
         {
-            this.creature = creature;
         }
 
         /// <summary>
@@ -27,12 +24,9 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (creature == null)
-            {
-                return;
-            }
-
-            if (creature.LootDroplist != null && creature.LootDroplist.EnumerateAllItems().Any())
+            if (ProtoEntity is IProtoCharacterMob creature &&
+                creature.LootDroplist != null &&
+                creature.LootDroplist.EnumerateAllItems().Any())
             {
                 Droplist = new RecipeViewModel(this, creature.LootDroplist.EnumerateAllItems());
                 EntityViewModelsManager.AddRecipe(Droplist);

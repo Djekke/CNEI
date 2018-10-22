@@ -6,11 +6,8 @@
 
     public class ProtoItemToolWateringCanViewModel : ProtoItemViewModel
     {
-        private readonly IProtoItemToolWateringCan wateringCan;
-
         public ProtoItemToolWateringCanViewModel([NotNull] IProtoItemToolWateringCan wateringCan) : base(wateringCan)
         {
-            this.wateringCan = wateringCan;
         }
 
         /// <summary>
@@ -22,7 +19,10 @@
         {
             base.InitInformation();
 
-            EntityInformation.Add(new ViewModelEntityInformation("Water capacity", wateringCan.WaterCapacity));
+            if (ProtoEntity is IProtoItemToolWateringCan wateringCan)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Water capacity", wateringCan.WaterCapacity));
+            }
         }
     }
 }

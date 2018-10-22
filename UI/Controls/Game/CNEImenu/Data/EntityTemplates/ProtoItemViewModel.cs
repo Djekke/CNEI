@@ -9,13 +9,10 @@
 
     public class ProtoItemViewModel : ProtoEntityViewModel
     {
-        private readonly IProtoItem item;
-
         public override string ResourceDictonaryName => "ProtoItemDataTemplate.xaml";
 
         public ProtoItemViewModel([NotNull] IProtoItem item) : base(item, item.Icon)
         {
-            this.item = item;
             Description = item.Description;
         }
 
@@ -28,8 +25,11 @@
         {
             base.InitInformation();
 
-            EntityInformation.Add(new ViewModelEntityInformation("Stack size", item.MaxItemsPerStack.ToString()));
-            if (item is IProtoItemWithDurablity itemWithDurablity)
+            if (ProtoEntity is IProtoItem item)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Stack size", item.MaxItemsPerStack.ToString()));
+            }
+            if (ProtoEntity is IProtoItemWithDurablity itemWithDurablity)
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Durability max", itemWithDurablity.DurabilityMax));
             }

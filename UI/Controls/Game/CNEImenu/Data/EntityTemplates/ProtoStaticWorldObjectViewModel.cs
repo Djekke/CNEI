@@ -8,7 +8,6 @@
         protected ProtoStaticWorldObjectViewModel([NotNull] IProtoStaticWorldObject staticObject)
             : base(staticObject, staticObject.Icon ?? staticObject.DefaultTexture)
         {
-
         }
     }
 }

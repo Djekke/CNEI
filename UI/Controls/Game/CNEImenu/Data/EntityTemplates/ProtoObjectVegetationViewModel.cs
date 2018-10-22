@@ -8,17 +8,10 @@
 
     public class ProtoObjectVegetationViewModel : ProtoStaticWorldObjectViewModel
     {
-        private readonly IProtoObjectVegetation vegetation;
-
         public override string ResourceDictonaryName => "ProtoObjectVegetationDataTemplate.xaml";
 
         public ProtoObjectVegetationViewModel([NotNull] IProtoObjectVegetation vegetation) : base(vegetation)
         {
-            this.vegetation = vegetation;
-            //vegetation.GrowthStagesCount
-            //vegetation.GetGrowthStageDurationSeconds() ??
-
-            // DroplistOnDestroy
         }
 
         /// <summary>
@@ -28,12 +21,8 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (vegetation == null)
-            {
-                return;
-            }
-
-            if (vegetation.DroplistOnDestroy != null &&
+            if (ProtoEntity is IProtoObjectVegetation vegetation &&
+                vegetation.DroplistOnDestroy != null &&
                 vegetation.DroplistOnDestroy.EnumerateAllItems().Any())
             {
                 DroplistOnDestroy = new RecipeViewModel(this, vegetation.DroplistOnDestroy.EnumerateAllItems());

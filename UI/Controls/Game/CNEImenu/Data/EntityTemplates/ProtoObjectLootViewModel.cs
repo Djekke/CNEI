@@ -8,13 +8,10 @@
 
     public class ProtoObjectLootViewModel : ProtoStaticWorldObjectViewModel
     {
-        private readonly IProtoObjectLoot loot;
-
         public override string ResourceDictonaryName => "ProtoObjectLootDataTemplate.xaml";
 
         public ProtoObjectLootViewModel([NotNull] IProtoObjectLoot loot) : base(loot)
         {
-            this.loot = loot;
         }
 
         /// <summary>
@@ -24,12 +21,9 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (loot == null)
-            {
-                return;
-            }
-
-            if (loot.LootDroplist != null && loot.LootDroplist.EnumerateAllItems().Any())
+            if (ProtoEntity is IProtoObjectLoot loot &&
+                loot.LootDroplist != null &&
+                loot.LootDroplist.EnumerateAllItems().Any())
             {
                 Droplist = new RecipeViewModel(this, loot.LootDroplist.EnumerateAllItems());
                 DroplistVisibility = Visibility.Visible;

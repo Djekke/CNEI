@@ -7,11 +7,8 @@
 
     public class ProtoItemToolLightViewModel : ProtoItemViewModel
     {
-        private readonly IProtoItemToolLight light;
-
         public ProtoItemToolLightViewModel([NotNull] IProtoItemToolLight light) : base(light)
         {
-            this.light = light;
         }
 
         /// <summary>
@@ -23,24 +20,28 @@
         {
             base.InitInformation();
 
-            if (light?.ItemLightConfig != null)
+            if (ProtoEntity is IProtoItemToolLight light)
             {
-                EntityInformation.Add(new ViewModelEntityInformation("Light radius",
-                    light.ItemLightConfig.LightSize));
-            }
-
-            if (light?.ItemFuelConfig != null)
-            {
-                EntityInformation.Add(new ViewModelEntityInformation("Fuel initial",
-                    light.ItemFuelConfig.FuelAmountInitial));
-                EntityInformation.Add(new ViewModelEntityInformation("Fuel max",
-                    light.ItemFuelConfig.FuelCapacity));
-                EntityInformation.Add(new ViewModelEntityInformation("Fuel use",
-                    light.ItemFuelConfig.FuelUsePerSecond));
-                if (light.ItemFuelConfig.FuelProtoItemsList?.Count > 0)
+                if (light?.ItemLightConfig != null)
                 {
-                    EntityInformation.Add(new ViewModelEntityInformation("Compatible fuel",
-                        light.ItemFuelConfig.FuelProtoItemsList.Select(EntityViewModelsManager.GetEntityViewModel)));
+                    EntityInformation.Add(new ViewModelEntityInformation("Light radius",
+                        light.ItemLightConfig.LightSize));
+                }
+
+                if (light?.ItemFuelConfig != null)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation("Fuel initial",
+                        light.ItemFuelConfig.FuelAmountInitial));
+                    EntityInformation.Add(new ViewModelEntityInformation("Fuel max",
+                        light.ItemFuelConfig.FuelCapacity));
+                    EntityInformation.Add(new ViewModelEntityInformation("Fuel use",
+                        light.ItemFuelConfig.FuelUsePerSecond));
+                    if (light.ItemFuelConfig.FuelProtoItemsList?.Count > 0)
+                    {
+                        EntityInformation.Add(new ViewModelEntityInformation("Compatible fuel",
+                            light.ItemFuelConfig.FuelProtoItemsList.Select(EntityViewModelsManager
+                                .GetEntityViewModel)));
+                    }
                 }
             }
         }
