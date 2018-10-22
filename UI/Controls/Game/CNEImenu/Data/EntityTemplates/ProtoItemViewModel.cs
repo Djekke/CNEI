@@ -2,18 +2,31 @@
 {
     using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
+    using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Windows;
 
     public class ProtoItemViewModel : ProtoEntityViewModel
     {
+        private readonly IProtoItem item;
+
         public override string ResourceDictonaryName => "ProtoItemDataTemplate.xaml";
 
         public ProtoItemViewModel([NotNull] IProtoItem item) : base(item, item.Icon)
         {
+            this.item = item;
             Description = item.Description;
-            IsStackable = item.IsStackable;
-            MaxItemsPerStack = item.MaxItemsPerStack;
+        }
+
+        /// <summary>
+        /// Initilize information about entity - invoked after all entity view Models created,
+        /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        /// </summary>
+        public override void InitInformation()
+        {
+            base.InitInformation();
+            EntityInformation.Add(new ViewModelEntityInformation("Stack size", item.MaxItemsPerStack.ToString()));
         }
 
         /// <summary>
@@ -47,10 +60,6 @@
         public BaseCommand UsageNextPage { get; private set; }
 
         public string Description { get; }
-
-        public bool IsStackable { get; }
-
-        public ushort MaxItemsPerStack { get; }
 
         public Visibility RecipesVisibility { get; private set; } = Visibility.Visible;
 

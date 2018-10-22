@@ -8,6 +8,7 @@
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Reflection;
     using System.Windows;
 
@@ -34,6 +35,7 @@
             TypeLower = entity.Id.ToLower();
             RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>();
             UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>();
+            EntityInformation = new ObservableCollection<ViewModelEntityInformation>();
         }
 
         public ProtoEntityViewModel([NotNull] IProtoEntity entity, [NotNull] ITextureResource icon) : this(entity)
@@ -90,6 +92,8 @@
 
         public virtual Visibility CountVisibility => Visibility.Collapsed;
 
+        public ObservableCollection<ViewModelEntityInformation> EntityInformation { get; set; }
+
         public FilteredObservableWithPaging<RecipeViewModel> RecipeVMList { get; private set; }
 
         public FilteredObservableWithPaging<RecipeViewModel> UsageVMList { get; private set; }
@@ -100,6 +104,16 @@
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
         public virtual void InitAdditionalRecipes()
+        {
+            InitInformation();
+        }
+
+        /// <summary>
+        /// Initilize information about entity - invoked after all entity view Models created,
+        /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        /// </summary>
+        public virtual void InitInformation()
         {
         }
 
