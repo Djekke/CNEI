@@ -212,7 +212,7 @@
                 <ControlTemplate TargetType="{x:Type ListBox}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto"
                                   Margin="1">
-                        <ItemsPresenter />
+                        <ItemsPresenter Margin="0,0,2,0" />
                     </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>

@@ -22,7 +22,7 @@
 
             if (ProtoEntity is IProtoItemToolLight light)
             {
-                if (light?.ItemLightConfig != null)
+                if (light?.ItemLightConfig?.IsLightEnabled == true)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Light radius",
                         light.ItemLightConfig.LightSize));
