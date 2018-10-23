@@ -1,8 +1,10 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.Windows;
 
     public class ViewModelEntityInformation : BaseViewModel
@@ -14,8 +16,18 @@
             TextVisibility = Visibility.Visible;
         }
 
-        public ViewModelEntityInformation(string header, int i) : this (header, i.ToString()) {}
-        public ViewModelEntityInformation(string header, double d) : this (header, d.ToString()) {}
+        public ViewModelEntityInformation(string header, int i) : this(header, i.ToString())
+        {
+        }
+
+        public ViewModelEntityInformation(string header, double d)
+            : this(header, d.ToString(CultureInfo.CurrentCulture))
+        {
+        }
+
+        public ViewModelEntityInformation(string header, TimeSpan timeSpan) : this(header, timeSpan.ToString("g"))
+        {
+        }
 
         public ViewModelEntityInformation(string header, IEnumerable<ProtoEntityViewModel> collection)
         {
