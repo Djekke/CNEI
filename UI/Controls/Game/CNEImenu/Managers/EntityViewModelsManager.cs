@@ -438,6 +438,20 @@
         }
 
         /// <summary>
+        /// Return reference to existed View Model.
+        /// </summary>
+        public static ProtoEntityViewModel GetEntityViewModelByType<TProtoEntity>()
+            where TProtoEntity : class, IProtoEntity
+        {
+            if (!EntityDictonaryCreated)
+            {
+                throw new Exception("CNEI: Call GetEntityViewModelByType before all entity VMs sets.");
+            }
+
+            return Api.FindProtoEntities<TProtoEntity>().Select(GetEntityViewModel).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Gets view models of proto-classes of the specified type. For example, use IItemType as type parameter
         /// to get all view models of IItemType.
         /// </summary>
@@ -446,6 +460,11 @@
         public static List<ProtoEntityViewModel> GetAllEntityViewModelsByType<TProtoEntity>()
             where TProtoEntity : class, IProtoEntity
         {
+            if (!EntityDictonaryCreated)
+            {
+                throw new Exception("CNEI: Call GetAllEntityViewModelsByType before all entity VMs sets.");
+            }
+
             return Api.FindProtoEntities<TProtoEntity>().Select(GetEntityViewModel).ToList();
         }
 
