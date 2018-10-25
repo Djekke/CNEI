@@ -90,8 +90,6 @@
 
         public BaseCommand UsageNextPage { get; private set; }
 
-        public string Description { get; }
-
         public Visibility RecipesVisibility { get; private set; } = Visibility.Visible;
 
         public Visibility UsageVisibility { get; private set; } = Visibility.Visible;

@@ -9,19 +9,41 @@
 
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:ProtoEntityViewModel}">
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Vertical">
-            <TextBlock Text="{Binding Title}" 
-                       HorizontalAlignment="Center" />
-            <Border x:Name="Border"
-                    Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
-                    BorderThickness="0,0,0,3"
-                    CornerRadius="3,3,0,0"
-                    Padding="2,1,2,0"
-                    Width="256" Height="256">
-                <Rectangle Fill="{Binding Icon}" />
-            </Border>
+        <StackPanel Orientation="Vertical">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding Title}"
+                           HorizontalAlignment="Center" />
+
+                <ListBox Grid.Row="1"
+                         Grid.Column="0"
+                         Margin="0,0,2,0"
+                         MaxHeight="256"
+                         Style="{StaticResource ListBoxColumn}"
+                         ItemsSource="{Binding EntityInformation}" />
+
+                <Border Grid.Row="1"
+                        Grid.Column="1"
+                        Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
+                        CornerRadius="5"
+                        Width="256" Height="256">
+                    <Rectangle Fill="{Binding Icon}" />
+                </Border>
+            </Grid>
+
+            <TextBlock Text="{Binding Description}"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap" />
         </StackPanel>
     </DataTemplate>
 

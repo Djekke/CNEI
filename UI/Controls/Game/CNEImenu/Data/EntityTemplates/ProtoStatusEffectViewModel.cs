@@ -31,8 +31,6 @@
         private static readonly Brush BrushNeutral
             = new SolidColorBrush(Color.FromArgb(BackgroundOpacity, 0xCC, 0xCC, 0xCC));
 
-        public override string ResourceDictonaryName =>  "ProtoStatusEffectDataTemplate.xaml";
-
         public ProtoStatusEffectViewModel([NotNull] IProtoStatusEffect statusEffect)
             : base(statusEffect)
         {
@@ -75,11 +73,7 @@
             }
         }
 
-        public string Description { get; }
-
         public StatusEffectKind Kind { get; }
-
-        public bool IsInfoExpanded { get; set; } = true;
 
         public Brush GetBackgroundBrush(double intensity)
         {

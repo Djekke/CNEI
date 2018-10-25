@@ -86,6 +86,8 @@
 
         public string TypeLower;
 
+        public string Description { get; set; }
+
         public virtual Visibility Visibility => Visibility.Visible;
 
         public Visibility TypeVisibility => EntityViewModelsManager.TypeVisibility;

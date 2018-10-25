@@ -80,8 +80,6 @@
 
         public BaseCommand UsageNextPage { get; private set; }
 
-        public string Description { get; }
-
         public string DescriptionUpgrade { get; }
 
         public bool IsAutoUnlocked { get; }
