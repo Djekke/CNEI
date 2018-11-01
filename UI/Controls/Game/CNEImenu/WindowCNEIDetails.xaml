@@ -9,7 +9,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
-                <ResourceDictionary Source="/UI/Controls/Game/CNEImenu/Data/AdditionalTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </base:BaseUserControl.Resources>

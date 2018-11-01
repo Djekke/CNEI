@@ -4,7 +4,7 @@
     xmlns:data="clr-namespace:CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+        <ResourceDictionary Source="/UI/Controls/Game/CNEImenu/Data/AdditionalTemplates.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->

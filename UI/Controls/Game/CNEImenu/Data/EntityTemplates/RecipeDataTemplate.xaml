@@ -7,7 +7,7 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+        <ResourceDictionary Source="/UI/Controls/Game/CNEImenu/Data/AdditionalTemplates.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- 7 rows: 32 * 7 + 6 * 4 = 248 -->

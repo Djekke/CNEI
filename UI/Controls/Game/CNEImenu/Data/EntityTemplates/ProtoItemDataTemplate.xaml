@@ -4,7 +4,7 @@
     xmlns:data="clr-namespace:CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+        <ResourceDictionary Source="/UI/Controls/Game/CNEImenu/Data/AdditionalTemplates.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->
@@ -13,42 +13,7 @@
             <StackPanel Margin="6,0,0,0">
                 <Expander Header="Information"
                           IsExpanded="{Binding IsInfoExpanded}">
-                    <StackPanel Orientation="Vertical">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Row="0"
-                                       Grid.Column="1"
-                                       Text="{Binding Title}"
-                                       HorizontalAlignment="Center" />
-
-                            <ListBox Grid.Row="1"
-                                     Grid.Column="0"
-                                     Margin="0,0,2,0"
-                                     MaxHeight="256"
-                                     Style="{StaticResource ListBoxColumn}"
-                                     ItemsSource="{Binding EntityInformation}" />
-
-                            <Border Grid.Row="1"
-                                    Grid.Column="1"
-                                    Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
-                                    CornerRadius="5"
-                                    Width="256" Height="256">
-                                <Rectangle Fill="{Binding Icon}" />
-                            </Border>
-                        </Grid>
-
-                        <TextBlock Text="{Binding Description}"
-                                   HorizontalAlignment="Center"
-                                   TextWrapping="Wrap" />
-                    </StackPanel>
+                    <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" />
                 </Expander>
                 <Expander Header="How to get"
                           Visibility="{Binding RecipesVisibility}"

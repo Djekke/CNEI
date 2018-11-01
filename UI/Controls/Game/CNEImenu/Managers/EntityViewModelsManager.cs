@@ -452,6 +452,21 @@
         }
 
         /// <summary>
+        /// Return reference to existed View Model.
+        /// </summary>
+        public static List<ProtoEntityViewModel> GetEntityViewModelByInterface(Type interfaceType)
+        {
+            if (!EntityDictonaryCreated)
+            {
+                throw new Exception("CNEI: Call GetEntityViewModelByType before all entity VMs sets.");
+            }
+
+            return allEntityDictonary.Where(p => interfaceType.IsAssignableFrom(p.Key.GetType()))
+                                     .Select(p => p.Value)
+                                     .ToList();
+        }
+
+        /// <summary>
         /// Gets view models of proto-classes of the specified type. For example, use IItemType as type parameter
         /// to get all view models of IItemType.
         /// </summary>
