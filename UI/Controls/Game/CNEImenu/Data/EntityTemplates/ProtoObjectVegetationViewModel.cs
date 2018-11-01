@@ -31,6 +31,22 @@
             }
         }
 
+        /// <summary>
+        /// Initilize information about entity - invoked after all entity view Models created,
+        /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        /// </summary>
+        public override void InitInformation()
+        {
+            base.InitInformation();
+
+            if (ProtoEntity is IProtoObjectVegetation vegetation)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Grow stage count",
+                    vegetation.GrowthStagesCount));
+            }
+        }
+
         public RecipeViewModel DroplistOnDestroy { get; private set; }
 
         public Visibility DroplistOnDestroyVisibility { get; private set; } = Visibility.Collapsed;

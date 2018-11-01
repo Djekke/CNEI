@@ -34,6 +34,7 @@
                 EntityViewModelsManager.AddRecipe(GatherDroplist);
             }
         }
+
         public RecipeViewModel GatherDroplist { get; private set; }
 
         public Visibility GatherDroplistVisibility { get; private set; } = Visibility.Collapsed;
