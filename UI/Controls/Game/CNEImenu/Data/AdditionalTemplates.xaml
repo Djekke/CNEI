@@ -10,12 +10,19 @@
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type data:ViewModelEntityInformation}">
-        <DockPanel>
-            <TextBlock Text="{Binding Header, StringFormat={}{0}:}"
+        <DockPanel x:Name="rootPanel">
+            <ListBox ItemsSource="{Binding InformationArray}"
+                     Style="{StaticResource ListBoxInformation}"
+                     Visibility="{Binding InformationArrayVisibility}"
+                     MaxWidth="{Binding Path=ActualWidth, ElementName=rootPanel}"/>
+            <TextBlock Text="{Binding Header, StringFormat={}{0}: }"
+                       Visibility="{Binding HeaderVisibility}"
+                       VerticalAlignment="Center"
                        DockPanel.Dock="Left" />
             <StackPanel HorizontalAlignment="Right"
                         Orientation="Horizontal">
                 <TextBlock Text="{Binding Text}"
+                           VerticalAlignment="Center"
                            Visibility="{Binding TextVisibility}" />
                 <ListBox ItemsSource="{Binding Collection}"
                          Style="{StaticResource ListBoxRow}"

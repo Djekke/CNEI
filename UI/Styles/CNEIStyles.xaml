@@ -4,8 +4,8 @@
     xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=AtomicTorch.CBND.CoreMod"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
     xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls.Game.CNEImenu.Controls"
-    xmlns:system="clr-namespace:System;assembly=mscorlib"
-    xmlns:helpers="clr-namespace:CryoFall.CNEI.UI.Helpers">
+    xmlns:helpers="clr-namespace:CryoFall.CNEI.UI.Helpers"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="DefaultStyles.xaml" />
@@ -21,6 +21,9 @@
 
     <!-- Converters -->
     <helpers:MarginLeftConverter x:Key="MarginLeftConverter" />
+
+    <!-- Template Selector -->
+    <helpers:InformationTemplateSelector x:Key="InformationTemplateSelector" />
 
     <!-- Panel Styles -->
     <Style x:Key="BottomPanel" TargetType="{x:Type StackPanel}">
@@ -147,6 +150,134 @@
         </Setter>
     </Style>
 
+    <!-- ScrollBar Style -->
+    <Style x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Width" Value="{StaticResource DefaultScrollbarWidth}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid x:Name="Bg" Background="{TemplateBinding Background}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="true"
+                               IsEnabled="{TemplateBinding IsMouseOver}">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="ScrollBar.PageUpCommand"
+                                              Style="{StaticResource VerticalScrollBarPageButton}" />
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="ScrollBar.PageDownCommand"
+                                              Style="{StaticResource VerticalScrollBarPageButton}" />
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource ScrollBarThumb}" />
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HorizontalScrollBar" TargetType="{x:Type ScrollBar}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Height" Value="{StaticResource DefaultScrollbarWidth}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid x:Name="Bg" Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Track x:Name="PART_Track" Grid.Column="1"
+                               IsEnabled="{TemplateBinding IsMouseOver}">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="ScrollBar.PageUpCommand"
+                                              Style="{StaticResource VerticalScrollBarPageButton}" />
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="ScrollBar.PageDownCommand"
+                                              Style="{StaticResource VerticalScrollBarPageButton}" />
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource ScrollBarThumb}" />
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ScrollViewer Style -->
+    <Style x:Key="ProperScrollViewer" TargetType="{x:Type ScrollViewer}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Column="0" Grid.ColumnSpan="2"
+                                Grid.Row="0" Grid.RowSpan="2"
+                                Padding="{TemplateBinding Padding}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}" />
+                        <Border Grid.Column="0" Grid.Row="1"
+                                BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{x:Null}">
+                            <ScrollContentPresenter Content="{TemplateBinding Content}"
+                                                    Margin="{TemplateBinding Padding}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}" />
+                        </Border>
+
+                        <Border Grid.Column="0" Grid.Row="0" Margin="{TemplateBinding BorderThickness}"
+                                BorderBrush="{x:Null}">
+                            <ScrollBar x:Name="PART_HorizontalScrollBar" Margin="1,1,1,1"
+                                       Style="{StaticResource HorizontalScrollBar}"
+                                       Value="{TemplateBinding HorizontalOffset}"
+                                       Orientation="Horizontal"
+                                       Maximum="{TemplateBinding ScrollableWidth}"
+                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                       ViewportSize="{TemplateBinding ViewportWidth}" />
+                        </Border>
+                        <Border Grid.Column="1" Grid.Row="1" Margin="{TemplateBinding BorderThickness}"
+                                BorderBrush="{x:Null}">
+                            <ScrollBar x:Name="PART_VerticalScrollBar" Margin="1,1,1,1"
+                                       Style="{StaticResource VerticalScrollBar}"
+                                       Value="{TemplateBinding VerticalOffset}"
+                                       Orientation="Vertical"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--ListBox Styles -->
     <Style x:Key="DefaultListBoxItems"  TargetType="{x:Type ListBoxItem}">
         <Setter Property="core:SoundUI.ClickSound" Value="{StaticResource SoundListElementClick}" />
@@ -229,7 +360,7 @@
     </Style>
 
 
-    <Style x:Key="ListBoxRowItems"  TargetType="{x:Type ListBoxItem}">
+    <Style x:Key="ListBoxRowItems" TargetType="{x:Type ListBoxItem}">
         <Setter Property="Margin" Value="2" />
         <Setter Property="Template">
             <Setter.Value>
@@ -258,6 +389,50 @@
             </Setter.Value>
         </Setter>
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxRowItems}" />
+    </Style>
+
+
+    <Style x:Key="ListBoxInformationItems" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplateSelector="{StaticResource InformationTemplateSelector}"
+                                    x:Name="InfromationContent">
+                        <ContentControl.Resources>
+                            <DataTemplate x:Key="EntityTemplate">
+                                <controls:EntitySlotControl />
+                            </DataTemplate>
+                            <DataTemplate x:Key="StringTemplate">
+                                <TextBlock Text="{Binding StringFormat={}{0}: }"
+                                           VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListBoxInformation" TargetType="{x:Type ListBox}">
+        <Setter Property="VerticalAlignment"  Value="Stretch"/>
+        <Setter Property="HorizontalAlignment"  Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <ItemsPresenter />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxInformationItems}" />
     </Style>
 
 

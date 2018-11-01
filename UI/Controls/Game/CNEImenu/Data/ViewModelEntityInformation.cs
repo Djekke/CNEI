@@ -3,9 +3,11 @@
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Scripting;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Globalization;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Media;
 
@@ -13,8 +15,8 @@
     {
         public ViewModelEntityInformation(string header, string text)
         {
-            Text = text;
             Header = header;
+            Text = text;
             TextVisibility = Visibility.Visible;
         }
 
@@ -31,18 +33,17 @@
         {
         }
 
-        public ViewModelEntityInformation(string header, IEnumerable<ProtoEntityViewModel> collection)
-        {
-            Header = header;
-            Collection = new ObservableCollection<ProtoEntityViewModel>(collection);
-            CollectionVisibility = Visibility.Visible;
-        }
-
         public ViewModelEntityInformation(string header, List<ProtoEntityViewModel> collection)
         {
-            Header = header;
-            Collection = new ObservableCollection<ProtoEntityViewModel>(collection);
-            CollectionVisibility = Visibility.Visible;
+            HeaderVisibility = Visibility.Collapsed;
+            InformationArray = new ArrayList() { header };
+            InformationArray.AddRange(collection);
+            InformationArrayVisibility = Visibility.Visible;
+        }
+
+        public ViewModelEntityInformation(string header, IEnumerable<ProtoEntityViewModel> collection)
+            : this(header, collection.ToList())
+        {
         }
 
         public ViewModelEntityInformation(string header, ProtoEntityViewModel protoEntityViewModel)
@@ -68,7 +69,13 @@
             }
         }
 
+        public ArrayList InformationArray { get; }
+
+        public Visibility InformationArrayVisibility { get; } = Visibility.Collapsed;
+
         public string Header { get; }
+
+        public Visibility HeaderVisibility { get; } = Visibility.Visible;
 
         public string Text { get; }
 
