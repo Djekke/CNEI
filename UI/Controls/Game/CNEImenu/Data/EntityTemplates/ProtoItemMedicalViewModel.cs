@@ -51,6 +51,7 @@
                 }
             }
 
+            // TODO: Rework this.
             // Hardcoded information
             AddStatusEffectsInformation();
         }
@@ -86,6 +87,8 @@
                 case ItemBandage _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectBleeding>(), 0.3));
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.1));
                     break;
                 case ItemCigarCheap _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
@@ -107,7 +110,7 @@
                     break;
                 case ItemHerbGreen _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.1));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.07));
                     break;
                 case ItemHerbPurple _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
@@ -119,7 +122,7 @@
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectEnergyRush>(), 0.05));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 0.05));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 0.1));
                     break;
                 case ItemMedkit _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
@@ -133,10 +136,10 @@
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectSplintedLeg>(), 1.0));
                     break;
-                case ItemNeuralImplant _:
+                case ItemNeuralEnhancer _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectPain>(), 1.0));
-                    EntityInformation.Add(new ViewModelEntityInformation("Add LP", 50));
+                    EntityInformation.Add(new ViewModelEntityInformation("Add LP", 100));
                     break;
                 case ItemPainkiller _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",

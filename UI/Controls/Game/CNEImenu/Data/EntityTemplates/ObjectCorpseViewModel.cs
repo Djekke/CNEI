@@ -1,13 +1,16 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
-    using AtomicTorch.CBND.CoreMod.Items.Tools;
-    using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
+    using AtomicTorch.CBND.CoreMod.StaticObjects.Loot;
+    using AtomicTorch.CBND.GameApi.Resources;
     using JetBrains.Annotations;
+    using System;
 
-    public class ProtoItemToolPickaxeViewModel : ProtoItemWeaponViewModel
+    public class ObjectCorpseViewModel : ProtoStaticWorldObjectViewModel
     {
-        public ProtoItemToolPickaxeViewModel([NotNull] IProtoItemToolMining pickaxe) : base(pickaxe)
+        public ObjectCorpseViewModel([NotNull] ObjectCorpse corpse)
+            : base(corpse)
         {
+            IconResource = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
         }
 
         /// <summary>
@@ -19,11 +22,8 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is IProtoItemToolMining pickaxe)
-            {
-                EntityInformation.Add(new ViewModelEntityInformation("Damage to minerals",
-                    pickaxe.DamageToMinerals));
-            }
+            EntityInformation.Add(new ViewModelEntityInformation("Disapear after",
+                TimeSpan.FromSeconds(ObjectCorpse.CorpseTimeoutSeconds)));
         }
     }
 }

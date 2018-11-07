@@ -26,11 +26,20 @@
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Equipment type",
                     equipment.EquipmentType.ToString()));
+
                 if (equipment?.ProtoEffects?.Values.Count > 0)
                 {
                     foreach (KeyValuePair<StatName, double> pair in equipment.ProtoEffects.Values)
                     {
-                        EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(), pair.Value * 100));
+                        EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(), pair.Value));
+                    }
+                }
+
+                if (equipment?.ProtoEffects?.Multipliers.Count > 0)
+                {
+                    foreach (KeyValuePair<StatName, double> pair in equipment.ProtoEffects.Multipliers)
+                    {
+                        EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(), pair.Value));
                     }
                 }
 

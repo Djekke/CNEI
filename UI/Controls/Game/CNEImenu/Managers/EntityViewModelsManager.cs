@@ -103,9 +103,10 @@
                 ProtoEntityViewModel newEntityViewModel = null;
                 do
                 {
-                    //Api.Logger.Info("CNEI: " + entityType.Name + "  " + GetNameWithoutGenericArity(entityType.Name));
                     Type currentType = Type.GetType("CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data." +
                                                     GetNameWithoutGenericArity(entityType.Name) + "ViewModel");
+                    //Api.Logger.Info("CNEI: " + entityType.Name + "  " + GetNameWithoutGenericArity(entityType.Name)
+                    //                + " " + currentType);
                     if (currentType != null && !currentType.IsAbstract)
                     {
                         try
@@ -114,7 +115,7 @@
                         }
                         catch (MissingMethodException)
                         {
-                            Api.Logger.Warning("CNEI: Can not apply constructor of " + currentType + " type for " + entity);
+                            Api.Logger.Error("CNEI: Can not apply constructor of " + currentType + " type for " + entity);
                         }
                         if (newEntityViewModel != null)
                         {

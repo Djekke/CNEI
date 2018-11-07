@@ -2,6 +2,7 @@
 {
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data;
+    using AtomicTorch.CBND.GameApi.Extensions;
     using AtomicTorch.CBND.GameApi.Resources;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
@@ -9,7 +10,6 @@
     using JetBrains.Annotations;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Reflection;
     using System.Windows;
 
     public class ProtoEntityViewModel : BaseViewModel
@@ -29,7 +29,7 @@
         public ProtoEntityViewModel([NotNull] IProtoEntity entity)
         {
             ProtoEntity = entity;
-            Title = entity.Name;
+            Title = entity.Name == "" ? entity.GetType().Name : entity.Name;
             TitleLower = entity.Name.ToLower();
             Type = entity.Id;
             TypeLower = entity.Id.ToLower();
@@ -52,6 +52,16 @@
                     iconResource = GetPropertyByName(ProtoEntity, "Icon") as ITextureResource;
                 }
                 return iconResource;
+            }
+            set
+            {
+                if (value == iconResource)
+                {
+                    return;
+                }
+
+                iconResource = value;
+                NotifyThisPropertyChanged();
             }
         }
 
@@ -160,10 +170,7 @@
 
         private static object GetPropertyByName(object obj, string name)
         {
-            return obj?.GetType().GetProperty(name, BindingFlags.Instance |
-                                                    BindingFlags.Public |
-                                                    BindingFlags.NonPublic |
-                                                    BindingFlags.GetProperty)?.GetValue(obj, null);
+            return obj?.GetType().ScriptingGetProperty(name)?.GetValue(obj, null);
         }
     }
 }

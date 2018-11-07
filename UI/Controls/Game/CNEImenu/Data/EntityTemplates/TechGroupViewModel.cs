@@ -5,9 +5,9 @@
     using JetBrains.Annotations;
     using System.Linq;
 
-    public class ProtoTechGroupViewModel : ProtoEntityViewModel
+    public class TechGroupViewModel : ProtoEntityViewModel
     {
-        public ProtoTechGroupViewModel([NotNull] ProtoTechGroup techGroup) : base(techGroup, techGroup.Icon)
+        public TechGroupViewModel([NotNull] TechGroup techGroup) : base(techGroup, techGroup.Icon)
         {
             Description = techGroup.Description;
         }
@@ -21,7 +21,7 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is ProtoTechGroup techGroup)
+            if (ProtoEntity is TechGroup techGroup)
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Tier", techGroup.Tier.ToString()));
                 EntityInformation.Add(new ViewModelEntityInformation("LP to unlock", techGroup.LearningPointsPrice));

@@ -23,7 +23,7 @@
         {
             RecipeType = recipe.RecipeType;
 
-            IsByproduct = (RecipeType == RecipeType.StationByproduct)
+            IsByproduct = (RecipeType == RecipeType.ManufacturingByproduct)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
             IsStationCraft = (RecipeType == RecipeType.Hand)
@@ -150,7 +150,7 @@
                 return;
             }
 
-            if (recipe is Recipe.RecipeForStationByproduct byproductRecipe)
+            if (recipe is Recipe.RecipeForManufacturingByproduct byproductRecipe)
             {
                 InputItemsVMList = new List<BaseViewModel>()
                 {

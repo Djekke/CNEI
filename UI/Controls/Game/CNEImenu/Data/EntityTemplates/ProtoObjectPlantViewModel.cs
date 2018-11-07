@@ -1,6 +1,5 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
-    using System;
     using AtomicTorch.CBND.CoreMod.StaticObjects.Vegetation.Plants;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;

@@ -7,9 +7,9 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class ProtoTechNodeViewModel : ProtoEntityViewModel
+    public class TechNodeViewModel : ProtoEntityViewModel
     {
-        public ProtoTechNodeViewModel([NotNull] ProtoTechNode techNode) : base(techNode, techNode.Icon)
+        public TechNodeViewModel([NotNull] TechNode techNode) : base(techNode, techNode.Icon)
         {
             Description = techNode.Description;
         }
@@ -23,7 +23,7 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is ProtoTechNode techNode)
+            if (ProtoEntity is TechNode techNode)
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Tier", techNode.Group.Tier.ToString()));
                 EntityInformation.Add(new ViewModelEntityInformation("LP to unlock", techNode.LearningPointsPrice));

@@ -10,16 +10,24 @@
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type data:ViewModelEntityInformation}">
-        <DockPanel x:Name="rootPanel">
-            <ListBox ItemsSource="{Binding InformationArray}"
+        <Grid MaxWidth="{Binding Path=ActualWidth,
+                                 RelativeSource={RelativeSource AncestorType=ListBoxItem}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox Grid.Column="0"
+                     ItemsSource="{Binding InformationArray}"
                      Style="{StaticResource ListBoxInformation}"
-                     Visibility="{Binding InformationArrayVisibility}"
-                     MaxWidth="{Binding Path=ActualWidth, ElementName=rootPanel}"/>
-            <TextBlock Text="{Binding Header, StringFormat={}{0}: }"
+                     Visibility="{Binding InformationArrayVisibility}"/>
+            <TextBlock Grid.Column="0"
+                       Text="{Binding Header, StringFormat={}{0}: }"
                        Visibility="{Binding HeaderVisibility}"
-                       VerticalAlignment="Center"
-                       DockPanel.Dock="Left" />
-            <StackPanel HorizontalAlignment="Right"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="1"
+                        HorizontalAlignment="Right"
                         Orientation="Horizontal">
                 <TextBlock Text="{Binding Text}"
                            VerticalAlignment="Center"
@@ -30,9 +38,9 @@
                 <controls:EntitySlotControl DataContext="{Binding StatusEffect}"
                                             IsBackgroundEnabled="False"
                                             Visibility="{Binding DataContext.StatusEffectVisibility,
-                                                                 RelativeSource={RelativeSource AncestorType=DockPanel}}"
+                                                                 RelativeSource={RelativeSource AncestorType=Grid}}"
                                             Background="{Binding DataContext.StatusEffectBackground,
-                                                                 RelativeSource={RelativeSource AncestorType=DockPanel}}">
+                                                                 RelativeSource={RelativeSource AncestorType=Grid}}">
                     <base:ToolTipServiceExtend.ToolTip>
                         <StackPanel Orientation="Vertical" MinWidth="150" MaxWidth="275">
                             <TextBlock Text="{Binding Title}"
@@ -44,7 +52,7 @@
                                 <TextBlock Text="Intensity: " />
                                 <TextBlock
                                     Text="{Binding DataContext.ToolTipIntensityPercent,
-                                                   RelativeSource={RelativeSource AncestorType=DockPanel}}"
+                                                   RelativeSource={RelativeSource AncestorType=Grid}}"
                                     FontWeight="Bold" />
                                 <TextBlock Text="%" FontWeight="Bold" />
                             </StackPanel>
@@ -55,7 +63,7 @@
                     </base:ToolTipServiceExtend.ToolTip>
                 </controls:EntitySlotControl>
             </StackPanel>
-        </DockPanel>
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="BasicInformation">

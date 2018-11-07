@@ -1,12 +1,11 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
-    using AtomicTorch.CBND.CoreMod.Items.Tools;
-    using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
+    using AtomicTorch.CBND.CoreMod.Items.Devices;
     using JetBrains.Annotations;
 
-    public class ProtoItemToolPickaxeViewModel : ProtoItemWeaponViewModel
+    public class ProtoItemPowerBankViewModel : ProtoItemEquipmentViewModel
     {
-        public ProtoItemToolPickaxeViewModel([NotNull] IProtoItemToolMining pickaxe) : base(pickaxe)
+        public ProtoItemPowerBankViewModel([NotNull] IProtoItemPowerBank powerBank) : base(powerBank)
         {
         }
 
@@ -19,10 +18,10 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is IProtoItemToolMining pickaxe)
+            if (ProtoEntity is IProtoItemPowerBank powerBank)
             {
-                EntityInformation.Add(new ViewModelEntityInformation("Damage to minerals",
-                    pickaxe.DamageToMinerals));
+                EntityInformation.Add(new ViewModelEntityInformation("Energy capacity",
+                    powerBank.EnergyCapacity));
             }
         }
     }

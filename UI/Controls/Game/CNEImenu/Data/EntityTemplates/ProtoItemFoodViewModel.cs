@@ -45,6 +45,7 @@
                 }
             }
 
+            // TODO: Rework this.
             // Hardcoded information
             AddStatusEffectsInformation();
         }
@@ -107,11 +108,17 @@
                     break;
                 case ItemMushroomRust _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 1.0));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.5));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 0.1));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 0.15));
+                    break;
+                case ItemTequila _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectDrunk>(), 0.4));
                     break;
                 case ItemTincture _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectDrunk>(), 0.2));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.25));
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
