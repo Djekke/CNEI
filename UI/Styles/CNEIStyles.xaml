@@ -464,7 +464,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border Margin="2"
+                    <Border Margin="1,2,1,2"
                             CornerRadius="2"
                             BorderThickness="0"
                             Background="{StaticResource BrushColorAlt3}">
