@@ -183,13 +183,17 @@
             }
         }
 
-        public IReadOnlyList<BaseViewModel> InputItemsVMList { get; private set; } = new List<BaseViewModel>();
+        public IReadOnlyList<BaseViewModel> InputItemsVMList { get; protected set; }
+            = new List<BaseViewModel>();
 
-        public IReadOnlyList<BaseViewModel> OutputItemsVMList { get; private set; } = new List<BaseViewModel>();
+        public IReadOnlyList<BaseViewModel> OutputItemsVMList { get; protected set; }
+            = new List<BaseViewModel>();
 
-        public IReadOnlyList<ProtoEntityViewModel> StationsList { get; private set; } = new List<ProtoEntityViewModel>();
+        public IReadOnlyList<ProtoEntityViewModel> StationsList { get; protected set; }
+            = new List<ProtoEntityViewModel>();
 
-        public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; private set; } = new List<ProtoEntityViewModel>();
+        public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; protected set; }
+            = new List<ProtoEntityViewModel>();
 
         public double OriginalDuration { get; } = 0d;
 

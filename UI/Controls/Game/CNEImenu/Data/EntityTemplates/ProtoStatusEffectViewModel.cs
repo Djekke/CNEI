@@ -1,10 +1,12 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
     using AtomicTorch.CBND.CoreMod.CharacterStatusEffects;
+    using AtomicTorch.CBND.CoreMod.Stats;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.HUD.Data;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System;
+    using System.Collections.Generic;
     using System.Windows.Media;
 
     public class ProtoStatusEffectViewModel : ProtoEntityViewModel
@@ -33,6 +35,22 @@
                     statusEffect.IsRemovedOnRespawn ? "Yes" : "No"));
                 EntityInformation.Add(new ViewModelEntityInformation("Visibility threshold",
                     (statusEffect.VisibilityIntensityThreshold * 100) + "%"));
+
+                if (statusEffect?.ProtoEffects?.Values.Count > 0)
+                {
+                    foreach (KeyValuePair<StatName, double> pair in statusEffect.ProtoEffects.Values)
+                    {
+                        EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(), pair.Value));
+                    }
+                }
+
+                if (statusEffect?.ProtoEffects?.Multipliers.Count > 0)
+                {
+                    foreach (KeyValuePair<StatName, double> pair in statusEffect.ProtoEffects.Multipliers)
+                    {
+                        EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(), pair.Value));
+                    }
+                }
             }
 
             if (ProtoEntity is ProtoStatusEffect effect)

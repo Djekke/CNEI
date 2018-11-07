@@ -139,7 +139,8 @@
                 case ItemNeuralEnhancer _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectPain>(), 1.0));
-                    EntityInformation.Add(new ViewModelEntityInformation("Add LP", 100));
+                    EntityInformation.Add(new ViewModelEntityInformation("Add LP",
+                        ItemNeuralEnhancer.UsageGivesLearningPointsAmount));
                     break;
                 case ItemPainkiller _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
