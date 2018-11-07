@@ -10,13 +10,10 @@
 
     public class ProtoObjectMineralViewModel : ProtoStaticWorldObjectViewModel
     {
-        private readonly IProtoObjectMineral mineral;
-
         public override string ResourceDictonaryName => "ProtoObjectMineralDataTemplate.xaml";
 
         public ProtoObjectMineralViewModel([NotNull] IProtoObjectMineral mineral) : base(mineral)
         {
-            this.mineral = mineral;
         }
 
         /// <summary>
@@ -26,20 +23,24 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (mineral.DropItemsConfig == null)
+            if (ProtoEntity is IProtoObjectMineral mineral)
             {
-                return;
-            }
-            HashSet<IProtoItem> droplist = new HashSet<IProtoItem>();
-            droplist.AddRange(mineral.DropItemsConfig.Stage1.EnumerateAllItems());
-            droplist.AddRange(mineral.DropItemsConfig.Stage2.EnumerateAllItems());
-            droplist.AddRange(mineral.DropItemsConfig.Stage3.EnumerateAllItems());
-            droplist.AddRange(mineral.DropItemsConfig.Stage4.EnumerateAllItems());
-            if (droplist.Count > 0)
-            {
-                Droplist = new RecipeViewModel(this, droplist);
-                DroplistVisibility = Visibility.Visible;
-                EntityViewModelsManager.AddRecipe(Droplist);
+                if (mineral.DropItemsConfig == null)
+                {
+                    return;
+                }
+
+                HashSet<IProtoItem> droplist = new HashSet<IProtoItem>();
+                droplist.AddRange(mineral.DropItemsConfig.Stage1.EnumerateAllItems());
+                droplist.AddRange(mineral.DropItemsConfig.Stage2.EnumerateAllItems());
+                droplist.AddRange(mineral.DropItemsConfig.Stage3.EnumerateAllItems());
+                droplist.AddRange(mineral.DropItemsConfig.Stage4.EnumerateAllItems());
+                if (droplist.Count > 0)
+                {
+                    Droplist = new RecipeViewModel(this, droplist);
+                    DroplistVisibility = Visibility.Visible;
+                    EntityViewModelsManager.AddRecipe(Droplist);
+                }
             }
         }
 

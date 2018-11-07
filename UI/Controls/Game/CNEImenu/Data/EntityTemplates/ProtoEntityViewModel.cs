@@ -2,13 +2,14 @@
 {
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data;
+    using AtomicTorch.CBND.GameApi.Extensions;
     using AtomicTorch.CBND.GameApi.Resources;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Collections.Generic;
-    using System.Reflection;
+    using System.Collections.ObjectModel;
     using System.Windows;
 
     public class ProtoEntityViewModel : BaseViewModel
@@ -28,10 +29,13 @@
         public ProtoEntityViewModel([NotNull] IProtoEntity entity)
         {
             ProtoEntity = entity;
-            Title = entity.Name;
+            Title = entity.Name == "" ? entity.GetType().Name : entity.Name;
+            TitleLower = entity.Name.ToLower();
             Type = entity.Id;
+            TypeLower = entity.Id.ToLower();
             RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>();
             UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>();
+            EntityInformation = new ObservableCollection<ViewModelEntityInformation>();
         }
 
         public ProtoEntityViewModel([NotNull] IProtoEntity entity, [NotNull] ITextureResource icon) : this(entity)
@@ -48,6 +52,16 @@
                     iconResource = GetPropertyByName(ProtoEntity, "Icon") as ITextureResource;
                 }
                 return iconResource;
+            }
+            set
+            {
+                if (value == iconResource)
+                {
+                    return;
+                }
+
+                iconResource = value;
+                NotifyThisPropertyChanged();
             }
         }
 
@@ -68,15 +82,29 @@
             }
         }
 
+        /// <summary>
+        /// Entity name.
+        /// </summary>
         public virtual string Title { get; }
 
+        public string TitleLower;
+
+        /// <summary>
+        /// C# type full name (with namespace).
+        /// </summary>
         public virtual string Type { get; }
+
+        public string TypeLower;
+
+        public string Description { get; set; }
 
         public virtual Visibility Visibility => Visibility.Visible;
 
         public Visibility TypeVisibility => EntityViewModelsManager.TypeVisibility;
 
         public virtual Visibility CountVisibility => Visibility.Collapsed;
+
+        public ObservableCollection<ViewModelEntityInformation> EntityInformation { get; set; }
 
         public FilteredObservableWithPaging<RecipeViewModel> RecipeVMList { get; private set; }
 
@@ -88,6 +116,15 @@
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
         public virtual void InitAdditionalRecipes()
+        {
+        }
+
+        /// <summary>
+        /// Initilize information about entity - invoked after all entity view Models created,
+        /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        /// </summary>
+        public virtual void InitInformation()
         {
         }
 
@@ -133,10 +170,7 @@
 
         private static object GetPropertyByName(object obj, string name)
         {
-            return obj?.GetType().GetProperty(name, BindingFlags.Instance |
-                                                    BindingFlags.Public |
-                                                    BindingFlags.NonPublic |
-                                                    BindingFlags.GetProperty)?.GetValue(obj, null);
+            return obj?.GetType().ScriptingGetProperty(name)?.GetValue(obj, null);
         }
     }
 }

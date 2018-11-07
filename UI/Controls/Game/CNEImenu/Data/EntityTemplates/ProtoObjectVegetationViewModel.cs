@@ -8,17 +8,10 @@
 
     public class ProtoObjectVegetationViewModel : ProtoStaticWorldObjectViewModel
     {
-        private readonly IProtoObjectVegetation vegetation;
-
         public override string ResourceDictonaryName => "ProtoObjectVegetationDataTemplate.xaml";
 
         public ProtoObjectVegetationViewModel([NotNull] IProtoObjectVegetation vegetation) : base(vegetation)
         {
-            this.vegetation = vegetation;
-            //vegetation.GrowthStagesCount
-            //vegetation.GetGrowthStageDurationSeconds() ??
-
-            // DroplistOnDestroy
         }
 
         /// <summary>
@@ -28,17 +21,29 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (vegetation == null)
-            {
-                return;
-            }
-
-            if (vegetation.DroplistOnDestroy != null &&
+            if (ProtoEntity is IProtoObjectVegetation vegetation &&
+                vegetation.DroplistOnDestroy != null &&
                 vegetation.DroplistOnDestroy.EnumerateAllItems().Any())
             {
                 DroplistOnDestroy = new RecipeViewModel(this, vegetation.DroplistOnDestroy.EnumerateAllItems());
                 DroplistOnDestroyVisibility = Visibility.Visible;
                 EntityViewModelsManager.AddRecipe(DroplistOnDestroy);
+            }
+        }
+
+        /// <summary>
+        /// Initilize information about entity - invoked after all entity view Models created,
+        /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        /// </summary>
+        public override void InitInformation()
+        {
+            base.InitInformation();
+
+            if (ProtoEntity is IProtoObjectVegetation vegetation)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Grow stage count",
+                    vegetation.GrowthStagesCount));
             }
         }
 

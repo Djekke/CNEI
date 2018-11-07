@@ -11,6 +11,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type RadioButton}">
+                <Setter Property="core:SoundUI.ClickSound" Value="{x:Null}" />
+                <Setter Property="core:SoundUI.EnterSound" Value="{x:Null}" />
+                <Setter Property="IsTabStop" Value="False" />
+            </Style>
         </ResourceDictionary>
     </base:BaseUserControl.Resources>
 
@@ -29,12 +35,47 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DockPanel Grid.Row="0"
-                       Grid.Column="1"
-                       Margin="0,0,0,3">
+            <!-- Header -->
+            <Grid Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="0,0,0,3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!--<ColumnDefinition Width="*"/>-->
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <ToggleButton DockPanel.Dock="Right"
+                <Border BorderThickness="0,0,0,1"
+                        BorderBrush="{StaticResource ItemBorderNormalBrush}"
+                        Background="{StaticResource ItemBackgroundNormalBrush}"
+                        VerticalAlignment="Center">
+                    <core:TextBoxSearch
+                        SearchText="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="1" />
+                </Border>
+
+                <!--<ComboBox Grid.Column="1"
+                          ItemsSource="{Binding CurrentViewTypesCollection}"
+                          IsEditable="True"
+                          FontSize="10"
+                          Background="Green"
+                          IsDropDownOpen="True"
+                          StaysOpenOnEdit="True"
+                          IsTabStop="False">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ShortName}"
+                                       Margin="{Binding Indent, Converter={StaticResource MarginLeftConverter}}"
+                                       FontSize="10"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>-->
+
+                <ToggleButton Grid.Column="2"
                               x:Name="SettingsButton"
+                              Command="{Binding ToggleSettings}"
+                              CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                              IsTabStop="False"
                               Margin="4,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Content/Textures/Options/General.png"
@@ -43,19 +84,9 @@
                         <TextBlock Text="Settings" />
                     </StackPanel>
                 </ToggleButton>
+            </Grid>
 
-                <Grid>
-                    <Border BorderThickness="0,0,0,1"
-                            BorderBrush="{StaticResource ItemBorderNormalBrush}"
-                            Background="{StaticResource ItemBackgroundNormalBrush}"
-                            VerticalAlignment="Center">
-                        <core:TextBoxSearch
-                            SearchText="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="1" />
-                    </Border>
-                </Grid>
-            </DockPanel>
-
+            <!-- Entity list -->
             <Grid x:Name="EntityListGrid"
                   Grid.Row="1"
                   Grid.Column="1">
@@ -91,30 +122,31 @@
                     </StackPanel.Resources>
                     <Button Content="&lt;"
                             Command="{Binding PrevPage}"
-                            IsEnabled="{Binding FilteredEntityVMList.IsNotFirstPage}"/>
+                            IsEnabled="{Binding EntityViewModelCollection.IsNotFirstPage}"/>
                     <TextBlock Text="( "/>
-                    <TextBlock Text="{Binding FilteredEntityVMList.CurrentPage}"/>
+                    <TextBlock Text="{Binding EntityViewModelCollection.CurrentPage}"/>
                     <TextBlock Text=" / "/>
-                    <TextBlock Text="{Binding FilteredEntityVMList.PageCount}"/>
+                    <TextBlock Text="{Binding EntityViewModelCollection.PageCount}"/>
                     <TextBlock Text=" )"/>
                     <Button Content="&gt;"
                             Command="{Binding NextPage}"
-                            IsEnabled="{Binding FilteredEntityVMList.IsNotLastPage}"/>
+                            IsEnabled="{Binding EntityViewModelCollection.IsNotLastPage}"/>
                 </StackPanel>
 
                 <ListBox Grid.Row="1"
                          Style="{StaticResource ListBoxRow}"
-                         ItemsSource="{Binding FilteredEntityVMList.Items}"
+                         ItemsSource="{Binding EntityViewModelCollection.Items}"
                          HorizontalAlignment="Center"/>
 
                 <StackPanel Grid.Row="2"
                             Style="{StaticResource BottomPanel}"
                             Margin="0,3,0,0">
                     <TextBlock Text="Entity count: " />
-                    <TextBlock Text="{Binding FilteredEntityVMList.EntityCount}" />
+                    <TextBlock Text="{Binding EntityViewModelCollection.EntityCount}" />
                 </StackPanel>
             </Grid>
 
+            <!-- Settings -->
             <Grid x:Name="SettingsGrid"
                   Grid.Row="1"
                   Grid.Column="1">
@@ -129,26 +161,48 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
+                <Grid.Resources>
+                    <Style TargetType="{x:Type CheckBox}">
+                        <Setter Property="IsTabStop" Value="False" />
+                    </Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="IsTabStop" Value="False" />
+                    </Style>
+                </Grid.Resources>
 
                 <StackPanel Orientation="Vertical">
                     <GroupBox Header="Content">
-                        <StackPanel>
-                            <CheckBox x:Name="DefaultView"
-                                      Content="Default View (Items, structures, creatures)"
-                                      IsChecked="{Binding IsDefaultViewOn}"/>
-                            <CheckBox x:Name="ShowEntityWithTemplates"
-                                      Content="Show all entity with templates"
-                                      IsChecked="{Binding IsShowingEntityWithTemplates}"/>
-                            <CheckBox x:Name="ShowAllEntity"
-                                      IsChecked="{Binding IsShowingAll}">
-                                <CheckBox.Content>
-                                    <TextBlock>
-                                        <Run>Show all entity </Run>
-                                        <Run Foreground="Red">(only for development use)</Run>
-                                    </TextBlock>
-                                </CheckBox.Content>
-                            </CheckBox>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <RadioButton x:Name="DefaultView"
+                                             GroupName="Content"
+                                             Content="Default View (Items, structures, creatures)"
+                                             IsChecked="{Binding IsDefaultViewOn}" />
+                                <RadioButton x:Name="ShowEntityWithTemplates"
+                                             GroupName="Content"
+                                             Content="Show all entity with templates"
+                                             IsChecked="{Binding IsShowingEntityWithTemplates}" />
+                                <RadioButton x:Name="ShowAllEntity"
+                                             GroupName="Content"
+                                             IsChecked="{Binding IsShowingAll}">
+                                    <RadioButton.Content>
+                                        <TextBlock>
+                                            <Run>Show all entity </Run>
+                                            <Run Foreground="Red">(only for development use)</Run>
+                                        </TextBlock>
+                                    </RadioButton.Content>
+                                </RadioButton>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1"
+                                        HorizontalAlignment="Right">
+                                <Button Content="Change default view preset"
+                                        Command="{Binding ChangeViewPreset}"/>
+                            </StackPanel>
+                        </Grid>
                     </GroupBox>
                     <GroupBox Header="View">
                         <StackPanel>
@@ -162,7 +216,7 @@
 
             <ContentControl Template="{StaticResource SidePanelTemplate}"
                             Visibility="{Binding IsCreativePanelVisibile, 
-                                         Converter={StaticResource BoolToVisibilityConverter}}"
+                                                 Converter={StaticResource BoolToVisibilityConverter}}"
                             Grid.Row="0" Grid.RowSpan="2"
                             Grid.Column="0">
                 <cnei:CreativePanel />

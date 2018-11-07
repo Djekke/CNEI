@@ -4,25 +4,12 @@
     xmlns:data="clr-namespace:CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+        <ResourceDictionary Source="/UI/Controls/Game/CNEImenu/Data/AdditionalTemplates.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:ProtoEntityViewModel}">
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Vertical">
-            <TextBlock Text="{Binding Title}" 
-                       HorizontalAlignment="Center" />
-            <Border x:Name="Border"
-                    Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
-                    BorderThickness="0,0,0,3"
-                    CornerRadius="3,3,0,0"
-                    Padding="2,1,2,0"
-                    Width="256" Height="256">
-                <Rectangle Fill="{Binding Icon}" />
-            </Border>
-        </StackPanel>
+        <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" />
     </DataTemplate>
 
 </ResourceDictionary>

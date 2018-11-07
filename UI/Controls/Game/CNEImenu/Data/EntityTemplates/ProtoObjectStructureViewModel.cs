@@ -10,18 +10,14 @@
 
     public class ProtoObjectStructureViewModel : ProtoStaticWorldObjectViewModel
     {
-        private readonly IProtoObjectStructure structure;
-
         public override string ResourceDictonaryName => "ProtoObjectStructureDataTemplate.xaml";
 
         public ProtoObjectStructureViewModel([NotNull] IProtoObjectStructure structure) : base(structure)
         {
-            this.structure = structure;
             Description = structure.Description;
             DescriptionUpgrade = structure.DescriptionUpgrade;
 
             IsAutoUnlocked = structure.IsAutoUnlocked;
-            //structure.IsInteractableObject
         }
 
         /// <summary>
@@ -31,31 +27,27 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (structure == null)
+            if (ProtoEntity is IProtoObjectStructure structure)
             {
-                return;
-            }
+                ListedInTechNodes = structure.ListedInTechNodes
+                    .Select(EntityViewModelsManager.GetEntityViewModel)
+                    .ToList().AsReadOnly();
 
-            ListedInTechNodes = structure.ListedInTechNodes
-                .Select(EntityViewModelsManager.GetEntityViewModel)
-                .ToList().AsReadOnly();
-
-            if (structure.ConfigBuild.IsAllowed &&
-                structure.ConfigBuild != null &&
-                structure.ConfigBuild.StageRequiredItems.Count > 0)
-            {
-                EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, structure.ConfigBuild));
-            }
-
-            if (structure.ConfigUpgrade != null)
-            {
-                foreach (var upgradeEntry in structure.ConfigUpgrade.Entries)
+                if (structure.ConfigBuild.IsAllowed &&
+                    structure.ConfigBuild != null &&
+                    structure.ConfigBuild.StageRequiredItems.Count > 0)
                 {
-                    EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, upgradeEntry));
+                    EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, structure.ConfigBuild));
+                }
+
+                if (structure.ConfigUpgrade != null)
+                {
+                    foreach (var upgradeEntry in structure.ConfigUpgrade.Entries)
+                    {
+                        EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, upgradeEntry));
+                    }
                 }
             }
-
-            //structure.ConfigRepair
         }
 
         /// <summary>
@@ -87,8 +79,6 @@
         public BaseCommand UsagePrevPage { get; private set; }
 
         public BaseCommand UsageNextPage { get; private set; }
-
-        public string Description { get; }
 
         public string DescriptionUpgrade { get; }
 

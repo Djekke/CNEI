@@ -14,8 +14,6 @@
 
     public class RecipeViewModel : ProtoEntityViewModel
     {
-        private readonly Recipe recipe;
-
         public override string ResourceDictonaryName => "RecipeDataTemplate.xaml";
 
         /// <summary>
@@ -23,10 +21,9 @@
         /// </summary>
         public RecipeViewModel([NotNull] Recipe recipe) : base(recipe, recipe.Icon)
         {
-            this.recipe = recipe;
             RecipeType = recipe.RecipeType;
 
-            IsByproduct = (RecipeType == RecipeType.StationByproduct)
+            IsByproduct = (RecipeType == RecipeType.ManufacturingByproduct)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
             IsStationCraft = (RecipeType == RecipeType.Hand)
@@ -148,12 +145,12 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (recipe == null)
+            if (!(ProtoEntity is Recipe recipe))
             {
                 return;
             }
 
-            if (recipe is Recipe.RecipeForStationByproduct byproductRecipe)
+            if (recipe is Recipe.RecipeForManufacturingByproduct byproductRecipe)
             {
                 InputItemsVMList = new List<BaseViewModel>()
                 {
@@ -186,13 +183,17 @@
             }
         }
 
-        public IReadOnlyList<BaseViewModel> InputItemsVMList { get; private set; } = new List<BaseViewModel>();
+        public IReadOnlyList<BaseViewModel> InputItemsVMList { get; protected set; }
+            = new List<BaseViewModel>();
 
-        public IReadOnlyList<BaseViewModel> OutputItemsVMList { get; private set; } = new List<BaseViewModel>();
+        public IReadOnlyList<BaseViewModel> OutputItemsVMList { get; protected set; }
+            = new List<BaseViewModel>();
 
-        public IReadOnlyList<ProtoEntityViewModel> StationsList { get; private set; } = new List<ProtoEntityViewModel>();
+        public IReadOnlyList<ProtoEntityViewModel> StationsList { get; protected set; }
+            = new List<ProtoEntityViewModel>();
 
-        public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; private set; } = new List<ProtoEntityViewModel>();
+        public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; protected set; }
+            = new List<ProtoEntityViewModel>();
 
         public double OriginalDuration { get; } = 0d;
 
