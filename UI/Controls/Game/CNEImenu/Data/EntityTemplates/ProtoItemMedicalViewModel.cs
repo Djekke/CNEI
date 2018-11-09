@@ -39,9 +39,9 @@
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Health restore", medical.HealthRestore));
                 }
-                if (Math.Abs(medical.EnergyRestore) > 0)
+                if (Math.Abs(medical.StaminaRestore) > 0)
                 {
-                    EntityInformation.Add(new ViewModelEntityInformation("Energy restore", medical.EnergyRestore));
+                    EntityInformation.Add(new ViewModelEntityInformation("Stamina restore", medical.StaminaRestore));
                 }
                 if (medical.MedicalToxicity > 0)
                 {
