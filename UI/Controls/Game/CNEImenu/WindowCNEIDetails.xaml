@@ -2,13 +2,14 @@
     x:Class="CryoFall.CNEI.UI.Controls.Game.CNEImenu.WindowCNEIdetails"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=AtomicTorch.CBND.CoreMod"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
 
     <base:BaseUserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UI/Styles/CNEIStyles.xaml" />
+                <ResourceDictionary Source="/UI/Controls/Game/CNEImenu/Data/AdditionalTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </base:BaseUserControl.Resources>

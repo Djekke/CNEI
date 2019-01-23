@@ -13,7 +13,7 @@
             <StackPanel Margin="6,0,0,0">
                 <Expander Header="Information"
                           IsExpanded="{Binding IsInfoExpanded}">
-                    <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" />
+                    <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" Content="{Binding}" />
                 </Expander>
                 <Expander Header="Droplist"
                           Visibility="{Binding DroplistVisibility}"

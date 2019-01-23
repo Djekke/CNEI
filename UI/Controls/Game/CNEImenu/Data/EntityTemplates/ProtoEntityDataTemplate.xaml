@@ -9,7 +9,7 @@
 
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:ProtoEntityViewModel}">
-        <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" />
+        <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" Content="{Binding}" />
     </DataTemplate>
 
 </ResourceDictionary>

@@ -132,5 +132,10 @@
         {
             get => ServerOperatorSystem.ClientIsOperator();
         }
+
+        public void UpdateCreativeStatus()
+        {
+            NotifyPropertyChanged(nameof(IsCreativePanelVisibile));
+        }
     }
 }

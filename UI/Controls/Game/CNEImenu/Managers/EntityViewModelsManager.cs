@@ -9,6 +9,7 @@
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
     using JetBrains.Annotations;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -199,7 +200,8 @@
                 }
             }
 
-            tempList.Sort((t1,t2) => string.Compare(t1.ShortName, t2.ShortName, StringComparison.OrdinalIgnoreCase));
+            // Change main nodes order.
+            //tempList.Sort((t1,t2) => string.Compare(t1.ShortName, t2.ShortName, StringComparison.OrdinalIgnoreCase));
             if (!tempList.SequenceEqual(DefaultViewPreset))
             {
                 DefaultViewPreset = tempList;
@@ -219,6 +221,8 @@
             {
                 tempList.AddRange(node.EntityViewModelsFullList);
             }
+            // Sort EntityList by Type
+            tempList.Sort((t1,t2) => string.Compare(t1.Type, t2.Type, StringComparison.OrdinalIgnoreCase));
             var tempCollection = new ObservableCollection<ProtoEntityViewModel>(tempList);
             if (settingsInstance.View == ViewType.Default)
             {
@@ -410,11 +414,14 @@
                     "UI/Controls/Game/CNEImenu/Data/EntityTemplates/" + resourceDictionaryName);
                 if (newDict != null)
                 {
-                    AllEntityTemplatesResourceDictionary.MergedDictionaries.Add(newDict);
+                    foreach (DictionaryEntry entry in newDict)
+                    {
+                        AllEntityTemplatesResourceDictionary.Add(entry.Key, entry.Value);
+                    }
                 }
                 else
                 {
-                    Api.Logger.Error("CNEI: Cannot load template " + resourceDictionaryName);
+                    Api.Logger.Error("CNEI: Can not load template " + resourceDictionaryName);
                 }
             }
         }

@@ -102,6 +102,10 @@
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHigh>(), 0.7));
                     break;
+                case ItemHeatPreExposure _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectProtectionHeat>(), 0.5));
+                    break;
                 case ItemHemostatic _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectBleeding>(), 1.0));
@@ -153,6 +157,10 @@
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectMedicineOveruse>(), 1.0));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectAnalBlockage>(), 1.0));
+                    break;
+                case ItemPsiPreExposure _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectProtectionPsi>(), 0.5));
                     break;
                 case ItemRemedyHerbal _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",

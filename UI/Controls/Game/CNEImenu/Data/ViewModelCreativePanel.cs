@@ -49,5 +49,12 @@
             SetTimeOfDay = new ActionCommandWithParameter(time =>
                 CreativePanelManager.ExecuteCommand("/admin.setTimeOfDay " + time));
         }
+
+        public void UpdateStatus()
+        {
+            CreativePanelManager.RefreshCreativeModeStatus();
+            NotifyPropertyChanged(nameof(IsCreativeModeOn));
+            NotifyPropertyChanged(nameof(IsGodModeOn));
+        }
     }
 }

@@ -43,10 +43,15 @@
             }
         }
 
+        protected override void InitControlWithWindow()
+        {
+            base.InitControlWithWindow();
+            Resources.MergedDictionaries.Add(EntityViewModelsManager.AllEntityTemplatesResourceDictionary);
+        }
+
         protected override void OnLoaded()
         {
             base.OnLoaded();
-            Resources.MergedDictionaries.Add(EntityViewModelsManager.AllEntityTemplatesResourceDictionary);
             DataContext = entityVMStack.Peek();
             windowInputContext = ClientInputContext.Start("CNEI details")
                 .HandleButtonDown(CNEIbutton.MenuBack, OnBackButtonDown);
