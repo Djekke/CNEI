@@ -13,15 +13,7 @@
             <StackPanel Margin="6,0,0,0">
                 <Expander Header="Information"
                           IsExpanded="{Binding IsInfoExpanded}">
-                    <StackPanel HorizontalAlignment="Center"
-                                Orientation="Vertical">
-                        <StackPanel.Resources>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                            </Style>
-                        </StackPanel.Resources>
-                        <TextBlock Text="{Binding Title}" />
-                    </StackPanel>
+                    <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" Content="{Binding}" />
                 </Expander>
                 <Expander Header="Drop on death"
                           IsExpanded="{Binding IsRecipesExpanded}">

@@ -33,6 +33,26 @@
             }
         }
 
+        /// <summary>
+        /// Initilize information about entity - invoked after all entity view Models created,
+        /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        /// </summary>
+        public override void InitInformation()
+        {
+            base.InitInformation();
+
+            if (ProtoEntity is ProtoCharacterMob characterMob)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("HP",
+                    characterMob.StatDefaultHealthMax));
+                EntityInformation.Add(new ViewModelEntityInformation("Move speed",
+                    characterMob.StatMoveSpeed));
+                EntityInformation.Add(new ViewModelEntityInformation("Kill exp multiplier",
+                    characterMob.MobKillExperienceMultiplier));
+            }
+        }
+
         public RecipeViewModel Droplist { get; private set; }
 
         public bool IsInfoExpanded { get; set; } = true;
