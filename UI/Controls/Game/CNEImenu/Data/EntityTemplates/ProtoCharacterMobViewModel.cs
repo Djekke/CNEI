@@ -2,9 +2,12 @@
 {
     using AtomicTorch.CBND.CoreMod.Characters;
     using AtomicTorch.CBND.GameApi.Resources;
+    using AtomicTorch.CBND.GameApi.Scripting;
+    using AtomicTorch.CBND.GameApi.ServicesClient.Components.Camera;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Linq;
+    using System.Windows.Media;
 
     public class ProtoCharacterMobViewModel : ProtoEntityViewModel
     {
@@ -15,6 +18,44 @@
 
         public ProtoCharacterMobViewModel([NotNull] IProtoCharacterMob creature) : base(creature, DefaultIcon)
         {
+            creature.SharedGetSkeletonProto(null, out var creatureSkeleton, out var scale);
+
+            ushort textureWidth = 256;
+            ushort textureHeight = 256;
+            string RenderingTag = Title + " skeleton camera";
+            var sceneObjectCamera = Api.Client.Scene.CreateSceneObject(RenderingTag);
+            var camera = Api.Client.Rendering.CreateCamera(sceneObjectCamera,
+                                                           renderingTag: RenderingTag,
+                                                           drawOrder: -10,
+                                                           drawMode: CameraDrawMode.Auto);
+
+            var renderTarget = Api.Client.Rendering.CreateRenderTexture(RenderingTag, textureWidth, textureHeight);
+            camera.RenderTarget = renderTarget;
+            camera.ClearColor = Color.FromArgb(0, 0, 0, 0);
+            camera.SetOrthographicProjection(textureWidth, textureHeight);
+
+            var sceneObjectSkeleton = Api.Client.Scene.CreateSceneObject(Title + " skeleton renderer");
+
+            var currentSkeleton = ClientCharacterEquipmentHelper.CreateCharacterSkeleton(
+                                    sceneObjectSkeleton,
+                                    creatureSkeleton,
+                                    worldScale: 115.0 / textureWidth,
+                                    spriteQualityOffset: -1);
+
+            if (currentSkeleton != null)
+            {
+                currentSkeleton.PositionOffset = (textureWidth / 2d, -textureHeight * 0.70);
+                currentSkeleton.RenderingTag = RenderingTag;
+
+                var ImageBrush = Api.Client.UI.CreateImageBrushForRenderTarget(renderTarget);
+                ImageBrush.Stretch = Stretch.Uniform;
+
+                icon = ImageBrush;
+            }
+            else
+            {
+                Api.Logger.Error("CNEI: Failed to create skeleton for " + Title);
+            }
         }
 
         /// <summary>
@@ -58,8 +99,5 @@
         public bool IsInfoExpanded { get; set; } = true;
 
         public bool IsRecipesExpanded { get; set; } = true;
-
-        // TODO: Prewiew from skeleton
-        //public override TextureBrush Icon
     }
 }

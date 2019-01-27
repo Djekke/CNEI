@@ -5,18 +5,18 @@
     using AtomicTorch.CBND.GameApi.Extensions;
     using AtomicTorch.CBND.GameApi.Resources;
     using AtomicTorch.CBND.GameApi.Scripting;
-    using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Windows;
+    using System.Windows.Media;
 
     public class ProtoEntityViewModel : BaseViewModel
     {
         private ITextureResource iconResource;
 
-        private TextureBrush icon;
+        protected Brush icon;
 
         private HashSet<RecipeViewModel> recipeVMList = new HashSet<RecipeViewModel>();
 
@@ -65,7 +65,7 @@
             }
         }
 
-        public virtual TextureBrush Icon
+        public virtual Brush Icon
         {
             get
             {
