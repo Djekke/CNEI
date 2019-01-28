@@ -8,6 +8,8 @@
     using JetBrains.Annotations;
     using System.Linq;
     using System.Windows.Media;
+    using AtomicTorch.CBND.CoreMod.Skills;
+    using AtomicTorch.CBND.CoreMod.Technologies;
 
     public class ProtoCharacterMobViewModel : ProtoEntityViewModel
     {
@@ -89,8 +91,33 @@
                     characterMob.StatDefaultHealthMax));
                 EntityInformation.Add(new ViewModelEntityInformation("Move speed",
                     characterMob.StatMoveSpeed));
-                EntityInformation.Add(new ViewModelEntityInformation("Kill exp multiplier",
-                    characterMob.MobKillExperienceMultiplier));
+                EntityInformation.Add(new ViewModelEntityInformation("Experience for kill", ""));
+                EntityInformation.Add(new ViewModelEntityInformation("- Multiplier",
+                    characterMob.MobKillExperienceMultiplier + "x"));
+                // \Scripts\Systems\Weapons\WeaponSystem.cs:475
+                var experienceForKill = characterMob.MobKillExperienceMultiplier * SkillHunting.ExperienceForKill;
+                EntityInformation.Add(new ViewModelEntityInformation("- Total experience",
+                    experienceForKill));
+                // \Scripts\Skills\Base\ProtoSkill.cs:163
+                var skillHunting = Api.FindProtoEntities<SkillHunting>().FirstOrDefault();
+                if (skillHunting == null)
+                {
+                    Api.Logger.Error("CNEI: Error geting skillHunting for LP calculation for mob " + Title + " kill.");
+                    return;
+                }
+                var multiplier = skillHunting.ExperienceToLearningPointsConversionMultiplier
+                                 * TechConstants.SkillExperienceToLearningPointsConversionMultiplier;
+                if (multiplier <= 0)
+                {
+                    Api.Logger.Error("CNEI: Error LP multiplier less then zero for mob " + Title + " kill.");
+                    return;
+                }
+                var lpAtZeroLevel = experienceForKill * multiplier;
+                EntityInformation.Add(new ViewModelEntityInformation("- Total LP (at skill level 0)",
+                    lpAtZeroLevel.ToString("F3")));
+                var lpAtMaxLevel = lpAtZeroLevel * TechConstants.SkillLearningPointMultiplierAtMaximumLevel;
+                EntityInformation.Add(new ViewModelEntityInformation("- Total LP (at max skill level)",
+                    lpAtMaxLevel.ToString("F3")));
             }
         }
 

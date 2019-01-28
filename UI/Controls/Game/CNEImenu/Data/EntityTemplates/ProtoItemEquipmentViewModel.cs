@@ -31,7 +31,8 @@
                 {
                     foreach (KeyValuePair<StatName, double> pair in equipment.ProtoEffects.Values)
                     {
-                        EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(), pair.Value));
+                        EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(),
+                            (pair.Value * 100).ToString() + "%"));
                     }
                 }
 

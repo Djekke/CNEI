@@ -1,5 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
+    using AtomicTorch.CBND.CoreMod.Helpers.Client;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Scripting;
     using System;
@@ -29,7 +30,8 @@
         {
         }
 
-        public ViewModelEntityInformation(string header, TimeSpan timeSpan) : this(header, timeSpan.ToString("g"))
+        public ViewModelEntityInformation(string header, TimeSpan timeSpan)
+            : this(header, ClientTimeFormatHelper.FormatTimeDuration(timeSpan))
         {
         }
 
