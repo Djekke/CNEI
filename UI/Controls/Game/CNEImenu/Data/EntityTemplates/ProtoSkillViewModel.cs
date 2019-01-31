@@ -11,7 +11,7 @@
     {
         public override string ResourceDictonaryName => "ProtoSkillDataTemplate.xaml";
 
-        public ProtoSkillViewModel([NotNull] IProtoSkill skill) : base(skill, skill.Icon)
+        public ProtoSkillViewModel([NotNull] IProtoSkill skill) : base(skill)
         {
             Description = skill.Description;
         }

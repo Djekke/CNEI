@@ -14,7 +14,6 @@
             {
                 viewModel.UpdateCreativeStatus();
             }
-            CreativePanel.UpdateStatus();
         }
 
         protected override void WindowClosing()
