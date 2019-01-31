@@ -18,7 +18,7 @@
 
         public override string ResourceDictonaryName => "ProtoCharacterMobDataTemplate.xaml";
 
-        public ProtoCharacterMobViewModel([NotNull] IProtoCharacterMob creature) : base(creature, DefaultIcon)
+        public ProtoCharacterMobViewModel([NotNull] IProtoCharacterMob creature) : base(creature)
         {
             creature.SharedGetSkeletonProto(null, out var creatureSkeleton, out var scale);
 

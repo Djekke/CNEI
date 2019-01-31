@@ -9,7 +9,7 @@
 
     public class TechNodeViewModel : ProtoEntityViewModel
     {
-        public TechNodeViewModel([NotNull] TechNode techNode) : base(techNode, techNode.Icon)
+        public TechNodeViewModel([NotNull] TechNode techNode) : base(techNode)
         {
             Description = techNode.Description;
         }

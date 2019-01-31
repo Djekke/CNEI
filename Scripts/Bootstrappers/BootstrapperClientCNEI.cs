@@ -5,6 +5,7 @@
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core.Menu;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.HUD;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Items.Controls;
+    using AtomicTorch.CBND.GameApi.Data;
     using AtomicTorch.CBND.GameApi.Data.Characters;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
@@ -15,6 +16,7 @@
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using CryoFall.CNEI.UI.Helpers;
 
+    [PrepareOrder(afterType: typeof(BootstrapperClientOptions))]
     public class BootstrapperClientCNEI: BaseBootstrapper
     {
         private static ClientInputContext gameplayInputContext;
