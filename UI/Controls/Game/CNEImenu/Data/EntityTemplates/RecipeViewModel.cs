@@ -19,7 +19,7 @@
         /// <summary>
         /// Constructor for basic recipes.
         /// </summary>
-        public RecipeViewModel([NotNull] Recipe recipe) : base(recipe)
+        public RecipeViewModel([NotNull] Recipe recipe) : base(recipe, recipe.Icon)
         {
             RecipeType = recipe.RecipeType;
 
@@ -47,7 +47,7 @@
         /// <param name="config">Building config.</param>
         public RecipeViewModel([NotNull] ProtoObjectStructureViewModel structureViewModel,
             [NotNull] IConstructionStageConfigReadOnly config)
-            : base(structureViewModel.ProtoEntity)
+            : base(structureViewModel.ProtoEntity, structureViewModel.IconResource)
         {
             if (!EntityViewModelsManager.EntityDictonaryCreated)
             {
@@ -78,7 +78,7 @@
         /// <param name="upgradeEntry">Entry of upgrade config.</param>
         public RecipeViewModel([NotNull] ProtoObjectStructureViewModel structureViewModel,
             [NotNull] IConstructionUpgradeEntryReadOnly upgradeEntry)
-            : base(upgradeEntry.ProtoStructure)
+            : base(upgradeEntry.ProtoStructure, upgradeEntry.ProtoStructure.Icon)
         {
             if (!EntityViewModelsManager.EntityDictonaryCreated)
             {
@@ -120,7 +120,7 @@
         /// <param name="entityViewModel">View Model of entity with droplist.</param>
         /// <param name="droplist">Droplist</param>
         public RecipeViewModel([NotNull] ProtoEntityViewModel entityViewModel, [NotNull] IEnumerable<IProtoItem> droplist)
-            : base(entityViewModel.ProtoEntity)
+            : base(entityViewModel.ProtoEntity, entityViewModel.IconResource)
         {
             if (!EntityViewModelsManager.EntityDictonaryCreated)
             {

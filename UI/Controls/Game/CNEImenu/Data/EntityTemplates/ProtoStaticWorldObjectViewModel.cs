@@ -6,7 +6,7 @@
     public abstract class ProtoStaticWorldObjectViewModel : ProtoEntityViewModel
     {
         protected ProtoStaticWorldObjectViewModel([NotNull] IProtoStaticWorldObject staticObject)
-            : base(staticObject)
+            : base(staticObject, staticObject.Icon ?? staticObject.DefaultTexture)
         {
         }
 

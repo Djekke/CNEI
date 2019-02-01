@@ -12,7 +12,7 @@
     {
         public override string ResourceDictonaryName => "ProtoItemDataTemplate.xaml";
 
-        public ProtoItemViewModel([NotNull] IProtoItem item) : base(item)
+        public ProtoItemViewModel([NotNull] IProtoItem item) : base(item, item.Icon)
         {
             Description = item.Description;
         }

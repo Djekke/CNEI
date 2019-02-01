@@ -3,7 +3,6 @@
     using AtomicTorch.CBND.CoreMod.CharacterStatusEffects.Buffs;
     using AtomicTorch.CBND.CoreMod.CharacterStatusEffects.Debuffs;
     using AtomicTorch.CBND.CoreMod.CharacterStatusEffects.Neutral;
-    using AtomicTorch.CBND.CoreMod.Helpers.Client;
     using AtomicTorch.CBND.CoreMod.Items.Food;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
@@ -27,9 +26,7 @@
             if (ProtoEntity is IProtoItemFood food)
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Stay fresh",
-                    food.FreshnessDuration == TimeSpan.Zero
-                        ? "forever"
-                        : ClientTimeFormatHelper.FormatTimeDuration(food.FreshnessDuration)));
+                    food.FreshnessDuration == TimeSpan.Zero ? "forever" : food.FreshnessDuration.ToString("g")));
                 if (Math.Abs(food.FoodRestore) > 0)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Food restore", food.FoodRestore));

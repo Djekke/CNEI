@@ -7,7 +7,7 @@
 
     public class TechGroupViewModel : ProtoEntityViewModel
     {
-        public TechGroupViewModel([NotNull] TechGroup techGroup) : base(techGroup)
+        public TechGroupViewModel([NotNull] TechGroup techGroup) : base(techGroup, techGroup.Icon)
         {
             Description = techGroup.Description;
         }

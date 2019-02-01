@@ -38,6 +38,11 @@
             EntityInformation = new ObservableCollection<ViewModelEntityInformation>();
         }
 
+        public ProtoEntityViewModel([NotNull] IProtoEntity entity, [NotNull] ITextureResource icon) : this(entity)
+        {
+            iconResource = icon;
+        }
+
         public virtual ITextureResource IconResource
         {
             get
