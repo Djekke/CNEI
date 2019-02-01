@@ -10,8 +10,8 @@
         <ResourceDictionary Source="/UI/Controls/Game/CNEImenu/Data/AdditionalTemplates.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <!-- 7 rows: 32 * 7 + 6 * 5 = 254 -->
-    <system:Single x:Key="MaxItemListHeight">254</system:Single>
+    <!-- 6 rows: 32 * 6 + 5 * 5 = 254 -->
+    <system:Single x:Key="MaxItemListHeight">217</system:Single>
 
     <DataTemplate DataType="{x:Type data:ViewModelEntityWithCount}">
         <StackPanel Orientation="Horizontal">
