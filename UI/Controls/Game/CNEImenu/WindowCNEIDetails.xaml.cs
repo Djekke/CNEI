@@ -3,14 +3,21 @@
     using AtomicTorch.CBND.CoreMod.ClientComponents.Input;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Scripting;
+    using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.ClientComponents.Input;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using System.Collections.Generic;
+    using System.Windows.Controls;
+    using System.Windows.Documents;
 
     public partial class WindowCNEIdetails : BaseUserControlWithWindow
     {
         private Stack<ProtoEntityViewModel> entityVMStack = new Stack<ProtoEntityViewModel>();
+
+        private Run pageCountText;
+
+        private Button buttonBack;
 
         private static ClientInputContext windowInputContext;
 
@@ -30,6 +37,7 @@
                 if (Instance.entityVMStack.Peek() != entityViewModel)
                 {
                     Instance.entityVMStack.Push(entityViewModel);
+                    Instance.UpdateCount();
                     Instance.DataContext = Instance.entityVMStack.Peek();
                 }
             }
@@ -47,6 +55,10 @@
         {
             base.InitControlWithWindow();
             Resources.MergedDictionaries.Add(EntityViewModelsManager.AllEntityTemplatesResourceDictionary);
+            pageCountText = FindName("PageCountText") as Run;
+            buttonBack = FindName("ButtonBack") as Button;
+            buttonBack.Command = new ActionCommand(OnBackButtonDown);
+            UpdateCount();
         }
 
         protected override void OnLoaded()
@@ -62,6 +74,7 @@
             if (entityVMStack.Count > 1)
             {
                 entityVMStack.Pop();
+                UpdateCount();
                 DataContext = entityVMStack.Peek();
             }
             else
@@ -80,6 +93,19 @@
             if (Instance == this)
             {
                 Instance = null;
+            }
+        }
+
+        private void UpdateCount()
+        {
+            pageCountText.Text = "(" + entityVMStack.Count.ToString() + ")";
+            if (entityVMStack.Count > 1)
+            {
+                buttonBack.Content = "Go back";
+            }
+            else
+            {
+                buttonBack.Content = "Close";
             }
         }
     }
