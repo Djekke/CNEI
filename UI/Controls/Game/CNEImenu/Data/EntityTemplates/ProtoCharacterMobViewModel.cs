@@ -1,15 +1,16 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
     using AtomicTorch.CBND.CoreMod.Characters;
+    using AtomicTorch.CBND.CoreMod.CharacterSkeletons;
+    using AtomicTorch.CBND.CoreMod.Skills;
+    using AtomicTorch.CBND.CoreMod.Technologies;
     using AtomicTorch.CBND.GameApi.Resources;
     using AtomicTorch.CBND.GameApi.Scripting;
-    using AtomicTorch.CBND.GameApi.ServicesClient.Components.Camera;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows.Media;
-    using AtomicTorch.CBND.CoreMod.Skills;
-    using AtomicTorch.CBND.CoreMod.Technologies;
 
     public class ProtoCharacterMobViewModel : ProtoEntityViewModel
     {
@@ -20,44 +21,63 @@
 
         public ProtoCharacterMobViewModel([NotNull] IProtoCharacterMob creature) : base(creature)
         {
-            creature.SharedGetSkeletonProto(null, out var creatureSkeleton, out var scale);
+        }
 
-            ushort textureWidth = 256;
-            ushort textureHeight = 256;
-            string RenderingTag = Title + " skeleton camera";
-            var sceneObjectCamera = Api.Client.Scene.CreateSceneObject(RenderingTag);
-            var camera = Api.Client.Rendering.CreateCamera(sceneObjectCamera,
-                                                           renderingTag: RenderingTag,
-                                                           drawOrder: -10,
-                                                           drawMode: CameraDrawMode.Auto);
+        /// <summary>
+        /// Uses in texture procedural generation.
+        /// </summary>
+        /// <param name="request">Request from ProceduralTexture generator</param>
+        /// <param name="textureWidth">Texture width</param>
+        /// <param name="textureHeight">Texture height</param>
+        /// <param name="spriteQualityOffset">Sprite quality modifier (0 = full size, 1 = x0.5, 2 = x0.25)</param>
+        /// <returns></returns>
+        public override async Task<ITextureResource> GenerateIcon(
+            ProceduralTextureRequest request,
+            ushort textureWidth = 512,
+            ushort textureHeight = 512,
+            sbyte spriteQualityOffset = 0)
+        {
+            var creature = ProtoEntity as IProtoCharacterMob;
+            creature.SharedGetSkeletonProto(null, out var creatureSkeleton, out var scale);
+            var worldScale = 1.0;
+            if (creatureSkeleton is ProtoCharacterSkeletonAnimal animalSkeleton)
+            {
+                worldScale = animalSkeleton.WorldScale * 2;
+            }
+            string RenderingTag = request.TextureName;
 
             var renderTarget = Api.Client.Rendering.CreateRenderTexture(RenderingTag, textureWidth, textureHeight);
+            var cameraObject = Api.Client.Scene.CreateSceneObject(RenderingTag);
+            var camera = Api.Client.Rendering.CreateCamera(cameraObject,
+                                                                 renderingTag: RenderingTag,
+                                                                 drawOrder: -10);
+
             camera.RenderTarget = renderTarget;
             camera.ClearColor = Color.FromArgb(0, 0, 0, 0);
             camera.SetOrthographicProjection(textureWidth, textureHeight);
 
-            var sceneObjectSkeleton = Api.Client.Scene.CreateSceneObject(Title + " skeleton renderer");
-
             var currentSkeleton = ClientCharacterEquipmentHelper.CreateCharacterSkeleton(
-                                    sceneObjectSkeleton,
+                                    cameraObject,
                                     creatureSkeleton,
-                                    worldScale: 115.0 / textureWidth,
-                                    spriteQualityOffset: -1);
+                                    worldScale: worldScale,
+                                    spriteQualityOffset: spriteQualityOffset);
+            currentSkeleton.PositionOffset = (textureWidth / 2d, -textureHeight * 0.70);
+            currentSkeleton.RenderingTag = RenderingTag;
 
-            if (currentSkeleton != null)
-            {
-                currentSkeleton.PositionOffset = (textureWidth / 2d, -textureHeight * 0.70);
-                currentSkeleton.RenderingTag = RenderingTag;
+            await camera.DrawAsync();
+            cameraObject.Destroy();
 
-                var ImageBrush = Api.Client.UI.CreateImageBrushForRenderTarget(renderTarget);
-                ImageBrush.Stretch = Stretch.Uniform;
+            request.ThrowIfCancelled();
 
-                icon = ImageBrush;
-            }
-            else
-            {
-                Api.Logger.Error("CNEI: Failed to create skeleton for " + Title);
-            }
+            var generatedTexture = await renderTarget.SaveToTexture(
+                    isTransparent: true,
+                    qualityScaleCoef: Api.Client.Rendering.CalculateCurrentQualityScaleCoefWithOffset(
+                        spriteQualityOffset));
+
+            currentSkeleton.Destroy();
+            renderTarget.Dispose();
+            request.ThrowIfCancelled();
+            return generatedTexture;
         }
 
         /// <summary>

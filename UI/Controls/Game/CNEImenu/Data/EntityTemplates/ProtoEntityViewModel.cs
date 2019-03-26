@@ -9,13 +9,12 @@
     using JetBrains.Annotations;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Media;
 
     public class ProtoEntityViewModel : BaseViewModel
     {
-        private ITextureResource iconResource;
-
         protected Brush icon;
 
         private HashSet<RecipeViewModel> recipeVMList = new HashSet<RecipeViewModel>();
@@ -38,40 +37,44 @@
             EntityInformation = new ObservableCollection<ViewModelEntityInformation>();
         }
 
-        public virtual ITextureResource IconResource
+        /// <summary>
+        /// Uses in texture procedural generation.
+        /// </summary>
+        /// <param name="request">Request from ProceduralTexture generator</param>
+        /// <param name="textureWidth">Texture width</param>
+        /// <param name="textureHeight">Texture height</param>
+        /// <param name="spriteQualityOffset">Sprite quality modifier (0 = full size, 1 = x0.5, 2 = x0.25)</param>
+        /// <returns></returns>
+        public virtual async Task<ITextureResource> GenerateIcon(
+            ProceduralTextureRequest request,
+            ushort textureWidth = 512,
+            ushort textureHeight = 512,
+            sbyte spriteQualityOffset = 0)
         {
-            get
+            if (!(GetPropertyByName(ProtoEntity, "Icon") is ITextureResource iconResource))
             {
-                if (iconResource == null)
-                {
-                    iconResource = GetPropertyByName(ProtoEntity, "Icon") as ITextureResource;
-                }
-                return iconResource;
+                // Default icon.
+                iconResource = new TextureResource(
+                    localFilePath: "Content/Textures/StaticObjects/ObjectUnknown.png",
+                    qualityOffset: spriteQualityOffset);
             }
-            set
-            {
-                if (value == iconResource)
-                {
-                    return;
-                }
-
-                iconResource = value;
-                NotifyThisPropertyChanged();
-            }
+            return iconResource;
         }
 
+        /// <summary>
+        /// Entity icon.
+        /// </summary>
         public virtual Brush Icon
         {
             get
             {
                 if (icon == null)
                 {
-                    if (IconResource == null)
-                    {
-                        // Default icon.
-                        iconResource = new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
-                    }
-                    icon = Api.Client.UI.GetTextureBrush(IconResource);
+                    icon = Api.Client.UI.GetTextureBrush(
+                        new ProceduralTexture("CNEI icon for " + Title,
+                            proceduralTextureRequest => GenerateIcon(proceduralTextureRequest),
+                            isTransparent: true,
+                            isUseCache: false));
                 }
                 return icon;
             }
