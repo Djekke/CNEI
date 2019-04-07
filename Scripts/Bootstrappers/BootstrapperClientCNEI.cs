@@ -61,6 +61,8 @@
                                    .Start("CNEI menu")
                                    .HandleButtonDown(CNEIbutton.MenuOpen, Menu.Toggle<WindowCNEImenu>)
                                    .HandleButtonDown(CNEIbutton.MenuDetails, ShowContextDetails);
+
+            CreativePanelManager.Init();
         }
 
         private static void LayoutControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -75,6 +77,8 @@
         private static void ResetHandler()
         {
             WindowCNEIdetails.Close();
+
+            CreativePanelManager.Reset();
 
             hudButton?.Dispose();
             hudButton = null;

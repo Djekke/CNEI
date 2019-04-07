@@ -28,17 +28,14 @@
 
         public bool IsCreativeModeOn
         {
-            get => CreativePanelManager.IsCreativeModeOn;
+            get => CreativePanelManager.GetCreativeModeStatus();
             set
             {
-                if (value == CreativePanelManager.IsCreativeModeOn)
+                if (value == CreativePanelManager.GetCreativeModeStatus())
                 {
                     return;
                 }
-
-                CreativePanelManager.IsCreativeModeOn = value;
-                CreativePanelManager.ExecuteCommand("/admin.setCreativeMode " + value);
-                NotifyThisPropertyChanged();
+                CreativePanelManager.ExecuteCommand("/player.setCreativeMode " + value);
             }
         }
 
@@ -48,11 +45,21 @@
                 CreativePanelManager.ExecuteCommand("/player.heal"));
             SetTimeOfDay = new ActionCommandWithParameter(time =>
                 CreativePanelManager.ExecuteCommand("/admin.setTimeOfDay " + time));
+
+            CreativePanelManager.CreativeModeChanged += CreativeModeStatusChanged;
+        }
+
+        void CreativeModeStatusChanged() => NotifyPropertyChanged(nameof(IsCreativeModeOn));
+
+        protected override void DisposeViewModel()
+        {
+            base.DisposeViewModel();
+
+            CreativePanelManager.CreativeModeChanged -= CreativeModeStatusChanged;
         }
 
         public void UpdateStatus()
         {
-            CreativePanelManager.RefreshCreativeModeStatus();
             NotifyPropertyChanged(nameof(IsCreativeModeOn));
             NotifyPropertyChanged(nameof(IsGodModeOn));
         }
