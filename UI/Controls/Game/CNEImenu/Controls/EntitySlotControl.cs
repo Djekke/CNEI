@@ -157,7 +157,7 @@
                                 var itemCount = Api.Client.Input.IsKeyHeld(InputKey.Control, evenIfHandled: true)
                                     ? item.MaxItemsPerStack
                                     : 1;
-                                CreativePanelManager.ExecuteCommand("/items.add " + item.ShortId + " " + itemCount);
+                                CreativePanelManager.ExecuteCommand("/player.items.add " + item.ShortId + " " + itemCount);
                                 break;
                             case IProtoCharacterMob mob:
                                 CreativePanelManager.ExecuteCommand("/mobs.spawn " + mob.ShortId);
