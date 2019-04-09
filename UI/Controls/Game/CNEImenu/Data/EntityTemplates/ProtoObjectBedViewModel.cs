@@ -7,8 +7,7 @@
 
     public class ProtoObjectBedViewModel : ProtoObjectStructureViewModel
     {
-        // TODO: fix to IProtoObjectBed.
-        public ProtoObjectBedViewModel([NotNull] ProtoObjectBed bed) : base(bed)
+        public ProtoObjectBedViewModel([NotNull] IProtoObjectBed bed) : base(bed)
         {
         }
 
