@@ -35,6 +35,12 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <Grid.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="IsTabStop" Value="False" />
+                </Style>
+            </Grid.Resources>
+
             <!-- Header -->
             <Grid Grid.Row="0"
                   Grid.Column="1"
@@ -42,6 +48,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <!--<ColumnDefinition Width="*"/>-->
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -71,7 +78,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>-->
 
-                <ToggleButton Grid.Column="2"
+                <ToggleButton Grid.Column="1"
                               x:Name="SettingsButton"
                               Command="{Binding ToggleSettings}"
                               CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
@@ -84,6 +91,14 @@
                         <TextBlock Text="Settings" />
                     </StackPanel>
                 </ToggleButton>
+
+                <Button Grid.Column="2"
+                        x:Name="InfoButton"
+                        Command="{Binding ShowInfo}">
+                    <Image Source="/UI/Images/Icons/CNEI/icon_info.png"
+                           Width="20"
+                           Height="20" />
+                </Button>
             </Grid>
 
             <!-- Entity list -->
@@ -163,9 +178,6 @@
                 </Grid.Style>
                 <Grid.Resources>
                     <Style TargetType="{x:Type CheckBox}">
-                        <Setter Property="IsTabStop" Value="False" />
-                    </Style>
-                    <Style TargetType="{x:Type Button}">
                         <Setter Property="IsTabStop" Value="False" />
                     </Style>
                 </Grid.Resources>

@@ -20,6 +20,7 @@
         {
             base.WindowClosing();
             TypeHierarchySelectView.Close();
+            WindowCNEIHelp.Close();
         }
 
         protected override void DisposeMenu()

@@ -24,6 +24,8 @@
 
         public BaseCommand ToggleSettings { get; }
 
+        public BaseCommand ShowInfo => WindowCNEIHelp.CommandOpenMenu;
+
         private bool SearchFilter(ProtoEntityViewModel entityViewModel)
         {
             var searchTextLowCase = searchText.ToLower();
