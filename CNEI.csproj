@@ -1,0 +1,25 @@
+﻿<Project>
+  <PropertyGroup Label="Configuration">
+    <RootNamespace>CryoFall.CNEI</RootNamespace>
+    <AssemblyName>CNEI</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <CryoFallSdk>$(ProjectDir)..\CryoFall.Mod.Sdk\</CryoFallSdk>
+    <CryoFallSdk Condition="!Exists('$(CryoFallSdk)')">$(ProjectDir)..\..\..\Core\CryoFall.Mod.Sdk\</CryoFallSdk>
+    <CryoFallSdk Condition="!Exists('$(CryoFallSdk)')">"CryoFall SDK cannot be located. Please ensure the mod csproj is located at CryoFall/Data/Mods"</CryoFallSdk>
+  </PropertyGroup>
+
+  <Import Project="$(CryoFallSdk)Sdk.props" />
+
+  <ItemGroup>
+    <Compile Remove=".git\**" />
+    <None Remove=".git\**" />
+    <Page Remove=".git\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Core.cpk\AtomicTorch.CBND.CoreMod.csproj" />
+  </ItemGroup>
+</Project>
