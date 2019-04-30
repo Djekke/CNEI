@@ -44,7 +44,7 @@
             Heal = new ActionCommand(() =>
                 CreativePanelManager.ExecuteCommand("/player.heal"));
             SetTimeOfDay = new ActionCommandWithParameter(time =>
-                CreativePanelManager.ExecuteCommand("/admin.setTimeOfDay " + time));
+                CreativePanelManager.ExecuteCommand("/world.setTimeOfDay " + time));
 
             CreativePanelManager.CreativeModeChanged += CreativeModeStatusChanged;
         }
