@@ -15,7 +15,7 @@
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Margin" Value="0,0,0,10" />
         </Style>
-        <Style x:Key="ButtonDescription" TargetType="{x:Type core:FormattedTextBlock}">
+        <Style TargetType="{x:Type core:FormattedTextBlock}">
             <Setter Property="Margin" Value="5,5,0,5" />
             <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="FontWeight" Value="Bold" />
@@ -37,6 +37,8 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="10" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -45,7 +47,7 @@
                         HorizontalAlignment="Center"
                         Grid.Row="0">
 
-                <TextBlock Text="CryoFall NEI hotkeys"
+                <TextBlock Text="CryoFall NEI Information"
                            HorizontalAlignment="Center"
                            Style="{StaticResource Header}" />
 
@@ -55,8 +57,7 @@
                             <controls:CNEIbuttonReference Button="MenuOpen" />
                         </core:LabelWithButton.Button>
                     </core:LabelWithButton>
-                    <core:FormattedTextBlock Content="Open/close CNEI menu."
-                                             Style="{StaticResource ButtonDescription}" />
+                    <core:FormattedTextBlock Content="Open/close CNEI menu." />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"
@@ -68,8 +69,7 @@
                     </core:LabelWithButton>
                     <core:FormattedTextBlock Content="Open item information while cursor over item icon.
                                                       [br] (Works with CNEI window, player equipment,
-                                                      [br] recipe window and any inventory)"
-                                             Style="{StaticResource ButtonDescription}" />
+                                                      [br] recipe window and any inventory)" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"
@@ -80,8 +80,7 @@
                         </core:LabelWithButton.Button>
                     </core:LabelWithButton>
                     <core:FormattedTextBlock Content="You can use this hotkey in details window to close it
-                                                     [br]or to go back to previous entity info."
-                                             Style="{StaticResource ButtonDescription}" />
+                                                     [br]or to go back to previous entity info." />
                 </StackPanel>
 
                 <TextBlock Text="All keybindings is configurable in game settings."
@@ -89,8 +88,14 @@
                            Style="{StaticResource BottomLine}" />
             </StackPanel>
 
+            <core:FormattedTextBlock HorizontalAlignment="Center"
+                                     Grid.Row="2"
+                                     Content="
+                Forum thread: [url=http://forums.atomictorch.com/index.php?topic=1108.0]http://forums.atomictorch.com/index.php?topic=1108.0[/url]
+                [br] Github link: [url=https://github.com/Djekke/CNEI]https://github.com/Djekke/CNEI[/url]" />
+
             <!-- Close button -->
-            <Button Grid.Row="2"
+            <Button Grid.Row="4"
                     Command="{Binding CommandCloseOk, ElementName=GameWindow}"
                     Content="{x:Static loc:CoreStrings.Button_Close}" />
         </Grid>
