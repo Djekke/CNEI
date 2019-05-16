@@ -26,7 +26,7 @@
         }
 
         public ViewModelEntityInformation(string header, double d)
-            : this(header, d.ToString(CultureInfo.CurrentCulture))
+            : this(header, d.ToString("0.###", CultureInfo.CurrentCulture))
         {
         }
 

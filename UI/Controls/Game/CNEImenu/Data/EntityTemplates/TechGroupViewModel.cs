@@ -39,10 +39,10 @@
                         }
                     }
                 }
-                if (techGroup.AllNodes?.Count > 0)
+                if (techGroup.Nodes?.Count > 0)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Contains nodes",
-                        techGroup.AllNodes.Select(EntityViewModelsManager.GetEntityViewModel)));
+                        techGroup.Nodes.Select(EntityViewModelsManager.GetEntityViewModel)));
                 }
             }
         }

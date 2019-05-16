@@ -24,8 +24,9 @@
             {
                 if (light?.ItemLightConfig?.IsLightEnabled == true)
                 {
-                    EntityInformation.Add(new ViewModelEntityInformation("Light radius",
-                        light.ItemLightConfig.Size));
+                    EntityInformation.Add(new ViewModelEntityInformation("Light size", "(" +
+                        light.ItemLightConfig.Size.X + ", " +
+                        light.ItemLightConfig.Size.Y + ")"));
                 }
 
                 if (light?.ItemFuelConfig != null)

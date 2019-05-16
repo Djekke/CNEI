@@ -1,12 +1,12 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
-    using AtomicTorch.CBND.CoreMod.StaticObjects.Structures.Crates;
+    using AtomicTorch.CBND.CoreMod.StaticObjects.Structures.Manufacturers;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
 
-    public class ProtoObjectCrateViewModel : ProtoObjectStructureViewModel
+    public class ProtoObjectWellViewModel : ProtoObjectStructureViewModel
     {
-        public ProtoObjectCrateViewModel([NotNull] IProtoObjectCrate crate) : base(crate)
+        public ProtoObjectWellViewModel([NotNull] IProtoObjectWell well) : base(well)
         {
         }
 
@@ -19,10 +19,12 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is IProtoObjectCrate crate)
+            if (ProtoEntity is IProtoObjectWell well)
             {
-                EntityInformation.Add(new ViewModelEntityInformation("Items slots count",
-                    crate.ItemsSlotsCount));
+                EntityInformation.Add(new ViewModelEntityInformation("Water capacity",
+                    well.WaterCapacity));
+                EntityInformation.Add(new ViewModelEntityInformation("Water production per sec",
+                    well.WaterProductionAmountPerSecond));
             }
         }
     }
