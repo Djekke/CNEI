@@ -1,6 +1,7 @@
 ﻿namespace CryoFall.CNEI.UI.Controls.Game.CNEImenu.Data
 {
     using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
+    using AtomicTorch.CBND.CoreMod.Systems.PowerGridSystem;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
@@ -70,6 +71,30 @@
             RecipeNextPage = new ActionCommand(() => RecipeVMList.NextPage());
             UsagePrevPage = new ActionCommand(() => UsageVMList.PrevPage());
             UsageNextPage = new ActionCommand(() => UsageVMList.NextPage());
+        }
+
+        public override void InitInformation()
+        {
+            base.InitInformation();
+
+            if (ProtoEntity is IProtoObjectElectricityConsumer protoConsumer)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Electricity consumtion rate",
+                    protoConsumer.ElectricityConsumptionPerSecondWhenActive));
+            }
+
+            if (ProtoEntity is IProtoObjectElectricityProducer protoProducer)
+            {
+                //protoProducer.SharedGetElectricityProduction(null, out var _, out var maxProduction);
+                EntityInformation.Add(new ViewModelEntityInformation("Max electricity production rate",
+                    "??"));
+            }
+
+            if (ProtoEntity is IProtoObjectElectricityStorage protoStorage)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Electricity capacity",
+                    protoStorage.ElectricityCapacity));
+            }
         }
 
         public BaseCommand RecipePrevPage { get; private set; }

@@ -19,16 +19,19 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is IProtoObjectManufacturer manufacturer)
+            if (ProtoEntity is IProtoObjectManufacturer protoManufacturer)
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Input slots count",
-                    manufacturer.ContainerInputSlotsCount));
+                    protoManufacturer.ContainerInputSlotsCount));
                 EntityInformation.Add(new ViewModelEntityInformation("Output slots count",
-                    manufacturer.ContainerOutputSlotsCount));
-                EntityInformation.Add(new ViewModelEntityInformation("Fuel slots count",
-                    manufacturer.ContainerFuelSlotsCount));
-                EntityInformation.Add(new ViewModelEntityInformation("Fuel produce byproducts",
-                    manufacturer.IsFuelProduceByproducts ? "Yes" : "No"));
+                    protoManufacturer.ContainerOutputSlotsCount));
+                if (protoManufacturer.ContainerFuelSlotsCount > 0)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation("Fuel slots count",
+                        protoManufacturer.ContainerFuelSlotsCount));
+                    EntityInformation.Add(new ViewModelEntityInformation("Fuel produce byproducts",
+                        protoManufacturer.IsFuelProduceByproducts ? "Yes" : "No"));
+                }
             }
         }
     }

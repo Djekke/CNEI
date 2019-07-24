@@ -4,7 +4,7 @@
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
 
-    public class ProtoObjectWellViewModel : ProtoObjectStructureViewModel
+    public class ProtoObjectWellViewModel : ProtoObjectManufacturerViewModel
     {
         public ProtoObjectWellViewModel([NotNull] IProtoObjectWell well) : base(well)
         {

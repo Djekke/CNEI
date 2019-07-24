@@ -21,10 +21,14 @@
 
             if (ProtoEntity is IProtoObjectLight light)
             {
-                EntityInformation.Add(new ViewModelEntityInformation("Fuel capacity",
-                    light.FuelCapacity));
-                EntityInformation.Add(new ViewModelEntityInformation("Compatible fuel",
-                    EntityViewModelsManager.GetEntityViewModelByInterface(light.FuelItemsContainerPrototype.FuelType)));
+                if(light.FuelCapacity > 0)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation("Fuel capacity",
+                        light.FuelCapacity));
+                    EntityInformation.Add(new ViewModelEntityInformation("Compatible fuel",
+                        EntityViewModelsManager.GetEntityViewModelByInterface(
+                            light.FuelItemsContainerPrototype.FuelType)));
+                }
             }
         }
     }

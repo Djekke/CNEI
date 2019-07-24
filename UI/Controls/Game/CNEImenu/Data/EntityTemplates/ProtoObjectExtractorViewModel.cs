@@ -4,7 +4,7 @@
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
 
-    public class ProtoObjectExtractorViewModel : ProtoObjectStructureViewModel
+    public class ProtoObjectExtractorViewModel : ProtoObjectManufacturerViewModel
     {
         public ProtoObjectExtractorViewModel([NotNull] IProtoObjectExtractor extractor) : base(extractor)
         {
