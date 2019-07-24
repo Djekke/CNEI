@@ -136,6 +136,11 @@
 
             OriginVisibility = Visibility.Collapsed;
             TechVisibility = Visibility.Collapsed;
+
+            if(entityViewModel is ProtoCharacterMobViewModel protoCharacterMobViewModel)
+            {
+                icon = protoCharacterMobViewModel.Icon;
+            }
         }
 
         /// <summary>
