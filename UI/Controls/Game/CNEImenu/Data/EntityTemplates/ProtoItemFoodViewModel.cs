@@ -5,6 +5,7 @@
     using AtomicTorch.CBND.CoreMod.CharacterStatusEffects.Neutral;
     using AtomicTorch.CBND.CoreMod.Helpers.Client;
     using AtomicTorch.CBND.CoreMod.Items.Food;
+    using AtomicTorch.CBND.CoreMod.Items.Implants;
     using CryoFall.CNEI.UI.Controls.Game.CNEImenu.Managers;
     using JetBrains.Annotations;
     using System;
@@ -62,23 +63,38 @@
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectDrunk>(), 0.2));
                     break;
                 case ItemBottleWaterSalty _:
-                case ItemBottleWaterStale _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.5));
                     break;
+                case ItemBottleWaterStale _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect depends on",
+                        EntityViewModelsManager.GetEntityViewModelByType<ItemImplantArtificialStomach>()));
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.5));
+                    break;
+                case ItemCactusDrink _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealthyFood>(), 0.1));
+                    break;
+                case ItemCarbonara _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHeartyFood>(), 0.5));
+                    break;
                 case ItemCarrotGrilled _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectWellFed>(), 0.2));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHeartyFood>(), 0.2));
                     break;
                 case ItemChiliBeans _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectWellFed>(), 0.3));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHeartyFood>(), 0.3));
                     break;
                 case ItemChiliPepper _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectPain>(), 0.3));
                     break;
                 case ItemCoffeeBeans _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect depends on",
+                        EntityViewModelsManager.GetEntityViewModelByType<ItemImplantArtificialStomach>()));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.2));
                     break;
@@ -96,9 +112,24 @@
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 0.025));
                     break;
                 case ItemEggsRaw _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect depends on",
+                        EntityViewModelsManager.GetEntityViewModelByType<ItemImplantArtificialStomach>()));
                     EntityInformation.Add(new ViewModelEntityInformation("Effect chance", "33%"));
                     EntityInformation.Add(new ViewModelEntityInformation("Effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.5));
+                    break;
+                case ItemInsectMeatFried _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect depends on",
+                        EntityViewModelsManager.GetEntityViewModelByType<ItemImplantArtificialStomach>()));
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect chance", "50%"));
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.25));
+                    break;
+                case ItemInsectMeatRaw _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect depends on",
+                        EntityViewModelsManager.GetEntityViewModelByType<ItemImplantArtificialStomach>()));
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.75));
                     break;
                 case ItemLiquor _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
@@ -107,17 +138,23 @@
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.1));
                     break;
                 case ItemMeatRaw _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect depends on",
+                        EntityViewModelsManager.GetEntityViewModelByType<ItemImplantArtificialStomach>()));
                     EntityInformation.Add(new ViewModelEntityInformation("Effect chance", "50%"));
                     EntityInformation.Add(new ViewModelEntityInformation("Effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.75));
                     break;
                 case ItemMushroomPink _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect depends on",
+                        EntityViewModelsManager.GetEntityViewModelByType<ItemImplantArtificialStomach>()));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 1.0));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 1.0));
                     break;
                 case ItemMushroomRust _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Effect depends on",
+                        EntityViewModelsManager.GetEntityViewModelByType<ItemImplantArtificialStomach>()));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 0.5));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
@@ -125,15 +162,23 @@
                     break;
                 case ItemPieBerry _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectWellFed>(), 0.4));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHeartyFood>(), 0.4));
+                    break;
+                case ItemSaladFruit _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealthyFood>(), 0.25));
+                    break;
+                case ItemSaladVegetable _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealthyFood>(), 0.3));
                     break;
                 case ItemSandwich _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectWellFed>(), 0.2));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHeartyFood>(), 0.2));
                     break;
                 case ItemStew _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectWellFed>(), 0.5));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHeartyFood>(), 0.5));
                     break;
                 case ItemTequila _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",

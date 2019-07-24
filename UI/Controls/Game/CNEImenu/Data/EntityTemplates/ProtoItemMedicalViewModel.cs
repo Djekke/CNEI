@@ -60,6 +60,10 @@
         {
             switch (ProtoEntity)
             {
+                case ItemAntiMutation _:
+                    EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectMutation>(), 1.0));
+                    break;
                 case ItemAntiNausea _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 1.0));
@@ -166,7 +170,7 @@
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 1.0));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.4));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.35));
                     break;
                 case ItemSplint _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
