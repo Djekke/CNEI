@@ -1,0 +1,155 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:data="clr-namespace:CryoFall.CNEI.UI.Data"
+    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/UI/CNEI/Data/AdditionalTemplates.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- 6 rows: 32 * 6 + 5 * 5 = 254 -->
+    <system:Single x:Key="MaxItemListHeight">217</system:Single>
+
+    <DataTemplate DataType="{x:Type data:ViewModelEntityWithCount}">
+        <StackPanel Orientation="Horizontal">
+            <controls:EntitySlotControl DataContext="{Binding EntityViewModel}" />
+            <TextBlock VerticalAlignment="Center"
+                       Margin="5,0,0,0">
+                <Run Text="{Binding CountString}"
+                     FontSize="12" />
+                <Run Text="{Binding EntityViewModel.Title}" />
+            </TextBlock>
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- Detail info -->
+    <DataTemplate DataType="{x:Type data:RecipeViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <controls:EntitySlotControl />
+                <TextBlock Text="{Binding Title}"
+                           Margin="10,0,5,0"
+                           VerticalAlignment="Center" />
+                <TextBlock Text="(disabled)"
+                           Foreground="Red"
+                           Visibility="{Binding IsDisabled, Converter={StaticResource BoolToVisibilityConverter}}"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+
+            <Grid Grid.Row="1"
+                  Margin="0,5,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="Ingredients"
+                           HorizontalAlignment="Center" />
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Text="Results"
+                           HorizontalAlignment="Center" />
+
+                <ListBox Grid.Row="1"
+                         Grid.Column="0"
+                         Style="{StaticResource IngredientListBox}"
+                         ItemsSource="{Binding InputItemsVMList}"
+                         MaxHeight="{StaticResource MaxItemListHeight}" />
+
+                <ListBox Grid.Row="1"
+                         Grid.Column="1"
+                         Style="{StaticResource IngredientListBox}"
+                         ItemsSource="{Binding OutputItemsVMList}"
+                         MaxHeight="{StaticResource MaxItemListHeight}" />
+            </Grid>
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding TimeVisibility}"
+                        MinHeight="40">
+                <TextBlock VerticalAlignment="Center">
+                    <Run Text="Base craft time: " />
+                    <Run Text="{Binding OriginalDuration, StringFormat='{}{0} s '}"
+                         FontSize="12" />
+                </TextBlock>
+                <Image Source="/UI/Images/Icons/Clock.png"
+                       VerticalAlignment="Center"
+                       Width="16"
+                       Height="16" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding OriginVisibility}"
+                        MinHeight="40">
+                <TextBlock Text="{Binding OriginText}"
+                           Margin="0,0,20,0"
+                           VerticalAlignment="Center" />
+
+                <Border x:Name="Border"
+                        Background="{StaticResource WidgetBackgroundImageTexture}"
+                        CornerRadius="1"
+                        Padding="1"
+                        Width="{StaticResource EntityItemSize}" Height="{StaticResource EntityItemSize}"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding IsHandCraft}">
+                    <Image Source="/Content/Animations/Human/images/Front/Male/HandLeft.png"
+                           base:ToolTipServiceExtend.ToolTip="Hand craft" />
+                </Border>
+                
+                <ListBox Style="{StaticResource ListBoxRow}"
+                         VerticalAlignment="Center"
+                         Visibility="{Binding IsStationCraft}"
+                         ItemsSource="{Binding StationsList}" />
+
+                <TextBlock Text="Station byproduct"
+                           VerticalAlignment="Center"
+                           Visibility="{Binding IsByproduct}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding TechVisibility}"
+                        MinHeight="40">
+                <TextBlock Text="Technologies:"
+                           Margin="0,0,20,0"
+                           VerticalAlignment="Center" />
+                
+                <ListBox Style="{StaticResource ListBoxRow}"
+                         VerticalAlignment="Center"
+                         ItemsSource="{Binding ListedInTechNodes}"/>
+                
+                <TextBlock Text="No technology required"
+                           VerticalAlignment="Center"
+                           Foreground="Green"
+                           Visibility="{Binding IsAutoUnlocked, Converter={StaticResource BoolToVisibilityConverter}}" />
+            </StackPanel>
+
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

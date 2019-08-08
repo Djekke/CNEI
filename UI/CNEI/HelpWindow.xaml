@@ -1,0 +1,103 @@
+﻿<core:BaseUserControlWithWindow
+    x:Class="CryoFall.CNEI.UI.HelpWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:loc="clr-namespace:AtomicTorch.CBND.CoreMod.UI;assembly=Core"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core"
+    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls">
+
+    <core:BaseUserControlWithWindow.Resources>
+        <Style x:Key="Header" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontFamily" Value="{StaticResource CondensedFontFamily}" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+        <Style TargetType="{x:Type core:FormattedTextBlock}">
+            <Setter Property="Margin" Value="5,5,0,5" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontFamily" Value="{StaticResource CondensedFontFamily}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="BottomLine" TargetType="TextBlock" BasedOn="{StaticResource Header}">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+    </core:BaseUserControlWithWindow.Resources>
+
+    <core:GameWindow x:Name="GameWindow"
+                     Width="400"
+                     FocusOnControl="{Binding ElementName=GameWindow}"
+                     Padding="20,10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        Grid.Row="0">
+
+                <TextBlock Text="CryoFall NEI Information"
+                           HorizontalAlignment="Center"
+                           Style="{StaticResource Header}" />
+
+                <StackPanel Orientation="Horizontal">
+                    <core:LabelWithButton>
+                        <core:LabelWithButton.Button>
+                            <controls:CNEIButtonReference Button="MenuOpen" />
+                        </core:LabelWithButton.Button>
+                    </core:LabelWithButton>
+                    <core:FormattedTextBlock Content="Open/close CNEI menu." />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+                    <core:LabelWithButton>
+                        <core:LabelWithButton.Button>
+                            <controls:CNEIButtonReference Button="MenuDetails" />
+                        </core:LabelWithButton.Button>
+                    </core:LabelWithButton>
+                    <core:FormattedTextBlock Content="Open item information while cursor over item icon.
+                                                      [br] (Works with CNEI window, player equipment,
+                                                      [br] recipe window and any inventory)" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+                    <core:LabelWithButton>
+                        <core:LabelWithButton.Button>
+                            <controls:CNEIButtonReference Button="MenuBack" />
+                        </core:LabelWithButton.Button>
+                    </core:LabelWithButton>
+                    <core:FormattedTextBlock Content="You can use this hotkey in details window to close it
+                                                     [br]or to go back to previous entity info." />
+                </StackPanel>
+
+                <TextBlock Text="All keybindings is configurable in game settings."
+                           HorizontalAlignment="Center"
+                           Style="{StaticResource BottomLine}" />
+            </StackPanel>
+
+            <core:FormattedTextBlock HorizontalAlignment="Center"
+                                     Grid.Row="2"
+                                     Content="
+                Forum thread: [url=http://forums.atomictorch.com/index.php?topic=1108.0]http://forums.atomictorch.com/index.php?topic=1108.0[/url]
+                [br] Github link: [url=https://github.com/Djekke/CNEI]https://github.com/Djekke/CNEI[/url]" />
+
+            <!-- Close button -->
+            <Button Grid.Row="4"
+                    Command="{Binding CommandCloseOk, ElementName=GameWindow}"
+                    Content="{x:Static loc:CoreStrings.Button_Close}" />
+        </Grid>
+    </core:GameWindow>
+</core:BaseUserControlWithWindow>

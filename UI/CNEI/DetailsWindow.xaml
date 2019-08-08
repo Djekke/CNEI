@@ -1,0 +1,73 @@
+﻿<core:BaseUserControlWithWindow
+    x:Class="CryoFall.CNEI.UI.DetailsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core"
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
+    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls">
+
+    <base:BaseUserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UI/CNEI/Styles/DefaultStyles.xaml" />
+                <ResourceDictionary Source="/UI/CNEI/Data/AdditionalTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </base:BaseUserControl.Resources>
+
+    <core:GameWindow x:Name="GameWindow"
+                     Width="{StaticResource GameMenuStandardWindowWidth}"
+                     Height="{StaticResource GameMenuStandardWindowHeight}"
+                     IsCached="False">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Content="Close"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource IconButton}"
+                    Width="70"
+                    Padding="7,2,7,2"
+                    Grid.Row="0"
+                    Margin="10,0,0,0"
+                    x:Name="ButtonBack">
+                <base:ToolTipServiceExtend.ToolTip>
+                    <core:LabelWithButton>
+                        <core:LabelWithButton.Content>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Go to the previous page" />
+                                <TextBlock Text="Or close, if on first page." />
+                            </StackPanel>
+                        </core:LabelWithButton.Content>
+                        <core:LabelWithButton.Button>
+                            <controls:CNEIButtonReference Button="MenuBack"/>
+                        </core:LabelWithButton.Button>
+                    </core:LabelWithButton>
+                </base:ToolTipServiceExtend.ToolTip>
+            </Button>
+
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <controls:EntitySlotControl DataContext="{Binding}" Margin="0,0,5,2" />
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="13">
+                    <Run Text="{Binding Title}" />
+                    <Run x:Name="PageCountText" Text="(1)"
+                         base:ToolTipServiceExtend.ToolTip="Remembered page count."/>
+                </TextBlock>
+            </StackPanel>
+
+            <Border Style="{StaticResource WidgetBorderStyle}"
+                    Grid.Row="1"
+                    Margin="-5,2,-5,2"
+                    BorderThickness="1" />
+
+            <ContentControl Grid.Row="2"
+                            Content="{Binding}" />
+        </Grid>
+    </core:GameWindow>
+</core:BaseUserControlWithWindow>
