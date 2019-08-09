@@ -195,6 +195,7 @@
                             }
                         }
                         break;
+                    // ReSharper disable once HeuristicUnreachableCode
                     default:
                         throw new Exception("CNEI: And how it happened?");
                 }

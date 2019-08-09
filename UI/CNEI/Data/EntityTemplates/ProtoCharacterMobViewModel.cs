@@ -37,19 +37,23 @@
             ushort textureHeight = 512,
             sbyte spriteQualityOffset = 0)
         {
-            var creature = ProtoEntity as IProtoCharacterMob;
-            creature.SharedGetSkeletonProto(null, out var creatureSkeleton, out var scale);
+            if (!(ProtoEntity is IProtoCharacterMob creature)) // Can't be via constructor rule
+            {
+                Api.Logger.Error("CNEI: creature is not IProtoCharacterMob, but it shouldn't be possible!");
+                return DefaultIcon;
+            }
+            creature.SharedGetSkeletonProto(null, out var creatureSkeleton, out double _);
             var worldScale = 1.0;
             if (creatureSkeleton is ProtoCharacterSkeletonAnimal animalSkeleton)
             {
                 worldScale = animalSkeleton.WorldScale * 2;
             }
-            string RenderingTag = request.TextureName;
+            string renderingTag = request.TextureName;
 
-            var renderTarget = Api.Client.Rendering.CreateRenderTexture(RenderingTag, textureWidth, textureHeight);
-            var cameraObject = Api.Client.Scene.CreateSceneObject(RenderingTag);
+            var renderTarget = Api.Client.Rendering.CreateRenderTexture(renderingTag, textureWidth, textureHeight);
+            var cameraObject = Api.Client.Scene.CreateSceneObject(renderingTag);
             var camera = Api.Client.Rendering.CreateCamera(cameraObject,
-                                                                 renderingTag: RenderingTag,
+                                                                 renderingTag: renderingTag,
                                                                  drawOrder: -10);
 
             camera.RenderTarget = renderTarget;
@@ -62,7 +66,7 @@
                                     worldScale: worldScale,
                                     spriteQualityOffset: spriteQualityOffset);
             currentSkeleton.PositionOffset = (textureWidth / 2d, -textureHeight * 0.70);
-            currentSkeleton.RenderingTag = RenderingTag;
+            currentSkeleton.RenderingTag = renderingTag;
 
             await camera.DrawAsync();
             cameraObject.Destroy();

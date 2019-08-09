@@ -10,10 +10,7 @@
         protected override void WindowOpening()
         {
             base.WindowOpening();
-            if (viewModel != null)
-            {
-                viewModel.UpdateCreativeStatus();
-            }
+            viewModel?.UpdateCreativeStatus();
         }
 
         protected override void WindowClosing()

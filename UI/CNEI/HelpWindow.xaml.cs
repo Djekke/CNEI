@@ -4,6 +4,7 @@
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
 
+    // ReSharper disable once RedundantExtendsListEntry
     public partial class HelpWindow : BaseUserControlWithWindow
     {
         public static HelpWindow Instance;
@@ -15,10 +16,7 @@
 
         public static void Close()
         {
-            if (Instance != null)
-            {
-                Instance.CloseWindow(DialogResult.OK);
-            }
+            Instance?.CloseWindow(DialogResult.OK);
         }
 
         public HelpWindow()
@@ -41,7 +39,7 @@
         protected override void InitControlWithWindow()
         {
             base.InitControlWithWindow();
-            this.Window.IsCached = false;
+            Window.IsCached = false;
         }
     }
 }

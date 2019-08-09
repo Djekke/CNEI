@@ -130,10 +130,7 @@
         }
 
         // TODO: Update this on Operator status change.
-        public bool IsCreativePanelVisibile
-        {
-            get => ServerOperatorSystem.ClientIsOperator();
-        }
+        public bool IsCreativePanelVisibile => ServerOperatorSystem.ClientIsOperator();
 
         public void UpdateCreativeStatus()
         {

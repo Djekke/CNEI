@@ -23,7 +23,7 @@
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Deploy distance", explosive.DeployDistanceMax));
                 EntityInformation.Add(new ViewModelEntityInformation("Deploy duration", explosive.DeployDuration));
-                if (explosive?.ObjectExplosiveProto != null)
+                if (explosive.ObjectExplosiveProto != null)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Structure damage",
                         explosive.ObjectExplosiveProto.StructureDamage));

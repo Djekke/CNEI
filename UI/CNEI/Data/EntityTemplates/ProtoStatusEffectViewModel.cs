@@ -36,7 +36,7 @@
                 EntityInformation.Add(new ViewModelEntityInformation("Visibility threshold",
                     (statusEffect.VisibilityIntensityThreshold * 100) + "%"));
 
-                if (statusEffect?.ProtoEffects?.Values.Count > 0)
+                if (statusEffect.ProtoEffects?.Values.Count > 0)
                 {
                     foreach (KeyValuePair<StatName, double> pair in statusEffect.ProtoEffects.Values)
                     {
@@ -44,7 +44,7 @@
                     }
                 }
 
-                if (statusEffect?.ProtoEffects?.Multipliers.Count > 0)
+                if (statusEffect.ProtoEffects?.Multipliers.Count > 0)
                 {
                     foreach (KeyValuePair<StatName, double> pair in statusEffect.ProtoEffects.Multipliers)
                     {

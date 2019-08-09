@@ -22,14 +22,14 @@
 
             if (ProtoEntity is IProtoItemToolLight light)
             {
-                if (light?.ItemLightConfig?.IsLightEnabled == true)
+                if (light.ItemLightConfig?.IsLightEnabled == true)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Light size", "(" +
                         light.ItemLightConfig.Size.X + ", " +
                         light.ItemLightConfig.Size.Y + ")"));
                 }
 
-                if (light?.ItemFuelConfig != null)
+                if (light.ItemFuelConfig != null)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Fuel initial",
                         light.ItemFuelConfig.FuelAmountInitial));

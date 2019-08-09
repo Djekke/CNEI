@@ -27,16 +27,16 @@
                 EntityInformation.Add(new ViewModelEntityInformation("Equipment type",
                     equipment.EquipmentType.ToString()));
 
-                if (equipment?.ProtoEffects?.Values.Count > 0)
+                if (equipment.ProtoEffects?.Values.Count > 0)
                 {
                     foreach (KeyValuePair<StatName, double> pair in equipment.ProtoEffects.Values)
                     {
                         EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(),
-                            (pair.Value * 100).ToString() + "%"));
+                            (pair.Value * 100) + "%"));
                     }
                 }
 
-                if (equipment?.ProtoEffects?.Multipliers.Count > 0)
+                if (equipment.ProtoEffects?.Multipliers.Count > 0)
                 {
                     foreach (KeyValuePair<StatName, double> pair in equipment.ProtoEffects.Multipliers)
                     {
@@ -46,14 +46,14 @@
 
                 if (equipment is IProtoItemEquipmentHeadWithLight headWithLight)
                 {
-                    if (headWithLight?.ItemLightConfig?.IsLightEnabled == true)
+                    if (headWithLight.ItemLightConfig?.IsLightEnabled == true)
                     {
                         EntityInformation.Add(new ViewModelEntityInformation("Light size", "(" +
                             headWithLight.ItemLightConfig.Size.X + ", " +
                             headWithLight.ItemLightConfig.Size.Y + ")"));
                     }
 
-                    if (headWithLight?.ItemFuelConfig != null)
+                    if (headWithLight.ItemFuelConfig != null)
                     {
                         EntityInformation.Add(new ViewModelEntityInformation("Fuel initial",
                             headWithLight.ItemFuelConfig.FuelAmountInitial));

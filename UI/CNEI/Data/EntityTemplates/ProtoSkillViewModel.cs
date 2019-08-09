@@ -1,5 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -71,13 +72,13 @@
                                     percentBonus += statEffect.CalcTotalPercentBonus(level);
                                 }
                                 string text = "";
-                                if (valueBonus != 0.0)
+                                if (Math.Abs(valueBonus) > 0.001)
                                 {
                                     text += (valueBonus > 0 ? " +" : " ") +
                                             valueBonus.ToString("0.##");
                                 }
 
-                                if (percentBonus != 0.0)
+                                if (Math.Abs(percentBonus) > 0.001)
                                 {
                                     text += (percentBonus > 0 ? " +" : " ") +
                                             percentBonus.ToString("0.##") + "%";

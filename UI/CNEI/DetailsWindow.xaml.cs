@@ -10,6 +10,7 @@
     using CryoFall.CNEI.Managers;
     using CryoFall.CNEI.UI.Data;
 
+    // ReSharper disable once RedundantExtendsListEntry
     public partial class DetailsWindow : BaseUserControlWithWindow
     {
         private Stack<ProtoEntityViewModel> entityVMStack = new Stack<ProtoEntityViewModel>();
@@ -56,7 +57,7 @@
             Resources.MergedDictionaries.Add(EntityViewModelsManager.AllEntityTemplatesResourceDictionary);
             pageCountText = FindName("PageCountText") as Run;
             buttonBack = FindName("ButtonBack") as Button;
-            buttonBack.Command = new ActionCommand(OnBackButtonDown);
+            if (buttonBack != null) buttonBack.Command = new ActionCommand(OnBackButtonDown);
             UpdateCount();
         }
 

@@ -25,7 +25,7 @@
                 EntityInformation.Add(new ViewModelEntityInformation("Fire interval", itemWeapon.FireInterval));
 
                 // WeaponSkillProto not existed for ProtoItemToolAxe and ProtoItemToolPickaxe
-                if (itemWeapon?.WeaponSkillProto != null)
+                if (itemWeapon.WeaponSkillProto != null)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Corresponding skill",
                         EntityViewModelsManager.GetEntityViewModel(itemWeapon.WeaponSkillProto)));
@@ -39,7 +39,7 @@
                         itemWeapon.OverrideDamageDescription.DamageValue));
                 }
 
-                if (itemWeapon?.AmmoCapacity > 0)
+                if (itemWeapon.AmmoCapacity > 0)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Reload time",
                         itemWeapon.AmmoReloadDuration));

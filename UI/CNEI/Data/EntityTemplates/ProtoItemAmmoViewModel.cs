@@ -21,7 +21,7 @@
             base.InitInformation();
 
             if (ProtoEntity is IProtoItemAmmo ammo &&
-                ammo?.DamageDescription != null)
+                ammo.DamageDescription != null)
             {
                 if (ammo.DamageDescription?.DamageProportions.Count > 0)
                 {

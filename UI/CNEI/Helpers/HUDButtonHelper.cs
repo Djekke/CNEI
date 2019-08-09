@@ -1,4 +1,5 @@
-﻿namespace CryoFall.CNEI.UI.Helpers
+﻿// ReSharper disable InconsistentNaming
+namespace CryoFall.CNEI.UI.Helpers
 {
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Game.HUD;
@@ -21,9 +22,10 @@
                                         IButtonReference buttonRef)
         {
             var hudButtons = FindVisualChildren<HUDButton>(Api.Client.UI.LayoutRoot);
-            if (hudButtons?.Count() > 0)
+            IEnumerable<HUDButton> hudButtonsList = hudButtons.ToList();
+            if (hudButtonsList.Any())
             {
-                if (hudButtons.Last().Parent is StackPanel stackPanel)
+                if (hudButtonsList.Last().Parent is StackPanel stackPanel)
                 {
                     var newHUDButton = new HUDButton();
                     ImageBrush normalBrush = new ImageBrush();
@@ -34,8 +36,7 @@
                     BindingOperations.SetBinding(highlightedBrush, ImageBrush.ImageSourceProperty,
                         new Binding() {Source = img_on});
                     newHUDButton.BrushHighlighted = highlightedBrush;
-                    var labelWithButton = new LabelWithButton() { Content = label };
-                    labelWithButton.Button = buttonRef;
+                    var labelWithButton = new LabelWithButton {Content = label, Button = buttonRef};
                     newHUDButton.SetBinding(ToolTipServiceExtend.ToolTipProperty,
                         new Binding() {Source = labelWithButton});
                     newHUDButton.SetBinding(HUDButton.CommandProperty,
@@ -63,9 +64,9 @@
                 for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
                 {
                     DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child != null && child is T)
+                    if (child is T dependencyObject)
                     {
-                        yield return (T)child;
+                        yield return dependencyObject;
                     }
 
                     foreach (T childOfChild in FindVisualChildren<T>(child))
