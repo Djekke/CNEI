@@ -10,7 +10,9 @@
 
     public class ProtoObjectMineralViewModel : ProtoStaticWorldObjectViewModel
     {
-        public override string ResourceDictonaryName => "ProtoObjectMineralDataTemplate.xaml";
+        public override string ResourceDictionaryName => "ProtoObjectMineralDataTemplate.xaml";
+
+        public override string ResourceDictionaryFolderName => "StaticObjects/";
 
         public ProtoObjectMineralViewModel([NotNull] IProtoObjectMineral mineral) : base(mineral)
         {

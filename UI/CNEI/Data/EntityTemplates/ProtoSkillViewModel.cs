@@ -10,7 +10,7 @@
 
     public class ProtoSkillViewModel : ProtoEntityViewModel
     {
-        public override string ResourceDictonaryName => "ProtoSkillDataTemplate.xaml";
+        public override string ResourceDictionaryName => "ProtoSkillDataTemplate.xaml";
 
         public ProtoSkillViewModel([NotNull] IProtoSkill skill) : base(skill)
         {

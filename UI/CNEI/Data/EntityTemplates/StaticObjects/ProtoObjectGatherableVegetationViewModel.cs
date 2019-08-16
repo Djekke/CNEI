@@ -8,7 +8,9 @@
 
     public class ProtoObjectGatherableVegetationViewModel : ProtoObjectVegetationViewModel
     {
-        public override string ResourceDictonaryName => "ProtoObjectGatherableVegetationDataTemplate.xaml";
+        public override string ResourceDictionaryName => "ProtoObjectGatherableVegetationDataTemplate.xaml";
+
+        public override string ResourceDictionaryFolderName => "StaticObjects/";
 
         public ProtoObjectGatherableVegetationViewModel([NotNull] IProtoObjectGatherableVegetation gatherableVegetation)
             : base(gatherableVegetation)

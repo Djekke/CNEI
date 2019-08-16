@@ -17,7 +17,7 @@
         private static readonly ITextureResource DefaultIcon =
             new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
 
-        public override string ResourceDictonaryName => "ProtoCharacterMobDataTemplate.xaml";
+        public override string ResourceDictionaryName => "ProtoCharacterMobDataTemplate.xaml";
 
         public ProtoCharacterMobViewModel([NotNull] IProtoCharacterMob creature) : base(creature)
         {

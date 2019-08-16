@@ -11,7 +11,9 @@
 
     public class ProtoObjectStructureViewModel : ProtoStaticWorldObjectViewModel
     {
-        public override string ResourceDictonaryName => "ProtoObjectStructureDataTemplate.xaml";
+        public override string ResourceDictionaryName => "ProtoObjectStructureDataTemplate.xaml";
+
+        public override string ResourceDictionaryFolderName => "StaticObjects/Structures/";
 
         public ProtoObjectStructureViewModel([NotNull] IProtoObjectStructure structure) : base(structure)
         {

@@ -22,7 +22,7 @@
 
         private static List<RecipeViewModel> recipeList = new List<RecipeViewModel>();
 
-        private static HashSet<string> resourceDictionaryNames = new HashSet<string>();
+        private static HashSet<string> resourceDictionaryPaths = new HashSet<string>();
 
         private static IClientStorage settingsStorage;
 
@@ -126,7 +126,8 @@
                             }
                             EntityTypeHierarchy.Add(entity.GetType(), newEntityViewModel);
                             allEntityDictonary.Add(entity, newEntityViewModel);
-                            resourceDictionaryNames.Add(newEntityViewModel.ResourceDictonaryName);
+                            resourceDictionaryPaths.Add(newEntityViewModel.ResourceDictionaryFolderName +
+                                                        newEntityViewModel.ResourceDictionaryName);
                             templateFound = true;
                         }
                     }
@@ -138,7 +139,8 @@
                     newEntityViewModel = new ProtoEntityViewModel(entity);
                     EntityTypeHierarchy.Add(entity.GetType(), newEntityViewModel);
                     allEntityDictonary.Add(entity, newEntityViewModel);
-                    resourceDictionaryNames.Add(newEntityViewModel.ResourceDictonaryName);
+                    resourceDictionaryPaths.Add(newEntityViewModel.ResourceDictionaryFolderName +
+                                                newEntityViewModel.ResourceDictionaryName);
                 }
             }
 
@@ -409,7 +411,7 @@
         /// </summary>
         private static void AssembleAllTemplates()
         {
-            foreach (string resourceDictionaryName in resourceDictionaryNames)
+            foreach (string resourceDictionaryName in resourceDictionaryPaths)
             {
                 ResourceDictionary newDict = Api.Client.UI.LoadResourceDictionary(
                     "UI/CNEI/Data/EntityTemplates/" + resourceDictionaryName);

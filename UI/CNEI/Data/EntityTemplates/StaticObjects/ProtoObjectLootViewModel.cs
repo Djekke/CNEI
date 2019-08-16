@@ -6,11 +6,13 @@
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
-    public class ProtoObjectLootContainerViewModel : ProtoStaticWorldObjectViewModel
+    public class ProtoObjectLootViewModel : ProtoStaticWorldObjectViewModel
     {
-        public override string ResourceDictonaryName => "ProtoObjectLootContainerDataTemplate.xaml";
+        public override string ResourceDictionaryName => "ProtoObjectLootDataTemplate.xaml";
 
-        public ProtoObjectLootContainerViewModel([NotNull] IProtoObjectLoot lootContainer) : base(lootContainer)
+        public override string ResourceDictionaryFolderName => "StaticObjects/";
+
+        public ProtoObjectLootViewModel([NotNull] IProtoObjectLoot loot) : base(loot)
         {
         }
 
@@ -21,11 +23,11 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (ProtoEntity is IProtoObjectLoot lootContainer &&
-                lootContainer.LootDroplist != null &&
-                lootContainer.LootDroplist.EnumerateAllItems().Any())
+            if (ProtoEntity is IProtoObjectLoot loot &&
+                loot.LootDroplist != null &&
+                loot.LootDroplist.EnumerateAllItems().Any())
             {
-                Droplist = new RecipeViewModel(this, lootContainer.LootDroplist.EnumerateAllItems());
+                Droplist = new RecipeViewModel(this, loot.LootDroplist.EnumerateAllItems());
                 DroplistVisibility = Visibility.Visible;
                 EntityViewModelsManager.AddRecipe(Droplist);
             }

@@ -10,7 +10,9 @@
 
     public class ProtoItemViewModel : ProtoEntityViewModel
     {
-        public override string ResourceDictonaryName => "ProtoItemDataTemplate.xaml";
+        public override string ResourceDictionaryName => "ProtoItemDataTemplate.xaml";
+
+        public override string ResourceDictionaryFolderName => "Items/";
 
         public ProtoItemViewModel([NotNull] IProtoItem item) : base(item)
         {

@@ -23,7 +23,9 @@
 
         public virtual IProtoEntity ProtoEntity { get; }
 
-        public virtual string ResourceDictonaryName => "ProtoEntityDataTemplate.xaml";
+        public virtual string ResourceDictionaryName => "ProtoEntityDataTemplate.xaml";
+
+        public virtual string ResourceDictionaryFolderName => "";
 
         public ProtoEntityViewModel([NotNull] IProtoEntity entity)
         {

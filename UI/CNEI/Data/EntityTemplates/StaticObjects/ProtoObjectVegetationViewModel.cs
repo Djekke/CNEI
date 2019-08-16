@@ -8,7 +8,9 @@
 
     public class ProtoObjectVegetationViewModel : ProtoStaticWorldObjectViewModel
     {
-        public override string ResourceDictonaryName => "ProtoObjectVegetationDataTemplate.xaml";
+        public override string ResourceDictionaryName => "ProtoObjectVegetationDataTemplate.xaml";
+
+        public override string ResourceDictionaryFolderName => "StaticObjects/";
 
         public ProtoObjectVegetationViewModel([NotNull] IProtoObjectVegetation vegetation) : base(vegetation)
         {

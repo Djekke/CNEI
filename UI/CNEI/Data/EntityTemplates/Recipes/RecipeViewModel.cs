@@ -14,7 +14,9 @@
 
     public class RecipeViewModel : ProtoEntityViewModel
     {
-        public override string ResourceDictonaryName => "RecipeDataTemplate.xaml";
+        public override string ResourceDictionaryName => "RecipeDataTemplate.xaml";
+
+        public override string ResourceDictionaryFolderName => "Recipes/";
 
         /// <summary>
         /// Constructor for basic recipes.
