@@ -22,7 +22,7 @@
 
         private static List<RecipeViewModel> recipeList = new List<RecipeViewModel>();
 
-        private static HashSet<string> resourceDictionaryPaths = new HashSet<string>();
+        private static readonly HashSet<string> resourceDictionaryPaths = new HashSet<string>();
 
         private static IClientStorage settingsStorage;
 
@@ -521,6 +521,8 @@
         public static void AddRecipe([NotNull] RecipeViewModel recipeViewModel)
         {
             recipeList.AddIfNotContains(recipeViewModel);
+            resourceDictionaryPaths.Add(recipeViewModel.ResourceDictionaryFolderName +
+                                        recipeViewModel.ResourceDictionaryName);
         }
 
         /// <summary>
@@ -533,13 +535,13 @@
             InitSettings();
             EntityDictonaryCreated = true;
 
-            AssembleAllTemplates();
-
             foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
             {
                 entityViewModel.InitAdditionalRecipes();
                 entityViewModel.InitInformation();
             }
+
+            AssembleAllTemplates();
 
             InitAllRecipesLinks();
 
