@@ -95,7 +95,7 @@
                 creature.LootDroplist != null &&
                 creature.LootDroplist.EnumerateAllItems().Any())
             {
-                Droplist = new RecipeViewModel(this, creature.LootDroplist.EnumerateAllItems());
+                Droplist = new DroplistRecipeViewModel(this, creature.LootDroplist.EnumerateAllItems());
                 EntityViewModelsManager.AddRecipe(Droplist);
             }
         }

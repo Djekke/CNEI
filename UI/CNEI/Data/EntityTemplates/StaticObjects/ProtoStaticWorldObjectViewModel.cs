@@ -3,7 +3,7 @@
     using AtomicTorch.CBND.GameApi.Data.World;
     using JetBrains.Annotations;
 
-    public abstract class ProtoStaticWorldObjectViewModel : ProtoEntityViewModel
+    public abstract class ProtoStaticWorldObjectViewModel : ProtoEntityWithRecipeBondsViewModel
     {
         protected ProtoStaticWorldObjectViewModel([NotNull] IProtoStaticWorldObject staticObject)
             : base(staticObject)

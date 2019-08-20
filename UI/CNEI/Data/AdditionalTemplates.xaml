@@ -105,4 +105,37 @@
         </StackPanel>
     </DataTemplate>
 
+    <!-- ComboBox for Recipe list templates and styles -->
+    <ControlTemplate x:Key="ComboBoxRecipeItemHeader">
+        <TextBlock Text="{Binding Name}" />
+    </ControlTemplate>
+    <ControlTemplate x:Key="ComboBoxRecipeItemChild">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="1"
+                       Width="20"
+                       Height="20"
+                       Fill="{Binding Icon}" />
+            <ContentControl Grid.Column="3"
+                            Content="{Binding Name}" />
+        </Grid>
+    </ControlTemplate>
+    <DataTemplate x:Key="ComboBoxRecipeItemCustom">
+        <Control x:Name="itemControl"
+                 Focusable="False" Template="{StaticResource ComboBoxRecipeItemChild}" />
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=IsEnabled}" Value="False">
+                <Setter TargetName="itemControl" Property="Template" Value="{StaticResource ComboBoxRecipeItemHeader}" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+    <Style TargetType="{x:Type ComboBoxItem}" x:Key="ComboBoxRecipeItemContainerStyle">
+        <Setter Property="IsEnabled" Value="{Binding IsItemEnabled}" />
+    </Style>
+
 </ResourceDictionary>

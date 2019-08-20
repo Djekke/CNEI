@@ -2,14 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Windows;
-    using AtomicTorch.CBND.CoreMod.Items.Tools.Toolboxes;
-    using AtomicTorch.CBND.CoreMod.Systems.Construction;
+    using System.Windows.Media;
     using AtomicTorch.CBND.CoreMod.Systems.Crafting;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
-    using AtomicTorch.CBND.GameApi.Data.Items;
-    using CryoFall.CNEI.Managers;
+    using AtomicTorch.CBND.GameApi.Data;
     using JetBrains.Annotations;
 
     public class RecipeViewModel : ProtoEntityViewModel
@@ -18,177 +15,75 @@
 
         public override string ResourceDictionaryFolderName => "Recipes/";
 
-        /// <summary>
-        /// Constructor for basic recipes.
-        /// </summary>
-        public RecipeViewModel([NotNull] Recipe recipe) : base(recipe)
-        {
-            RecipeType = recipe.RecipeType;
+        public virtual string RecipeTypeName => "Recipe";
 
-            IsByproduct = (RecipeType == RecipeType.ManufacturingByproduct)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-            IsStationCraft = (RecipeType == RecipeType.Hand)
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-            IsHandCraft = (RecipeType == RecipeType.Hand)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-            TimeVisibility = Visibility.Visible;
-            OriginalDuration = recipe.OriginalDuration;
-            IsDisabled = !recipe.IsEnabled;
-            IsAutoUnlocked = recipe.IsAutoUnlocked;
-            OriginText = (RecipeType == RecipeType.Hand) ? "Made by:" : "Made in:";
+        public RecipeViewModel([NotNull] IProtoEntity entity) : base(entity)
+        {
         }
 
-        /// <summary>
-        /// Constructor for build recipe for IProtoStructure.
-        /// Must be used only in InitEntityRelationships phase.
-        /// </summary>
-        /// <param name="structureViewModel">View Model of IProtoStructure.</param>
-        /// <param name="config">Building config.</param>
-        public RecipeViewModel([NotNull] ProtoObjectStructureViewModel structureViewModel,
-            [NotNull] IConstructionStageConfigReadOnly config)
-            : base(structureViewModel.ProtoEntity)
+        public static RecipeViewModel SelectBasicRecipe([NotNull] IProtoEntity entity)
         {
-            if (!EntityViewModelsManager.EntityDictonaryCreated)
+            if (!(entity is Recipe recipe))
+                return new RecipeViewModel(entity);
+            switch (recipe.RecipeType)
             {
-                throw new Exception("CNEI: Build constructor used before all entity VMs sets.");
-            }
-
-            InputItemsVMList = config.StageRequiredItems
-                .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item.ProtoItem),
-                    item.Count * config.StagesCount))
-                .ToList().AsReadOnly();
-
-            OutputItemsVMList =
-                new List<BaseViewModel>() {new ViewModelEntityWithCount(structureViewModel)}.AsReadOnly();
-
-            OriginText = "Build by:";
-            IsStationCraft = Visibility.Visible;
-            StationsList = EntityViewModelsManager.GetAllEntityViewModelsByType<IProtoItemToolToolbox>().AsReadOnly();
-            ListedInTechNodes = structureViewModel.ListedInTechNodes;
-
-            IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
-        }
-
-        /// <summary>
-        /// Constructor for upgrade recipe for IProtoStructure.
-        /// Must be used only in InitEntityRelationships phase.
-        /// </summary>
-        /// <param name="structureViewModel">View Model of IProtoStructure.</param>
-        /// <param name="upgradeEntry">Entry of upgrade config.</param>
-        public RecipeViewModel([NotNull] ProtoObjectStructureViewModel structureViewModel,
-            [NotNull] IConstructionUpgradeEntryReadOnly upgradeEntry)
-            : base(upgradeEntry.ProtoStructure)
-        {
-            if (!EntityViewModelsManager.EntityDictonaryCreated)
-            {
-                throw new Exception("CNEI: Upgrade constructor used before all entity VMs sets.");
-            }
-
-            var inputTempList = new List<BaseViewModel>() { new ViewModelEntityWithCount(structureViewModel) };
-            inputTempList.AddRange(upgradeEntry.RequiredItems
-                .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item.ProtoItem),
-                    item.Count)));
-            InputItemsVMList = inputTempList.AsReadOnly();
-
-            if (!(EntityViewModelsManager.GetEntityViewModel(upgradeEntry.ProtoStructure)
-                is ProtoObjectStructureViewModel newStructureViewModel))
-            {
-                throw new Exception("CNEI: Can not find ProtoObjectStructureViewModel for " +
-                                    upgradeEntry.ProtoStructure);
-            }
-            OutputItemsVMList = new List<BaseViewModel>()
-                {
-                    new ViewModelEntityWithCount(newStructureViewModel)
-                }.AsReadOnly();
-
-            OriginText = "Upgrade from:";
-            IsStationCraft = Visibility.Visible;
-            StationsList = new List<ProtoEntityViewModel>() { structureViewModel }.AsReadOnly();
-            // Can not simply get it from result entityVM because it can has not initilized Tech.
-            //ListedInTechNodes = newStructureViewModel.ListedInTechNodes;
-            ListedInTechNodes = upgradeEntry.ProtoStructure.ListedInTechNodes
-                .Select(EntityViewModelsManager.GetEntityViewModel)
-                .ToList().AsReadOnly();
-            IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
-        }
-
-        /// <summary>
-        /// Constructor for entity with droplist.
-        /// Must be used only in InitEntityRelationships phase.
-        /// </summary>
-        /// <param name="entityViewModel">View Model of entity with droplist.</param>
-        /// <param name="droplist">Droplist</param>
-        public RecipeViewModel([NotNull] ProtoEntityViewModel entityViewModel, [NotNull] IEnumerable<IProtoItem> droplist)
-            : base(entityViewModel.ProtoEntity)
-        {
-            if (!EntityViewModelsManager.EntityDictonaryCreated)
-            {
-                throw new Exception("CNEI: Droplist constructor used before all entity VMs sets.");
-            }
-            InputItemsVMList =
-                new List<BaseViewModel>() {new ViewModelEntityWithCount(entityViewModel)}.AsReadOnly();
-
-            HashSet<IProtoItem> uniqueDroplist = new HashSet<IProtoItem>(droplist);
-            OutputItemsVMList = uniqueDroplist
-                .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item)))
-                .ToList().AsReadOnly();
-
-            OriginVisibility = Visibility.Collapsed;
-            TechVisibility = Visibility.Collapsed;
-
-            if(entityViewModel is ProtoCharacterMobViewModel protoCharacterMobViewModel)
-            {
-                icon = protoCharacterMobViewModel.Icon;
+                case RecipeType.Hand:
+                    return new HandCraftingRecipeViewModel(recipe);
+                case RecipeType.StationCrafting:
+                    return new StationCraftingRecipeViewModel(recipe);
+                case RecipeType.Manufacturing:
+                    return new ManufacturingRecipeViewModel(recipe);
+                case RecipeType.ManufacturingByproduct:
+                    return new ManufacturingByproductRecipeViewModel(recipe);
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        /// <summary>
-        /// Initilize entity reletionships with each other - invoked after all entity view Models created,
-        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
-        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
-        /// </summary>
-        public override void InitAdditionalRecipes()
-        {
-            if (!(ProtoEntity is Recipe recipe))
-            {
-                return;
-            }
-
-            if (recipe is Recipe.RecipeForManufacturingByproduct byproductRecipe)
-            {
-                InputItemsVMList = new List<BaseViewModel>()
-                {
-                    new ViewModelEntityWithCount(
-                        EntityViewModelsManager.GetEntityViewModel(byproductRecipe.ProtoItemFuel))
-                }.AsReadOnly();
-            }
-            else
-            {
-                InputItemsVMList = recipe.InputItems
-                    .Select(i =>
-                        new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem), i.Count))
-                    .ToList().AsReadOnly();
-            }
-
-            OutputItemsVMList = recipe.OutputItems.Items
-                .Select(i => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem),
-                    i.Count, i.CountRandom, i.Probability))
-                .ToList().AsReadOnly();
-
-            ListedInTechNodes = recipe.ListedInTechNodes
-                .Select(EntityViewModelsManager.GetEntityViewModel)
-                .ToList().AsReadOnly();
-
-            if (recipe is Recipe.BaseRecipeForStation stationsRecipe)
-            {
-                StationsList = stationsRecipe.StationTypes
-                    .Select(EntityViewModelsManager.GetEntityViewModel)
-                    .ToList().AsReadOnly();
-            }
-        }
+        ///// <summary>
+        ///// Initilize entity reletionships with each other - invoked after all entity view Models created,
+        ///// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        ///// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        ///// </summary>
+        //public override void InitAdditionalRecipes()
+        //{
+        //    if (!(ProtoEntity is Recipe recipe))
+        //    {
+        //        return;
+        //    }
+        //
+        //    if (recipe is Recipe.RecipeForManufacturingByproduct byproductRecipe)
+        //    {
+        //        InputItemsVMList = new List<BaseViewModel>()
+        //        {
+        //            new ViewModelEntityWithCount(
+        //                EntityViewModelsManager.GetEntityViewModel(byproductRecipe.ProtoItemFuel))
+        //        }.AsReadOnly();
+        //    }
+        //    else
+        //    {
+        //        InputItemsVMList = recipe.InputItems
+        //            .Select(i =>
+        //                new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem), i.Count))
+        //            .ToList().AsReadOnly();
+        //    }
+        //
+        //    OutputItemsVMList = recipe.OutputItems.Items
+        //        .Select(i => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem),
+        //            i.Count, i.CountRandom, i.Probability))
+        //        .ToList().AsReadOnly();
+        //
+        //    ListedInTechNodes = recipe.ListedInTechNodes
+        //        .Select(EntityViewModelsManager.GetEntityViewModel)
+        //        .ToList().AsReadOnly();
+        //
+        //    if (recipe is Recipe.BaseRecipeForStation stationsRecipe)
+        //    {
+        //        StationsList = stationsRecipe.StationTypes
+        //            .Select(EntityViewModelsManager.GetEntityViewModel)
+        //            .ToList().AsReadOnly();
+        //    }
+        //}
 
         public IReadOnlyList<BaseViewModel> InputItemsVMList { get; protected set; }
             = new List<BaseViewModel>();
@@ -202,26 +97,60 @@
         public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; protected set; }
             = new List<ProtoEntityViewModel>();
 
-        public double OriginalDuration { get; } = 0d;
+        public double OriginalDuration { get; protected set; } = 0d;
 
-        public bool IsDisabled { get; } = false;
+        public bool IsDisabled { get; protected set; } = false;
 
-        public bool IsAutoUnlocked { get; }
+        public bool IsAutoUnlocked { get; protected set; }
 
-        public RecipeType RecipeType { get; }
+        public RecipeType RecipeType { get; protected set; }
 
-        public string OriginText { get; }
+        public string OriginText { get; protected set; }
 
-        public Visibility IsStationCraft { get; } = Visibility.Collapsed;
+        public Visibility IsStationCraft { get; protected set; } = Visibility.Collapsed;
 
-        public Visibility IsHandCraft { get; } = Visibility.Collapsed;
+        public Visibility IsHandCraft { get; protected set; } = Visibility.Collapsed;
 
-        public Visibility IsByproduct { get; } = Visibility.Collapsed;
+        public Visibility IsByproduct { get; protected set; } = Visibility.Collapsed;
 
-        public Visibility TechVisibility { get; } = Visibility.Visible;
+        public Visibility TechVisibility { get; protected set; } = Visibility.Visible;
 
-        public Visibility OriginVisibility { get; } = Visibility.Visible;
+        public Visibility OriginVisibility { get; protected set; } = Visibility.Visible;
 
-        public Visibility TimeVisibility { get; } = Visibility.Collapsed;
+        public Visibility TimeVisibility { get; protected set; } = Visibility.Collapsed;
+    }
+
+    public class RecipeViewModelComboBoxWraper
+    {
+        /// <summary>
+        /// Name that appear in ComboBox dropdown list.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// ComboBoxItem.IsEnabled link.
+        /// </summary>
+        public bool IsItemEnabled { get; }
+
+        public RecipeViewModel RecipeVM { get; }
+
+        /// <summary>
+        /// Icon to show near Name in ComboBox list.
+        /// </summary>
+        public Brush Icon { get; }
+
+        /// <summary>
+        /// Bond to index in collection(list) to assist Prev\Next commands.
+        /// </summary>
+        public int Index { get; set; }
+
+        public RecipeViewModelComboBoxWraper(RecipeViewModel recipeVM, string name, bool isEnabled, int index = -1)
+        {
+            RecipeVM = recipeVM;
+            Icon = recipeVM?.Icon;
+            Name = name;
+            IsItemEnabled = isEnabled;
+            Index = index;
+        }
     }
 }

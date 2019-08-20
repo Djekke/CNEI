@@ -2,10 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows;
     using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
     using AtomicTorch.CBND.CoreMod.Systems.PowerGridSystem;
-    using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
@@ -40,39 +38,17 @@
                     structure.ConfigBuild != null &&
                     structure.ConfigBuild.StageRequiredItems.Count > 0)
                 {
-                    EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, structure.ConfigBuild));
+                    EntityViewModelsManager.AddRecipe(new StructureBuildRecipeViewModel(this, structure.ConfigBuild));
                 }
 
                 if (structure.ConfigUpgrade != null)
                 {
                     foreach (var upgradeEntry in structure.ConfigUpgrade.Entries)
                     {
-                        EntityViewModelsManager.AddRecipe(new RecipeViewModel(this, upgradeEntry));
+                        EntityViewModelsManager.AddRecipe(new StructureUpgradeRecipeViewModel(this, upgradeEntry));
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Finalize Recipe Link creation and prepare recipe VM list to observation.
-        /// </summary>
-        public override void FinalizeRecipeLinking()
-        {
-            base.FinalizeRecipeLinking();
-            if (RecipeVMList.EntityCount == 0)
-            {
-                RecipesVisibility = Visibility.Collapsed;
-                IsRecipesExpanded = false;
-            }
-            if (UsageVMList.EntityCount == 0)
-            {
-                UsageVisibility = Visibility.Collapsed;
-                IsUsageExpanded = false;
-            }
-            RecipePrevPage = new ActionCommand(() => RecipeVMList.PrevPage());
-            RecipeNextPage = new ActionCommand(() => RecipeVMList.NextPage());
-            UsagePrevPage = new ActionCommand(() => UsageVMList.PrevPage());
-            UsageNextPage = new ActionCommand(() => UsageVMList.NextPage());
         }
 
         public override void InitInformation()
@@ -99,29 +75,11 @@
             }
         }
 
-        public BaseCommand RecipePrevPage { get; private set; }
-
-        public BaseCommand RecipeNextPage { get; private set; }
-
-        public BaseCommand UsagePrevPage { get; private set; }
-
-        public BaseCommand UsageNextPage { get; private set; }
-
         public string DescriptionUpgrade { get; }
 
         public bool IsAutoUnlocked { get; }
 
         public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; private set; } =
             new List<ProtoEntityViewModel>();
-
-        public Visibility RecipesVisibility { get; private set; } = Visibility.Visible;
-
-        public Visibility UsageVisibility { get; private set; } = Visibility.Visible;
-
-        public bool IsInfoExpanded { get; set; } = true;
-
-        public bool IsRecipesExpanded { get; set; } = true;
-
-        public bool IsUsageExpanded { get; set; } = true;
     }
 }

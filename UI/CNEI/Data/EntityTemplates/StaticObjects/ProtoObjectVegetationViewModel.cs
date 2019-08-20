@@ -27,7 +27,7 @@
                 vegetation.DroplistOnDestroy != null &&
                 vegetation.DroplistOnDestroy.EnumerateAllItems().Any())
             {
-                DroplistOnDestroy = new RecipeViewModel(this, vegetation.DroplistOnDestroy.EnumerateAllItems());
+                DroplistOnDestroy = new DroplistRecipeViewModel(this, vegetation.DroplistOnDestroy.EnumerateAllItems());
                 DroplistOnDestroyVisibility = Visibility.Visible;
                 EntityViewModelsManager.AddRecipe(DroplistOnDestroy);
             }

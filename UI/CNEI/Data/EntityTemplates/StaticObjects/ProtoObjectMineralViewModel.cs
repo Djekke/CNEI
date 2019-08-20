@@ -39,7 +39,7 @@
                 droplist.AddRange(mineral.DropItemsConfig.Stage4.EnumerateAllItems());
                 if (droplist.Count > 0)
                 {
-                    Droplist = new RecipeViewModel(this, droplist);
+                    Droplist = new DroplistRecipeViewModel(this, droplist);
                     DroplistVisibility = Visibility.Visible;
                     EntityViewModelsManager.AddRecipe(Droplist);
                 }

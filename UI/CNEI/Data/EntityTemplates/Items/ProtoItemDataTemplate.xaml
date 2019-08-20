@@ -36,30 +36,25 @@
                                     DockPanel.Dock="Left"
                                     Margin="10,0,0,0"
                                     Command="{Binding RecipePrevPage}"
-                                    IsEnabled="{Binding RecipeVMList.IsNotFirstPage}" />
+                                    IsEnabled="{Binding MoreThanOneRecipe}" />
                             <Button Content="&gt;"
                                     DockPanel.Dock="Right"
                                     Margin="0,0,10,0"
                                     Command="{Binding RecipeNextPage}"
-                                    IsEnabled="{Binding RecipeVMList.IsNotLastPage}" />
-                            <Grid HorizontalAlignment="Stretch">
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="( " />
-                                    <TextBlock Text="{Binding RecipeVMList.CurrentPage}" />
-                                    <TextBlock Text=" / " />
-                                    <TextBlock Text="{Binding RecipeVMList.PageCount}" />
-                                    <TextBlock Text=" )" />
-                                </StackPanel>
-                            </Grid>
+                                    IsEnabled="{Binding MoreThanOneRecipe}" />
+                            <ComboBox ItemsSource="{Binding RecipeVMWrappersList}"
+                                      ItemTemplate="{StaticResource ComboBoxRecipeItemCustom}"
+                                      ItemContainerStyle="{StaticResource ComboBoxRecipeItemContainerStyle}"
+                                      SelectedItem="{Binding Path=SelectedRecipeVMWrapper,
+                                                             Mode=TwoWay,
+                                                             UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Width="350" />
                         </DockPanel>
 
-                        <ListBox Grid.Row="1"
-                                 Style="{StaticResource ListBoxSimpleWrapper}"
-                                 ItemsSource="{Binding RecipeVMList.Items}" />
-
-                        <!--<ContentControl Content="{Binding RecipeVMList.Items/}" />-->
+                        <ContentControl Grid.Row="1"
+                                        Content="{Binding Path=SelectedRecipeVMWrapper.RecipeVM}" />
                     </Grid>
                 </Expander>
                 <Expander Header="Usage"
@@ -83,30 +78,25 @@
                                     DockPanel.Dock="Left"
                                     Margin="10,0,0,0"
                                     Command="{Binding UsagePrevPage}"
-                                    IsEnabled="{Binding UsageVMList.IsNotFirstPage}" />
+                                    IsEnabled="{Binding MoreThanOneUsage}" />
                             <Button Content="&gt;"
                                     DockPanel.Dock="Right"
                                     Margin="0,0,10,0"
                                     Command="{Binding UsageNextPage}"
-                                    IsEnabled="{Binding UsageVMList.IsNotLastPage}" />
-                            <Grid HorizontalAlignment="Stretch">
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="( " />
-                                    <TextBlock Text="{Binding UsageVMList.CurrentPage}" />
-                                    <TextBlock Text=" / " />
-                                    <TextBlock Text="{Binding UsageVMList.PageCount}" />
-                                    <TextBlock Text=" )" />
-                                </StackPanel>
-                            </Grid>
+                                    IsEnabled="{Binding MoreThanOneUsage}" />
+                            <ComboBox ItemsSource="{Binding UsageVMWrappersList}"
+                                      ItemTemplate="{StaticResource ComboBoxRecipeItemCustom}"
+                                      ItemContainerStyle="{StaticResource ComboBoxRecipeItemContainerStyle}"
+                                      SelectedItem="{Binding Path=SelectedUsageVMWrapper,
+                                                             Mode=TwoWay,
+                                                             UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Width="350" />
                         </DockPanel>
 
-                        <ListBox Grid.Row="1"
-                                 Style="{StaticResource ListBoxSimpleWrapper}"
-                                 ItemsSource="{Binding UsageVMList.Items}" />
-
-                        <!--<ContentControl Content="{Binding RecipeVMList.Items/}" />-->
+                        <ContentControl Grid.Row="1"
+                                        Content="{Binding Path=SelectedUsageVMWrapper.RecipeVM}" />
                     </Grid>
                 </Expander>
             </StackPanel>

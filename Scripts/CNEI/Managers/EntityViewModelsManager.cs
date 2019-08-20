@@ -112,7 +112,14 @@
                     {
                         try
                         {
-                            newEntityViewModel = (ProtoEntityViewModel)Activator.CreateInstance(currentType, entity);
+                            if (currentType == typeof(RecipeViewModel))
+                            {//This is shit code and I don't like it.
+                                newEntityViewModel = RecipeViewModel.SelectBasicRecipe(entity);
+                            }
+                            else
+                            {
+                                newEntityViewModel = (ProtoEntityViewModel)Activator.CreateInstance(currentType, entity);
+                            }
                         }
                         catch (MissingMethodException)
                         {

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Media;
@@ -17,9 +18,9 @@
     {
         protected Brush icon;
 
-        private HashSet<RecipeViewModel> recipeVMList = new HashSet<RecipeViewModel>();
+        protected HashSet<RecipeViewModel> recipeVMList = new HashSet<RecipeViewModel>();
 
-        private HashSet<RecipeViewModel> usageVMList = new HashSet<RecipeViewModel>();
+        protected HashSet<RecipeViewModel> usageVMList = new HashSet<RecipeViewModel>();
 
         public virtual IProtoEntity ProtoEntity { get; }
 
@@ -34,8 +35,8 @@
             TitleLower = entity.Name.ToLower();
             Type = entity.Id;
             TypeLower = entity.Id.ToLower();
-            RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>();
-            UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>();
+            RecipeVMWrappersList = new List<RecipeViewModelComboBoxWraper>();
+            UsageVMWrappersList = new List<RecipeViewModelComboBoxWraper>();
             EntityInformation = new ObservableCollection<ViewModelEntityInformation>();
         }
 
@@ -106,9 +107,9 @@
 
         public ObservableCollection<ViewModelEntityInformation> EntityInformation { get; set; }
 
-        public FilteredObservableWithPaging<RecipeViewModel> RecipeVMList { get; private set; }
+        public List<RecipeViewModelComboBoxWraper> RecipeVMWrappersList { get; private set; }
 
-        public FilteredObservableWithPaging<RecipeViewModel> UsageVMList { get; private set; }
+        public List<RecipeViewModelComboBoxWraper> UsageVMWrappersList { get; private set; }
 
         /// <summary>
         /// Initilize entity reletionships with each other - invoked after all entity view Models created,
@@ -164,8 +165,48 @@
         /// </summary>
         public virtual void FinalizeRecipeLinking()
         {
-            RecipeVMList = new FilteredObservableWithPaging<RecipeViewModel>(recipeVMList);
-            UsageVMList = new FilteredObservableWithPaging<RecipeViewModel>(usageVMList);
+            var sortedRecipeGroups = recipeVMList.GroupBy(recipe => recipe.RecipeTypeName)
+                .Select(group =>
+                    new
+                    {
+                        Name = group.Key,
+                        Entities = group.OrderBy(r => r.TitleLower)
+                    })
+                .OrderBy(group => group.Name);
+            var i = 0;
+            foreach (var group in sortedRecipeGroups)
+            {
+                RecipeVMWrappersList.Add(new RecipeViewModelComboBoxWraper(null,
+                    group.Name + " (" + group.Entities.Count() + ")", false, i));
+                i++;
+                foreach (var recipeVM in group.Entities)
+                {
+                    RecipeVMWrappersList.Add(
+                        new RecipeViewModelComboBoxWraper(recipeVM, recipeVM.Title, true, i));
+                    i++;
+                }
+            }
+            var sortedUsageGroups = usageVMList.GroupBy(recipe => recipe.RecipeTypeName)
+                .Select(group =>
+                    new
+                    {
+                        Name = group.Key,
+                        Entities = group.OrderBy(r => r.TitleLower)
+                    })
+                .OrderBy(group => group.Name);
+            var j = 0;
+            foreach (var group in sortedUsageGroups)
+            {
+                UsageVMWrappersList.Add(new RecipeViewModelComboBoxWraper(null,
+                    group.Name + " (" + group.Entities.Count() + ")", false, j));
+                j++;
+                foreach (var recipeVM in group.Entities)
+                {
+                    UsageVMWrappersList.Add(
+                        new RecipeViewModelComboBoxWraper(recipeVM, recipeVM.Title, true, j));
+                    j++;
+                }
+            }
         }
 
         private static object GetPropertyByName(object obj, string name)

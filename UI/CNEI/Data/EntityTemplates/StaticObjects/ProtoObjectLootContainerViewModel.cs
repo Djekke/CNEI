@@ -27,7 +27,7 @@
                 lootContainer.LootDroplist != null &&
                 lootContainer.LootDroplist.EnumerateAllItems().Any())
             {
-                Droplist = new RecipeViewModel(this, lootContainer.LootDroplist.EnumerateAllItems());
+                Droplist = new DroplistRecipeViewModel(this, lootContainer.LootDroplist.EnumerateAllItems());
                 DroplistVisibility = Visibility.Visible;
                 EntityViewModelsManager.AddRecipe(Droplist);
             }

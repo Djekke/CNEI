@@ -30,7 +30,7 @@
                 gatherableVegetation.GatherDroplist != null &&
                 gatherableVegetation.GatherDroplist.EnumerateAllItems().Any())
             {
-                GatherDroplist = new RecipeViewModel(this,
+                GatherDroplist = new DroplistRecipeViewModel(this,
                     gatherableVegetation.GatherDroplist.EnumerateAllItems());
                 GatherDroplistVisibility = Visibility.Visible;
                 EntityViewModelsManager.AddRecipe(GatherDroplist);
