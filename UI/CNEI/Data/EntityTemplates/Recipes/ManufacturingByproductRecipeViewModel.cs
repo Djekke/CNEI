@@ -10,20 +10,16 @@
 
     public class ManufacturingByproductRecipeViewModel : BasicRecipeViewModel
     {
+        public override string ResourceDictionaryName => "ManufacturingByproductRecipeDataTemplate.xaml";
+
         public override string RecipeTypeName => "Byproduct";
 
         public ManufacturingByproductRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
         {
             RecipeType = recipe.RecipeType;
-
-            IsByproduct = Visibility.Visible;
-            IsStationCraft = Visibility.Visible;
-            IsHandCraft = Visibility.Collapsed;
-            TimeVisibility = Visibility.Visible;
             OriginalDuration = recipe.OriginalDuration;
             IsDisabled = !recipe.IsEnabled;
             IsAutoUnlocked = recipe.IsAutoUnlocked;
-            OriginText = (RecipeType == RecipeType.Hand) ? "Made by:" : "Made in:";
         }
 
         /// <summary>
@@ -33,35 +29,34 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (!(ProtoEntity is Recipe recipe))
+            if (!(ProtoEntity is Recipe.RecipeForManufacturingByproduct byproductRecipe))
             {
                 return;
             }
 
-            if (recipe is Recipe.RecipeForManufacturingByproduct byproductRecipe)
-            {
-                InputItemsVMList = new List<BaseViewModel>()
-                {
-                    new ViewModelEntityWithCount(
-                        EntityViewModelsManager.GetEntityViewModel(byproductRecipe.ProtoItemFuel))
-                }.AsReadOnly();
-            }
+            FuelEntity = EntityViewModelsManager.GetEntityViewModel(byproductRecipe.ProtoItemFuel);
+            icon = FuelEntity.Icon;
 
-            OutputItemsVMList = recipe.OutputItems.Items
+            InputItemsVMList = new List<BaseViewModel>() {new ViewModelEntityWithCount(FuelEntity)}.AsReadOnly();
+
+            OutputItemsVMList = byproductRecipe.OutputItems.Items
                 .Select(i => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem),
                     i.Count, i.CountRandom, i.Probability))
                 .ToList().AsReadOnly();
 
-            ListedInTechNodes = recipe.ListedInTechNodes
+            // Do we need this?
+            ListedInTechNodes = byproductRecipe.ListedInTechNodes
                 .Select(EntityViewModelsManager.GetEntityViewModel)
                 .ToList().AsReadOnly();
+            TechVisibility = ListedInTechNodes.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
 
-            if (recipe is Recipe.BaseRecipeForStation stationsRecipe)
-            {
-                StationsList = stationsRecipe.StationTypes
-                    .Select(EntityViewModelsManager.GetEntityViewModel)
-                    .ToList().AsReadOnly();
-            }
+            // or this?
+            StationsList = byproductRecipe.StationTypes
+                .Select(EntityViewModelsManager.GetEntityViewModel)
+                .ToList().AsReadOnly();
+            OriginVisibility = StationsList.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        public ProtoEntityViewModel FuelEntity { get; private set; }
     }
 }
