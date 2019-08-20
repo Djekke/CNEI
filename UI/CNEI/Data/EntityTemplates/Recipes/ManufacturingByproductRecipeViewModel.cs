@@ -10,7 +10,7 @@
 
     public class ManufacturingByproductRecipeViewModel : BasicRecipeViewModel
     {
-        public override string RecipeTypeName => "Manufacturing";
+        public override string RecipeTypeName => "Byproduct";
 
         public ManufacturingByproductRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
         {

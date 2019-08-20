@@ -8,7 +8,7 @@
 
     public class ManufacturingRecipeViewModel : BasicRecipeViewModel
     {
-        public override string RecipeTypeName => "Byproduct";
+        public override string RecipeTypeName => "Manufacturing";
 
         public ManufacturingRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
         {
