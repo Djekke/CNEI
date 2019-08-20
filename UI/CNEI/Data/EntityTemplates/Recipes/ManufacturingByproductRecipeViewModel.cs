@@ -16,10 +16,6 @@
 
         public ManufacturingByproductRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
         {
-            RecipeType = recipe.RecipeType;
-            OriginalDuration = recipe.OriginalDuration;
-            IsDisabled = !recipe.IsEnabled;
-            IsAutoUnlocked = recipe.IsAutoUnlocked;
         }
 
         /// <summary>

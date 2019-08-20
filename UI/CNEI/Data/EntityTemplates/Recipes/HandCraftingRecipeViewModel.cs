@@ -1,7 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System.Linq;
-    using System.Windows;
     using AtomicTorch.CBND.CoreMod.Systems.Crafting;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
@@ -12,17 +11,6 @@
 
         public HandCraftingRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
         {
-            RecipeType = recipe.RecipeType;
-
-            // Delete this
-            IsByproduct = Visibility.Collapsed;
-            IsStationCraft = Visibility.Collapsed;
-            IsHandCraft = Visibility.Visible;
-            TimeVisibility = Visibility.Visible;
-            OriginalDuration = recipe.OriginalDuration;
-            IsDisabled = !recipe.IsEnabled;
-            IsAutoUnlocked = recipe.IsAutoUnlocked;
-            OriginText = (RecipeType == RecipeType.Hand) ? "Made by:" : "Made in:";
         }
 
         /// <summary>

@@ -1,7 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System.Linq;
-    using System.Windows;
     using AtomicTorch.CBND.CoreMod.Systems.Crafting;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
@@ -12,16 +11,6 @@
 
         public ManufacturingRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
         {
-            RecipeType = recipe.RecipeType;
-
-            IsByproduct = Visibility.Collapsed;
-            IsStationCraft = Visibility.Visible;
-            IsHandCraft = Visibility.Collapsed;
-            TimeVisibility = Visibility.Visible;
-            OriginalDuration = recipe.OriginalDuration;
-            IsDisabled = !recipe.IsEnabled;
-            IsAutoUnlocked = recipe.IsAutoUnlocked;
-            OriginText = (RecipeType == RecipeType.Hand) ? "Made by:" : "Made in:";
         }
 
         /// <summary>
@@ -31,7 +20,7 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (!(ProtoEntity is Recipe recipe))
+            if (!(ProtoEntity is Recipe.RecipeForManufacturing recipe))
             {
                 return;
             }
@@ -50,12 +39,9 @@
                 .Select(EntityViewModelsManager.GetEntityViewModel)
                 .ToList().AsReadOnly();
 
-            if (recipe is Recipe.BaseRecipeForStation stationsRecipe)
-            {
-                StationsList = stationsRecipe.StationTypes
-                    .Select(EntityViewModelsManager.GetEntityViewModel)
-                    .ToList().AsReadOnly();
-            }
+            StationsList = recipe.StationTypes
+                .Select(EntityViewModelsManager.GetEntityViewModel)
+                .ToList().AsReadOnly();
         }
     }
 }

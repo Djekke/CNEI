@@ -9,13 +9,9 @@
         /// <summary>
         /// Basic recipe from Recipe class.
         /// </summary>
-        public BasicRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
+        protected BasicRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
         {
             RecipeType = recipe.RecipeType;
-
-            IsByproduct = (RecipeType == RecipeType.ManufacturingByproduct)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
             IsStationCraft = (RecipeType == RecipeType.Hand)
                 ? Visibility.Collapsed
                 : Visibility.Visible;
