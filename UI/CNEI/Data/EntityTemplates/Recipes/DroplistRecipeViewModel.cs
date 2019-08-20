@@ -3,14 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows;
-    using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data.Items;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
     public class DroplistRecipeViewModel: RecipeViewModel
     {
+        public override string ResourceDictionaryName => "DroplistRecipeDataTemplate.xaml";
+
         public override string RecipeTypeName => "Drop";
 
         /// <summary>
@@ -27,21 +27,20 @@
             {
                 throw new Exception("CNEI: Droplist constructor used before all entity VMs sets.");
             }
-            InputItemsVMList =
-                new List<BaseViewModel>() { new ViewModelEntityWithCount(entityViewModel) }.AsReadOnly();
+
+            TargetEntity = entityViewModel;
 
             HashSet<IProtoItem> uniqueDroplist = new HashSet<IProtoItem>(droplist);
             OutputItemsVMList = uniqueDroplist
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item)))
                 .ToList().AsReadOnly();
 
-            OriginVisibility = Visibility.Collapsed;
-            TechVisibility = Visibility.Collapsed;
-
             if (entityViewModel is ProtoCharacterMobViewModel protoCharacterMobViewModel)
             {
                 icon = protoCharacterMobViewModel.Icon;
             }
         }
+
+        public ProtoEntityViewModel TargetEntity { get; set; }
     }
 }
