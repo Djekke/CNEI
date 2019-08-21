@@ -130,7 +130,6 @@
                            Foreground="Green"
                            Visibility="{Binding IsAutoUnlocked, Converter={StaticResource BoolToVisibilityConverter}}" />
             </StackPanel>
-
         </Grid>
     </DataTemplate>
 
