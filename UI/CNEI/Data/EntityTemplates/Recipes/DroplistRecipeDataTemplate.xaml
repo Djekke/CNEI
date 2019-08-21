@@ -13,22 +13,24 @@
     <DataTemplate DataType="{x:Type data:DroplistRecipeViewModel}">
         <Grid Margin="10,20,10,20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="1.3*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <controls:EntitySlotControl Grid.Column="0"
                                         Width="150"
                                         Height="150"
+                                        VerticalAlignment="Center"
                                         DataContext="{Binding TargetEntity}" />
 
             <TextBlock Grid.Column="1"
                        Text="--&gt;"
-                       Margin="0,0,10,0"
+                       Margin="10,0,10,0"
                        VerticalAlignment="Center" />
 
             <ListBox Grid.Column="2"
+                     VerticalAlignment="Center"
                      Style="{StaticResource IngredientListBox}"
                      ItemsSource="{Binding OutputItemsVMList}"
                      MaxHeight="{StaticResource MaxItemListHeight}" />

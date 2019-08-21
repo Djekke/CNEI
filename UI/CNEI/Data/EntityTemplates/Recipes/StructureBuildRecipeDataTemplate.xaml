@@ -21,24 +21,26 @@
             <Grid Grid.Row="0"
                   Margin="10,20,10,5">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.3*" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0"
+                         VerticalAlignment="Center"
                          Style="{StaticResource IngredientListBox}"
                          ItemsSource="{Binding InputItemsVMList}"
                          MaxHeight="{StaticResource MaxItemListHeight}" />
 
                 <TextBlock Grid.Column="1"
                            Text="--&gt;"
-                           Margin="10,0,0,0"
+                           Margin="10,0,10,0"
                            VerticalAlignment="Center" />
 
                 <controls:EntitySlotControl Grid.Column="2"
                                             Width="150"
                                             Height="150"
+                                            VerticalAlignment="Center"
                                             DataContext="{Binding StructureVM}" />
             </Grid>
 
