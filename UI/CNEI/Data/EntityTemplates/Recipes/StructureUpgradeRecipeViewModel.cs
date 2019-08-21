@@ -1,16 +1,15 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Windows;
     using AtomicTorch.CBND.CoreMod.Systems.Construction;
-    using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
     public class StructureUpgradeRecipeViewModel: RecipeViewModel
     {
+        public override string ResourceDictionaryName => "StructureUpgradeRecipeDataTemplate.xaml";
+
         public override string RecipeTypeName => "Structure upgrade";
 
         /// <summary>
@@ -28,11 +27,12 @@
                 throw new Exception("CNEI: Upgrade constructor used before all entity VMs sets.");
             }
 
-            var inputTempList = new List<BaseViewModel>() { new ViewModelEntityWithCount(structureViewModel) };
-            inputTempList.AddRange(upgradeEntry.RequiredItems
+            StructureVM = structureViewModel;
+
+            InputItemsVMList = upgradeEntry.RequiredItems
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item.ProtoItem),
-                    item.Count)));
-            InputItemsVMList = inputTempList.AsReadOnly();
+                    item.Count))
+                .ToList().AsReadOnly();
 
             if (!(EntityViewModelsManager.GetEntityViewModel(upgradeEntry.ProtoStructure)
                 is ProtoObjectStructureViewModel newStructureViewModel))
@@ -41,14 +41,8 @@
                                     upgradeEntry.ProtoStructure);
             }
 
-            OutputItemsVMList = new List<BaseViewModel>()
-            {
-                new ViewModelEntityWithCount(newStructureViewModel)
-            }.AsReadOnly();
+            UpgradedStructureVM = newStructureViewModel;
 
-            OriginText = "Upgrade from:";
-            IsStationCraft = Visibility.Visible;
-            StationsList = new List<ProtoEntityViewModel>() { structureViewModel }.AsReadOnly();
             // Can not simply get it from result entityVM because it can has not initilized Tech.
             //ListedInTechNodes = newStructureViewModel.ListedInTechNodes;
             ListedInTechNodes = upgradeEntry.ProtoStructure.ListedInTechNodes
@@ -56,5 +50,9 @@
                 .ToList().AsReadOnly();
             IsAutoUnlocked = structureViewModel.IsAutoUnlocked;
         }
+
+        public ProtoEntityViewModel StructureVM { get; }
+
+        public ProtoEntityViewModel UpgradedStructureVM { get; }
     }
 }
