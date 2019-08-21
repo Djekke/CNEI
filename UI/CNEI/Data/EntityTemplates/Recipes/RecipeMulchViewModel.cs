@@ -6,7 +6,7 @@
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
-    public class RecipeMulchViewModel : RecipeViewModel
+    public class RecipeMulchViewModel : ManufacturingRecipeViewModel
     {
 
         public RecipeMulchViewModel([NotNull] Recipe recipe) : base(recipe)
@@ -22,12 +22,9 @@
         {
             base.InitAdditionalRecipes();
 
-            if (ProtoEntity is Recipe recipe)
-            {
-                InputItemsVMList = EntityViewModelsManager.GetAllEntityViewModelsByType<IProtoItemOrganic>()
-                    .Select(item => new ViewModelEntityWithCount(item))
-                    .ToList().AsReadOnly();
-            }
+            InputItemsVMList = EntityViewModelsManager.GetAllEntityViewModelsByType<IProtoItemOrganic>()
+                .Select(item => new ViewModelEntityWithCount(item))
+                .ToList().AsReadOnly();
         }
     }
 }
