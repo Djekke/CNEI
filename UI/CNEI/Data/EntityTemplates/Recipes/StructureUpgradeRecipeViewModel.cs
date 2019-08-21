@@ -1,8 +1,10 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using AtomicTorch.CBND.CoreMod.Systems.Construction;
+    using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
@@ -29,6 +31,11 @@
 
             StructureVM = structureViewModel;
 
+            InputItemsList = upgradeEntry.RequiredItems
+                .Select(item => EntityViewModelsManager.GetEntityViewModel(item.ProtoItem))
+                .ToList();
+            InputItemsList.Add(structureViewModel);
+
             InputItemsVMList = upgradeEntry.RequiredItems
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item.ProtoItem),
                     item.Count))
@@ -40,6 +47,8 @@
                 throw new Exception("CNEI: Can not find ProtoObjectStructureViewModel for " +
                                     upgradeEntry.ProtoStructure);
             }
+
+            OutputItemsList.Add(newStructureViewModel);
 
             UpgradedStructureVM = newStructureViewModel;
 
@@ -54,5 +63,9 @@
         public ProtoEntityViewModel StructureVM { get; }
 
         public ProtoEntityViewModel UpgradedStructureVM { get; }
+
+        public IReadOnlyList<BaseViewModel> InputItemsVMList { get; protected set; }
+
+        public bool IsAutoUnlocked { get; protected set; }
     }
 }

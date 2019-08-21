@@ -25,10 +25,18 @@
                 return;
             }
 
+            InputItemsList = recipe.InputItems
+                .Select(i => EntityViewModelsManager.GetEntityViewModel(i.ProtoItem))
+                .ToList();
+
             InputItemsVMList = recipe.InputItems
                 .Select(i =>
                     new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem), i.Count))
                 .ToList().AsReadOnly();
+
+            OutputItemsList = recipe.OutputItems.Items
+                .Select(i => EntityViewModelsManager.GetEntityViewModel(i.ProtoItem))
+                .ToList();
 
             OutputItemsVMList = recipe.OutputItems.Items
                 .Select(i => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(i.ProtoItem),

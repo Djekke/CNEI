@@ -372,35 +372,13 @@
         {
             foreach (RecipeViewModel recipeViewModel in recipeList)
             {
-                foreach (BaseViewModel viewModel in recipeViewModel.InputItemsVMList)
+                foreach (ProtoEntityViewModel protoEntityViewModel in recipeViewModel.InputItemsList)
                 {
-                    switch (viewModel)
-                    {
-                        case ViewModelEntityWithCount viewModelEntityWithCount:
-                            viewModelEntityWithCount.EntityViewModel.AddRecipeLink(recipeViewModel, 1);
-                            break;
-                        case ProtoEntityViewModel protoEntityViewModel:
-                            protoEntityViewModel.AddRecipeLink(recipeViewModel, 1);
-                            break;
-                        default:
-                            Api.Logger.Error("CNEI: Unknown view model type: " + viewModel);
-                            break;
-                    }
+                    protoEntityViewModel.AddRecipeLink(recipeViewModel, 1);
                 }
-                foreach (BaseViewModel viewModel in recipeViewModel.OutputItemsVMList)
+                foreach (ProtoEntityViewModel protoEntityViewModel in recipeViewModel.OutputItemsList)
                 {
-                    switch (viewModel)
-                    {
-                        case ViewModelEntityWithCount viewModelEntityWithCount:
-                            viewModelEntityWithCount.EntityViewModel.AddRecipeLink(recipeViewModel, 2);
-                            break;
-                        case ProtoEntityViewModel protoEntityViewModel:
-                            protoEntityViewModel.AddRecipeLink(recipeViewModel, 2);
-                            break;
-                        default:
-                            Api.Logger.Error("CNEI: Unknown view model type: " + viewModel);
-                            break;
-                    }
+                    protoEntityViewModel.AddRecipeLink(recipeViewModel, 2);
                 }
                 foreach (ProtoEntityViewModel protoEntityViewModel in recipeViewModel.StationsList)
                 {

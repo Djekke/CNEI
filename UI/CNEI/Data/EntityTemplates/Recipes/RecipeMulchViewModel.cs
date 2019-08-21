@@ -22,6 +22,8 @@
         {
             base.InitAdditionalRecipes();
 
+            InputItemsList = EntityViewModelsManager.GetAllEntityViewModelsByType<IProtoItemOrganic>();
+
             InputItemsVMList = EntityViewModelsManager.GetAllEntityViewModelsByType<IProtoItemOrganic>()
                 .Select(item => new ViewModelEntityWithCount(item))
                 .ToList().AsReadOnly();

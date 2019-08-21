@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
     xmlns:data="clr-namespace:CryoFall.CNEI.UI.Data"
-    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls">
+    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/UI/CNEI/Styles/DefaultStyles.xaml" />
@@ -102,6 +103,21 @@
             <TextBlock Text="{Binding Description}"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- 6 rows: 32 * 6 + 5 * 5 = 254 -->
+    <system:Single x:Key="MaxItemListHeight">217</system:Single>
+
+    <DataTemplate DataType="{x:Type data:ViewModelEntityWithCount}">
+        <StackPanel Orientation="Horizontal">
+            <controls:EntitySlotControl DataContext="{Binding EntityViewModel}" />
+            <TextBlock VerticalAlignment="Center"
+                       Margin="5,0,0,0">
+                <Run Text="{Binding CountString}"
+                     FontSize="12" />
+                <Run Text="{Binding EntityViewModel.Title}" />
+            </TextBlock>
         </StackPanel>
     </DataTemplate>
 

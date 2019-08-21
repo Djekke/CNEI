@@ -2,22 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Windows;
     using System.Windows.Media;
     using AtomicTorch.CBND.CoreMod.Systems.Crafting;
-    using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data;
     using JetBrains.Annotations;
 
     public class RecipeViewModel : ProtoEntityViewModel
     {
-        public override string ResourceDictionaryName => "RecipeDataTemplate.xaml";
-
         public override string ResourceDictionaryFolderName => "Recipes/";
 
         public virtual string RecipeTypeName => "Recipe";
 
-        public RecipeViewModel([NotNull] IProtoEntity entity) : base(entity)
+        protected RecipeViewModel([NotNull] IProtoEntity entity) : base(entity)
         {
         }
 
@@ -40,37 +36,17 @@
             }
         }
 
-        public IReadOnlyList<BaseViewModel> InputItemsVMList { get; protected set; }
-            = new List<BaseViewModel>();
+        public List<ProtoEntityViewModel> InputItemsList { get; protected set; }
+            = new List<ProtoEntityViewModel>();
 
-        public IReadOnlyList<BaseViewModel> OutputItemsVMList { get; protected set; }
-            = new List<BaseViewModel>();
+        public List<ProtoEntityViewModel> OutputItemsList { get; protected set; }
+            = new List<ProtoEntityViewModel>();
 
         public IReadOnlyList<ProtoEntityViewModel> StationsList { get; protected set; }
             = new List<ProtoEntityViewModel>();
 
         public IReadOnlyList<ProtoEntityViewModel> ListedInTechNodes { get; protected set; }
             = new List<ProtoEntityViewModel>();
-
-        public double OriginalDuration { get; protected set; } = 0d;
-
-        public bool IsDisabled { get; protected set; } = false;
-
-        public bool IsAutoUnlocked { get; protected set; }
-
-        public RecipeType RecipeType { get; protected set; }
-
-        public string OriginText { get; protected set; }
-
-        public Visibility IsStationCraft { get; protected set; } = Visibility.Collapsed;
-
-        public Visibility IsHandCraft { get; protected set; } = Visibility.Collapsed;
-
-        public Visibility TechVisibility { get; protected set; } = Visibility.Visible;
-
-        public Visibility OriginVisibility { get; protected set; } = Visibility.Visible;
-
-        public Visibility TimeVisibility { get; protected set; } = Visibility.Collapsed;
     }
 
     public class RecipeViewModelComboBoxWraper

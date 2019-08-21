@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Data.Items;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
@@ -28,9 +29,14 @@
                 throw new Exception("CNEI: Droplist constructor used before all entity VMs sets.");
             }
 
+            InputItemsList.Add(entityViewModel);
+
             TargetEntity = entityViewModel;
 
             HashSet<IProtoItem> uniqueDroplist = new HashSet<IProtoItem>(droplist);
+
+            OutputItemsList = uniqueDroplist.Select(EntityViewModelsManager.GetEntityViewModel).ToList();
+
             OutputItemsVMList = uniqueDroplist
                 .Select(item => new ViewModelEntityWithCount(EntityViewModelsManager.GetEntityViewModel(item)))
                 .ToList().AsReadOnly();
@@ -41,6 +47,8 @@
             }
         }
 
-        public ProtoEntityViewModel TargetEntity { get; set; }
+        public ProtoEntityViewModel TargetEntity { get; protected set; }
+
+        public IReadOnlyList<BaseViewModel> OutputItemsVMList { get; protected set; }
     }
 }
