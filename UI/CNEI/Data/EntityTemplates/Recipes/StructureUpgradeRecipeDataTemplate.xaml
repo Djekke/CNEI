@@ -6,7 +6,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/UI/CNEI/Data/AdditionalTemplates.xaml" />
-        <ResourceDictionary Source="/UI/CNEI/Data/EntityTemplates/Recipes/RecipeDataTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->
@@ -59,7 +58,7 @@
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        MinHeight="40">
+                        MinHeight="35">
                 <TextBlock Text="Technologies:"
                            Margin="0,0,20,0"
                            VerticalAlignment="Center" />

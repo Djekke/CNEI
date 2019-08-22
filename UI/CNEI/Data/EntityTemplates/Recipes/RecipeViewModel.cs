@@ -5,6 +5,7 @@
     using System.Windows.Media;
     using AtomicTorch.CBND.CoreMod.Systems.Crafting;
     using AtomicTorch.CBND.GameApi.Data;
+    using AtomicTorch.CBND.GameApi.Scripting;
     using JetBrains.Annotations;
 
     public class RecipeViewModel : ProtoEntityViewModel
@@ -19,21 +20,25 @@
 
         public static RecipeViewModel SelectBasicRecipe([NotNull] IProtoEntity entity)
         {
-            if (!(entity is Recipe recipe))
-                return new RecipeViewModel(entity);
-            switch (recipe.RecipeType)
+            if (entity is Recipe recipe)
             {
-                case RecipeType.Hand:
-                    return new HandCraftingRecipeViewModel(recipe);
-                case RecipeType.StationCrafting:
-                    return new StationCraftingRecipeViewModel(recipe);
-                case RecipeType.Manufacturing:
-                    return new ManufacturingRecipeViewModel(recipe);
-                case RecipeType.ManufacturingByproduct:
-                    return new ManufacturingByproductRecipeViewModel(recipe);
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (recipe.RecipeType)
+                {
+                    case RecipeType.Hand:
+                        return new HandCraftingRecipeViewModel(recipe);
+                    case RecipeType.StationCrafting:
+                        return new StationCraftingRecipeViewModel(recipe);
+                    case RecipeType.Manufacturing:
+                        return new ManufacturingRecipeViewModel(recipe);
+                    case RecipeType.ManufacturingByproduct:
+                        return new ManufacturingByproductRecipeViewModel(recipe);
+                    default:
+                        Api.Logger.Error("CNEI: Can not recognize recipe type for " + recipe);
+                        return new BasicRecipeViewModel(recipe);
+                }
             }
+            Api.Logger.Error("CNEI: Entity " + entity + " is not a recipe, can not proceed.");
+            throw new ArgumentException();
         }
 
         public List<ProtoEntityViewModel> InputItemsList { get; protected set; }

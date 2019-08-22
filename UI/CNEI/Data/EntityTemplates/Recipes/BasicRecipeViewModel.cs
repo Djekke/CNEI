@@ -6,14 +6,16 @@
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using JetBrains.Annotations;
 
-    public abstract class BasicRecipeViewModel: RecipeViewModel
+    public class BasicRecipeViewModel: RecipeViewModel
     {
-        public override string ResourceDictionaryName => "RecipeDataTemplate.xaml";
+        public override string ResourceDictionaryName => "BasicRecipeDataTemplate.xaml";
+
+        public override string RecipeTypeName => "Basic recipe";
 
         /// <summary>
         /// Basic recipe from Recipe class.
         /// </summary>
-        protected BasicRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
+        public BasicRecipeViewModel([NotNull] Recipe recipe) : base(recipe)
         {
             RecipeType = recipe.RecipeType;
             IsStationCraft = (RecipeType == RecipeType.Hand)

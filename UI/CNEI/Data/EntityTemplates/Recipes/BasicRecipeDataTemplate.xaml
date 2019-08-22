@@ -9,7 +9,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->
-    <DataTemplate DataType="{x:Type data:RecipeViewModel}">
+    <DataTemplate DataType="{x:Type data:BasicRecipeViewModel}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -57,7 +57,7 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Visibility="{Binding TimeVisibility}"
-                        MinHeight="40">
+                        MinHeight="35">
                 <TextBlock VerticalAlignment="Center">
                     <Run Text="Base craft time: " />
                     <Run Text="{Binding OriginalDuration, StringFormat='{}{0} s '}"
@@ -73,7 +73,7 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Visibility="{Binding OriginVisibility}"
-                        MinHeight="40">
+                        MinHeight="35">
                 <TextBlock Text="{Binding OriginText}"
                            Margin="0,0,20,0"
                            VerticalAlignment="Center" />
@@ -99,7 +99,7 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Visibility="{Binding TechVisibility}"
-                        MinHeight="40">
+                        MinHeight="35">
                 <TextBlock Text="Technologies:"
                            Margin="0,0,20,0"
                            VerticalAlignment="Center" />

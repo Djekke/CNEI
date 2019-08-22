@@ -6,7 +6,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/UI/CNEI/Data/AdditionalTemplates.xaml" />
-        <ResourceDictionary Source="/UI/CNEI/Data/EntityTemplates/Recipes/RecipeDataTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Detail info -->
