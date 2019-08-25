@@ -1,7 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System.Linq;
-    using System.Windows;
     using AtomicTorch.CBND.CoreMod.StaticObjects.Vegetation;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
@@ -32,15 +31,10 @@
             {
                 GatherDroplist = new DroplistRecipeViewModel(this,
                     gatherableVegetation.GatherDroplist.EnumerateAllItems());
-                GatherDroplistVisibility = Visibility.Visible;
                 EntityViewModelsManager.AddRecipe(GatherDroplist);
             }
         }
 
         public RecipeViewModel GatherDroplist { get; private set; }
-
-        public Visibility GatherDroplistVisibility { get; private set; } = Visibility.Collapsed;
-
-        public bool IsGatherDroplistExpanded { get; set; } = true;
     }
 }

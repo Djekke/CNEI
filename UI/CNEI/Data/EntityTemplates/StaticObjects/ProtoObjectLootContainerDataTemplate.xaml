@@ -9,19 +9,7 @@
 
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:ProtoObjectLootContainerViewModel}">
-        <ScrollViewer>
-            <StackPanel Margin="6,0,0,0">
-                <Expander Header="Information"
-                          IsExpanded="{Binding IsInfoExpanded}">
-                    <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" Content="{Binding}" />
-                </Expander>
-                <Expander Header="Droplist"
-                          Visibility="{Binding DroplistVisibility}"
-                          IsExpanded="{Binding IsRecipesExpanded}">
-                    <ContentControl Content="{Binding Droplist}" />
-                </Expander>
-            </StackPanel>
-        </ScrollViewer>
+        <ContentPresenter ContentTemplate="{StaticResource InformationAndRecipes}" Content="{Binding}" />
     </DataTemplate>
 
 </ResourceDictionary>

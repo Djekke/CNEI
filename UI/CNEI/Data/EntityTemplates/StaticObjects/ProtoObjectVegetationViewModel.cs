@@ -28,7 +28,6 @@
                 vegetation.DroplistOnDestroy.EnumerateAllItems().Any())
             {
                 DroplistOnDestroy = new DroplistRecipeViewModel(this, vegetation.DroplistOnDestroy.EnumerateAllItems());
-                DroplistOnDestroyVisibility = Visibility.Visible;
                 EntityViewModelsManager.AddRecipe(DroplistOnDestroy);
             }
         }
@@ -50,11 +49,5 @@
         }
 
         public RecipeViewModel DroplistOnDestroy { get; private set; }
-
-        public Visibility DroplistOnDestroyVisibility { get; private set; } = Visibility.Collapsed;
-
-        public bool IsInfoExpanded { get; set; } = true;
-
-        public bool IsDroplistOnDestroyExpanded { get; set; } = true;
     }
 }

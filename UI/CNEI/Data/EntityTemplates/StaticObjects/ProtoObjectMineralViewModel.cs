@@ -1,7 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System.Collections.Generic;
-    using System.Windows;
     using AtomicTorch.CBND.CoreMod.StaticObjects.Minerals;
     using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.GameEngine.Common.Extensions;
@@ -40,18 +39,11 @@
                 if (droplist.Count > 0)
                 {
                     Droplist = new DroplistRecipeViewModel(this, droplist);
-                    DroplistVisibility = Visibility.Visible;
                     EntityViewModelsManager.AddRecipe(Droplist);
                 }
             }
         }
 
         public RecipeViewModel Droplist { get; private set; }
-
-        public Visibility DroplistVisibility { get; private set; } = Visibility.Collapsed;
-
-        public bool IsInfoExpanded { get; set; } = true;
-
-        public bool IsRecipesExpanded { get; set; } = true;
     }
 }

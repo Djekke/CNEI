@@ -1,7 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System.Linq;
-    using System.Windows;
     using AtomicTorch.CBND.CoreMod.StaticObjects.Loot;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
@@ -28,17 +27,10 @@
                 loot.LootDroplist.EnumerateAllItems().Any())
             {
                 Droplist = new DroplistRecipeViewModel(this, loot.LootDroplist.EnumerateAllItems());
-                DroplistVisibility = Visibility.Visible;
                 EntityViewModelsManager.AddRecipe(Droplist);
             }
         }
 
         public RecipeViewModel Droplist { get; private set; }
-
-        public Visibility DroplistVisibility { get; private set; } = Visibility.Collapsed;
-
-        public bool IsInfoExpanded { get; set; } = true;
-
-        public bool IsRecipesExpanded { get; set; } = true;
     }
 }

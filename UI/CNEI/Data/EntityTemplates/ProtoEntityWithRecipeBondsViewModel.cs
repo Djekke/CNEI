@@ -19,28 +19,25 @@
         public override void FinalizeRecipeLinking()
         {
             base.FinalizeRecipeLinking();
+
             SelectedRecipeVMWrapper = RecipeVMWrappersList.FirstOrDefault(rw => rw.IsItemEnabled);
             SelectedUsageVMWrapper = UsageVMWrappersList.FirstOrDefault(rw => rw.IsItemEnabled);
-            MoreThanOneRecipe = RecipeVMWrappersList.Count(rw => rw.IsItemEnabled) > 1;
-            MoreThanOneUsage = UsageVMWrappersList.Count(rw => rw.IsItemEnabled) > 1;
+
+            if (RecipeVMWrappersList.Count(rw => rw.IsItemEnabled) <= 1) MoreThanOneRecipe = Visibility.Collapsed;
+            if (UsageVMWrappersList.Count(rw => rw.IsItemEnabled) <= 1) MoreThanOneUsage = Visibility.Collapsed;
+
             RecipePrevPage = new ActionCommand(() =>
                 SelectedRecipeVMWrapper = PrevRecipe(RecipeVMWrappersList, SelectedRecipeVMWrapper));
             RecipeNextPage = new ActionCommand(() =>
                 SelectedRecipeVMWrapper = NextRecipe(RecipeVMWrappersList, SelectedRecipeVMWrapper));
+
             UsagePrevPage = new ActionCommand(() =>
                 SelectedUsageVMWrapper = PrevRecipe(UsageVMWrappersList, SelectedUsageVMWrapper));
             UsageNextPage = new ActionCommand(() =>
                 SelectedUsageVMWrapper = NextRecipe(UsageVMWrappersList, SelectedUsageVMWrapper));
-            if (SelectedRecipeVMWrapper == null)
-            {
-                RecipesVisibility = Visibility.Collapsed;
-                IsRecipesExpanded = false;
-            }
-            if (SelectedUsageVMWrapper == null)
-            {
-                UsageVisibility = Visibility.Collapsed;
-                IsUsageExpanded = false;
-            }
+
+            if (SelectedRecipeVMWrapper == null) RecipesVisibility = Visibility.Hidden;
+            if (SelectedUsageVMWrapper == null) UsageVisibility = Visibility.Hidden;
         }
 
         private RecipeViewModelComboBoxWraper selectedRecipeVMWraper;
@@ -83,19 +80,15 @@
 
         public BaseCommand UsageNextPage { get; private set; }
 
-        public bool MoreThanOneRecipe { get; private set; }
+        public Visibility MoreThanOneRecipe { get; private set; } = Visibility.Visible;
 
-        public bool MoreThanOneUsage { get; private set; }
+        public Visibility MoreThanOneUsage { get; private set; } = Visibility.Visible;
+
+        public int SelectedTabIndex { get; set; }
 
         public Visibility RecipesVisibility { get; private set; } = Visibility.Visible;
 
         public Visibility UsageVisibility { get; private set; } = Visibility.Visible;
-
-        public bool IsInfoExpanded { get; set; } = true;
-
-        public bool IsRecipesExpanded { get; set; } = true;
-
-        public bool IsUsageExpanded { get; set; } = true;
 
         public static RecipeViewModelComboBoxWraper PrevRecipe(
             List<RecipeViewModelComboBoxWraper> list,

@@ -104,9 +104,6 @@
 
         public List<List<string>> LevelTable { get; private set; }
 
-        public bool IsInfoExpanded { get; set; } = true;
-
-        public bool IsTableExpanded { get; set; } = true;
-
+        public int SelectedTabIndex { get; set; }
     }
 }

@@ -10,6 +10,54 @@
         <ResourceDictionary Source="/UI/CNEI/Styles/DefaultStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <!-- 6 rows: 32 * 6 + 5 * 5 = 254 -->
+    <system:Single x:Key="MaxItemListHeight">217</system:Single>
+
+    <DataTemplate DataType="{x:Type data:ViewModelEntityWithCount}">
+        <StackPanel Orientation="Horizontal">
+            <controls:EntitySlotControl DataContext="{Binding EntityViewModel}" />
+            <TextBlock VerticalAlignment="Center"
+                       Margin="5,0,0,0">
+                <Run Text="{Binding CountString}"
+                     FontSize="12" />
+                <Run Text="{Binding EntityViewModel.Title}" />
+            </TextBlock>
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- ComboBox for Recipe list templates and styles -->
+    <ControlTemplate x:Key="ComboBoxRecipeItemHeader">
+        <TextBlock Text="{Binding Name}" />
+    </ControlTemplate>
+    <ControlTemplate x:Key="ComboBoxRecipeItemChild">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="1"
+                       Width="20"
+                       Height="20"
+                       Fill="{Binding Icon}" />
+            <ContentControl Grid.Column="3"
+                            Content="{Binding Name}" />
+        </Grid>
+    </ControlTemplate>
+    <DataTemplate x:Key="ComboBoxRecipeItemCustom">
+        <Control x:Name="itemControl"
+                 Focusable="False" Template="{StaticResource ComboBoxRecipeItemChild}" />
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=IsEnabled}" Value="False">
+                <Setter TargetName="itemControl" Property="Template" Value="{StaticResource ComboBoxRecipeItemHeader}" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+    <Style TargetType="{x:Type ComboBoxItem}" x:Key="ComboBoxRecipeItemContainerStyle">
+        <Setter Property="IsEnabled" Value="{Binding IsItemEnabled}" />
+    </Style>
+
     <DataTemplate DataType="{x:Type data:ViewModelEntityInformation}">
         <Grid MaxWidth="{Binding Path=ActualWidth,
                                  RelativeSource={RelativeSource AncestorType=ListBoxItem}}">
@@ -106,52 +154,95 @@
         </StackPanel>
     </DataTemplate>
 
-    <!-- 6 rows: 32 * 6 + 5 * 5 = 254 -->
-    <system:Single x:Key="MaxItemListHeight">217</system:Single>
+    <DataTemplate x:Key="InformationAndRecipes">
+        <TabControl Style="{StaticResource TabControlStretchedHeader}"
+                    SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Information">
+                <ContentPresenter ContentTemplate="{StaticResource BasicInformation}"
+                                  Content="{Binding}" />
+            </TabItem>
+            <TabItem Header="Recipe"
+                     Visibility="{Binding RecipesVisibility}">
+                <Grid Margin="0,5,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-    <DataTemplate DataType="{x:Type data:ViewModelEntityWithCount}">
-        <StackPanel Orientation="Horizontal">
-            <controls:EntitySlotControl DataContext="{Binding EntityViewModel}" />
-            <TextBlock VerticalAlignment="Center"
-                       Margin="5,0,0,0">
-                <Run Text="{Binding CountString}"
-                     FontSize="12" />
-                <Run Text="{Binding EntityViewModel.Title}" />
-            </TextBlock>
-        </StackPanel>
+                    <DockPanel HorizontalAlignment="Stretch"
+                               Grid.Row="0">
+                        <DockPanel.Resources>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}" />
+                        </DockPanel.Resources>
+
+                        <Button Content="&lt;"
+                                DockPanel.Dock="Left"
+                                Margin="10,0,0,0"
+                                Command="{Binding RecipePrevPage}"
+                                Visibility="{Binding MoreThanOneRecipe}" />
+
+                        <Button Content="&gt;"
+                                DockPanel.Dock="Right"
+                                Margin="0,0,10,0"
+                                Command="{Binding RecipeNextPage}"
+                                Visibility="{Binding MoreThanOneRecipe}" />
+
+                        <ComboBox ItemsSource="{Binding RecipeVMWrappersList}"
+                                  ItemTemplate="{StaticResource ComboBoxRecipeItemCustom}"
+                                  ItemContainerStyle="{StaticResource ComboBoxRecipeItemContainerStyle}"
+                                  SelectedItem="{Binding Path=SelectedRecipeVMWrapper,
+                                                         Mode=TwoWay,
+                                                         UpdateSourceTrigger=PropertyChanged}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Width="350" />
+                    </DockPanel>
+
+                    <ContentControl Grid.Row="1"
+                                    Content="{Binding Path=SelectedRecipeVMWrapper.RecipeVM}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Usage"
+                     Visibility="{Binding UsageVisibility}">
+                <Grid Margin="0,5,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <DockPanel HorizontalAlignment="Stretch"
+                               Grid.Row="0">
+                        <DockPanel.Resources>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}" />
+                        </DockPanel.Resources>
+
+                        <Button Content="&lt;"
+                                DockPanel.Dock="Left"
+                                Margin="10,0,0,0"
+                                Command="{Binding UsagePrevPage}"
+                                Visibility="{Binding MoreThanOneUsage}" />
+
+                        <Button Content="&gt;"
+                                DockPanel.Dock="Right"
+                                Margin="0,0,10,0"
+                                Command="{Binding UsageNextPage}"
+                                Visibility="{Binding MoreThanOneUsage}" />
+
+                        <ComboBox ItemsSource="{Binding UsageVMWrappersList}"
+                                  ItemTemplate="{StaticResource ComboBoxRecipeItemCustom}"
+                                  ItemContainerStyle="{StaticResource ComboBoxRecipeItemContainerStyle}"
+                                  SelectedItem="{Binding Path=SelectedUsageVMWrapper,
+                                                         Mode=TwoWay,
+                                                         UpdateSourceTrigger=PropertyChanged}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Width="350" />
+                    </DockPanel>
+
+                    <ContentControl Grid.Row="1"
+                                    Content="{Binding Path=SelectedUsageVMWrapper.RecipeVM}" />
+                </Grid>
+            </TabItem>
+        </TabControl>
     </DataTemplate>
-
-    <!-- ComboBox for Recipe list templates and styles -->
-    <ControlTemplate x:Key="ComboBoxRecipeItemHeader">
-        <TextBlock Text="{Binding Name}" />
-    </ControlTemplate>
-    <ControlTemplate x:Key="ComboBoxRecipeItemChild">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="15" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Rectangle Grid.Column="1"
-                       Width="20"
-                       Height="20"
-                       Fill="{Binding Icon}" />
-            <ContentControl Grid.Column="3"
-                            Content="{Binding Name}" />
-        </Grid>
-    </ControlTemplate>
-    <DataTemplate x:Key="ComboBoxRecipeItemCustom">
-        <Control x:Name="itemControl"
-                 Focusable="False" Template="{StaticResource ComboBoxRecipeItemChild}" />
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=IsEnabled}" Value="False">
-                <Setter TargetName="itemControl" Property="Template" Value="{StaticResource ComboBoxRecipeItemHeader}" />
-            </DataTrigger>
-        </DataTemplate.Triggers>
-    </DataTemplate>
-    <Style TargetType="{x:Type ComboBoxItem}" x:Key="ComboBoxRecipeItemContainerStyle">
-        <Setter Property="IsEnabled" Value="{Binding IsItemEnabled}" />
-    </Style>
-
 </ResourceDictionary>

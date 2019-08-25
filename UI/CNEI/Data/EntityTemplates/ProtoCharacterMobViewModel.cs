@@ -12,7 +12,7 @@
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
-    public class ProtoCharacterMobViewModel : ProtoEntityViewModel
+    public class ProtoCharacterMobViewModel : ProtoEntityWithRecipeBondsViewModel
     {
         private static readonly ITextureResource DefaultIcon =
             new TextureResource("Content/Textures/StaticObjects/ObjectUnknown.png");
@@ -146,9 +146,5 @@
         }
 
         public RecipeViewModel Droplist { get; private set; }
-
-        public bool IsInfoExpanded { get; set; } = true;
-
-        public bool IsRecipesExpanded { get; set; } = true;
     }
 }

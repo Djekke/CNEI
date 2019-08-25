@@ -9,24 +9,7 @@
 
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:ProtoObjectGatherableVegetationViewModel}">
-        <ScrollViewer>
-            <StackPanel Margin="6,0,0,0">
-                <Expander Header="Information"
-                          IsExpanded="{Binding IsInfoExpanded}">
-                    <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" Content="{Binding}" />
-                </Expander>
-                <Expander Header="On gather"
-                          Visibility="{Binding GatherDroplistVisibility}"
-                          IsExpanded="{Binding IsGatherDroplistExpanded}">
-                    <ContentControl Content="{Binding GatherDroplist}" />
-                </Expander>
-                <Expander Header="On destroy"
-                          Visibility="{Binding DroplistOnDestroyVisibility}"
-                          IsExpanded="{Binding IsDroplistOnDestroyExpanded}">
-                    <ContentControl Content="{Binding DroplistOnDestroy}" />
-                </Expander>
-            </StackPanel>
-        </ScrollViewer>
+        <ContentPresenter ContentTemplate="{StaticResource InformationAndRecipes}" Content="{Binding}" />
     </DataTemplate>
 
 </ResourceDictionary>

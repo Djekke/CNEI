@@ -10,7 +10,8 @@
 
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:DroplistRecipeViewModel}">
-        <Grid Margin="10,20,10,20">
+        <Grid Margin="10,20,10,20"
+              VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />

@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:data="clr-namespace:CryoFall.CNEI.UI.Data">
+    xmlns:data="clr-namespace:CryoFall.CNEI.UI.Data"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/UI/CNEI/Data/AdditionalTemplates.xaml" />
@@ -9,47 +10,43 @@
 
     <!-- Detail info -->
     <DataTemplate DataType="{x:Type data:ProtoSkillViewModel}">
-        <ScrollViewer>
-            <StackPanel Margin="6,0,0,0">
-                <Expander Header="Information"
-                          IsExpanded="{Binding IsInfoExpanded}">
-                    <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" Content="{Binding}" />
-                </Expander>
-                <Expander Header="Levels table"
-                          IsExpanded="{Binding IsTableExpanded}">
-                    <Grid>
-                        <ItemsControl ItemsSource="{Binding LevelTable}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel IsItemsHost="True" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.Template>
-                                <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                    <ScrollViewer Style="{StaticResource ProperScrollViewer}"
-                                                  HorizontalScrollBarVisibility="Auto">
-                                        <ItemsPresenter />
-                                    </ScrollViewer>
-                                </ControlTemplate>
-                            </ItemsControl.Template>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <ListBox ItemsSource="{Binding}"
-                                             Style="{StaticResource IngredientListBox}">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding}"
-                                                           Margin="2,0,2,0"/>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </Grid>
-                </Expander>
-            </StackPanel>
-        </ScrollViewer>
+        <core:TabControlCached SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Information">
+                <ContentPresenter ContentTemplate="{StaticResource BasicInformation}" Content="{Binding}" />
+            </TabItem>
+            <TabItem Header="Levels table">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding LevelTable}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                <ScrollViewer Style="{StaticResource ProperScrollViewer}"
+                                              HorizontalScrollBarVisibility="Auto">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ListBox ItemsSource="{Binding}"
+                                         Style="{StaticResource IngredientListBox}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}"
+                                                       Margin="2,0,2,0"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+        </core:TabControlCached>
     </DataTemplate>
 
 </ResourceDictionary>
