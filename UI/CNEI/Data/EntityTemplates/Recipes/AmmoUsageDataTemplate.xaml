@@ -1,0 +1,38 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:data="clr-namespace:CryoFall.CNEI.UI.Data">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/UI/CNEI/Data/AdditionalTemplates.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Detail info -->
+    <DataTemplate DataType="{x:Type data:AmmoUsageViewModel}">
+        <Grid Margin="10,20,10,20"
+              VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="This ammo can be used by:"
+                       Margin="0,0,0,10"
+                       HorizontalAlignment="Center" />
+
+            <!--<ListBox Grid.Row="1"
+                     HorizontalAlignment="Center"
+                     Style="{StaticResource ListBoxRow}"
+                     ItemsSource="{Binding GunsVMList}" />-->
+
+            <ListBox Grid.Row="1"
+                     HorizontalAlignment="Center"
+                     Style="{StaticResource IngredientListBox}"
+                     ItemsSource="{Binding GunsInformationList}"
+                     Width="250"
+                     MaxHeight="{StaticResource MaxItemListHeight}" />
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

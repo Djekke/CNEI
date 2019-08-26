@@ -1,5 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
+    using System.Collections.Generic;
     using AtomicTorch.CBND.CoreMod.Items.Ammo;
     using AtomicTorch.CBND.GameApi.Data.Weapons;
     using CryoFall.CNEI.Managers;
@@ -42,5 +43,25 @@
                 }
             }
         }
+
+        public void AddCompatibleGun([NotNull] ProtoEntityViewModel gunViewModel)
+        {
+            if (CompatibleGuns.Count == 0)
+            {
+                AmmoUsage = new AmmoUsageViewModel(this, gunViewModel);
+                EntityViewModelsManager.AddRecipe(AmmoUsage);
+            }
+            else
+            {
+                AmmoUsage.AddAmmoUsage(gunViewModel);
+            }
+
+            CompatibleGuns.Add(gunViewModel);
+        }
+
+        public List<ProtoEntityViewModel> CompatibleGuns { get; private set; }
+            = new List<ProtoEntityViewModel>();
+
+        public AmmoUsageViewModel AmmoUsage { get; private set; }
     }
 }

@@ -1,7 +1,9 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
+    using System.Collections.Generic;
     using System.Linq;
     using AtomicTorch.CBND.CoreMod.Items.Weapons;
+    using AtomicTorch.CBND.GameApi.Scripting;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
@@ -9,6 +11,38 @@
     {
         public ProtoItemWeaponViewModel([NotNull] IProtoItemWeapon itemWeapon) : base(itemWeapon)
         {
+        }
+
+        /// <summary>
+        /// Initilize entity reletionships with each other - invoked after all entity view Models created,
+        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        /// </summary>
+        public override void InitAdditionalRecipes()
+        {
+            base.InitAdditionalRecipes();
+
+            if (!(ProtoEntity is IProtoItemWeapon itemWeapon))
+            {
+                return;
+            }
+
+            if (itemWeapon.AmmoCapacity > 0)
+            {
+                foreach (var compatibleAmmoProto in itemWeapon.CompatibleAmmoProtos)
+                {
+                    var ammoVM = EntityViewModelsManager.GetEntityViewModel(compatibleAmmoProto);
+                    CompatibleAmmo.Add(ammoVM);
+                    if (ammoVM is ProtoItemAmmoViewModel ammoViewModel)
+                    {
+                        ammoViewModel.AddCompatibleGun(this);
+                    }
+                    else
+                    {
+                        Api.Logger.Error("CNEI: Gun using something else as ammo (not IProtoItemAmmo) " + ammoVM);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -48,7 +82,7 @@
                     EntityInformation.Add(new ViewModelEntityInformation("Ammo capacity",
                         itemWeapon.AmmoCapacity));
                     EntityInformation.Add(new ViewModelEntityInformation("Compatible ammo",
-                        itemWeapon.CompatibleAmmoProtos.Select(EntityViewModelsManager.GetEntityViewModel)));
+                        CompatibleAmmo));
                 }
             }
 
@@ -58,5 +92,8 @@
                     weaponRangedEnergy.EnergyUsePerShot));
             }
         }
+
+        public List<ProtoEntityViewModel> CompatibleAmmo { get; private set; }
+            = new List<ProtoEntityViewModel>();
     }
 }
