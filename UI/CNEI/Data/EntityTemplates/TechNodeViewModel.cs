@@ -59,6 +59,11 @@
                                     EntityViewModelsManager.GetEntityViewModel(techNodeEffectStructureUnlock
                                         .Structure));
                                 break;
+                            case TechNodeEffectVehicleUnlock techNodeEffectVehicleUnlock:
+                                tempList.Add(
+                                    EntityViewModelsManager.GetEntityViewModel(techNodeEffectVehicleUnlock
+                                        .Vehicle));
+                                break;
                             default:
                                 Api.Logger.Error("CNEI: Unknown TechNodeEffect " + nodeEffect);
                                 break;
