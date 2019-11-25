@@ -6,6 +6,8 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
+    using AtomicTorch.CBND.CoreMod.StaticObjects.Structures;
+    using AtomicTorch.CBND.CoreMod.Vehicles;
     using AtomicTorch.CBND.GameApi;
     using AtomicTorch.CBND.GameApi.Data;
     using AtomicTorch.CBND.GameApi.Scripting;
@@ -23,6 +25,12 @@
 
         private static readonly HashSet<string> resourceDictionaryPaths = new HashSet<string>();
 
+        private static IClientStorage versionStorage;
+
+        private static IClientStorage defaultViewStorage;
+
+        private static List<string> defaultViewPresetFromSettings;
+
         private static IClientStorage settingsStorage;
 
         private static Settings settingsInstance;
@@ -32,6 +40,9 @@
         private static ViewType tempView;
 
         private static ObservableCollection<ProtoEntityViewModel> defaultViewCollection =
+            new ObservableCollection<ProtoEntityViewModel>();
+
+        private static ObservableCollection<ProtoEntityViewModel> defaultViewFilteredCollection =
             new ObservableCollection<ProtoEntityViewModel>();
 
         private static ObservableCollection<ProtoEntityViewModel> allEntityCollection;
@@ -78,6 +89,36 @@
         /// Is it safe to work with entity view models.
         /// </summary>
         public static bool EntityDictionaryCreated = false;
+
+        public static Version CurrentVersion => new Version("0.4.0");
+
+        public static Version VersionFromClientStorage = null;
+
+        /// <summary>
+        /// Main function, called on game start.
+        /// </summary>
+        public static void Init()
+        {
+            SetAllEntitiesViewModels();
+            GetPlaneListOfAllTypesHierarchy();
+            InitSettings();
+            EntityDictionaryCreated = true;
+
+            foreach (ProtoEntityViewModel entityViewModel in allEntityDictionary.Values)
+            {
+                entityViewModel.InitAdditionalRecipes();
+                entityViewModel.InitInformation();
+            }
+
+            AssembleAllTemplates();
+
+            InitAllRecipesLinks();
+
+            foreach (ProtoEntityViewModel entityViewModel in allEntityDictionary.Values)
+            {
+                entityViewModel.FinalizeRecipeLinking();
+            }
+        }
 
         /// <summary>
         /// Return substring before ` symbol.
@@ -226,19 +267,56 @@
         public static void AssembleDefaultView()
         {
             List<ProtoEntityViewModel> tempList = new List<ProtoEntityViewModel>();
+            List<ProtoEntityViewModel> tempListFiltered = new List<ProtoEntityViewModel>();
             foreach (TypeHierarchy node in DefaultViewPreset)
             {
                 tempList.AddRange(node.EntityViewModelsFullList);
             }
             // Sort EntityList by Type
             tempList.Sort((t1,t2) => string.Compare(t1.Type, t2.Type, StringComparison.OrdinalIgnoreCase));
+
+            // Filtering default view with all structures and vehicles that not available in technology.
+            foreach (var entityViewModel in tempList)
+            {
+                switch (entityViewModel.ProtoEntity)
+                {
+                    case IProtoObjectStructure protoObjectStructure:
+                        if (protoObjectStructure.IsAutoUnlocked || protoObjectStructure.IsListedInTechNodes)
+                        {
+                            tempListFiltered.Add(entityViewModel);
+                        }
+                        else
+                        {
+                            Api.Logger.Info("CNEI: Found unreachable structure: " + protoObjectStructure);
+                        }
+                        break;
+                    case IProtoVehicle protoVehicle:
+                        if (protoVehicle.ListedInTechNodes.Count > 0)
+                        {
+                            tempListFiltered.Add(entityViewModel);
+                        }
+                        else
+                        {
+                            Api.Logger.Info("CNEI: Found unreachable vehicle: " + protoVehicle);
+                        }
+                        break;
+                    default:
+                        tempListFiltered.Add(entityViewModel);
+                        break;
+                }
+            }
             var tempCollection = new ObservableCollection<ProtoEntityViewModel>(tempList);
+            var tempFilteredCollection = new ObservableCollection<ProtoEntityViewModel>(tempListFiltered);
             if (settingsInstance.View == ViewType.Default)
             {
-                CurrentView.BaseCollection = tempCollection;
+                CurrentView.BaseCollection = settingsInstance.HideUnreachableObjects
+                    ? tempFilteredCollection
+                    : tempCollection;
             }
             defaultViewCollection.Clear();
             defaultViewCollection = tempCollection;
+            defaultViewFilteredCollection.Clear();
+            defaultViewFilteredCollection = tempFilteredCollection;
         }
 
         /// <summary>
@@ -246,7 +324,63 @@
         /// </summary>
         public static void InitSettings()
         {
-            settingsStorage = Api.Client.Storage.GetStorage("Mods/CNEI.Settings");
+            LoadVersionFromClientStorage();
+            LoadDefaultViewPresetFromClientStorage();
+            LoadGlobalSettingsFromClientStorage();
+        }
+
+        /// <summary>
+        /// Try to load mod version from client storage.
+        /// </summary>
+        private static void LoadVersionFromClientStorage()
+        {
+            // Load settings.
+            versionStorage = Api.Client.Storage.GetStorage("Mods/CNEI/Version");
+            versionStorage.RegisterType(typeof(Version));
+            versionStorage.TryLoad(out VersionFromClientStorage);
+
+            // Version changes handling.
+            // if (VersionFromClientStorage.CompareTo(CurrentVersion) > 0)
+
+            // Or should I wait until all migration work is done?
+            versionStorage.Save(CurrentVersion);
+        }
+
+        public static void LoadDefaultViewPresetFromClientStorage()
+        {
+            defaultViewStorage = Api.Client.Storage.GetStorage("Mods/CNEI/DefaultView");
+            bool settingExist = true;
+            if (!defaultViewStorage.TryLoad(out defaultViewPresetFromSettings))
+            {
+                // Default settings.
+                defaultViewPresetFromSettings = new List<string>()
+                {
+                    "ProtoCharacterMob",
+                    "ProtoItem",
+                    "ProtoObjectLoot",
+                    "ProtoObjectLootContainer",
+                    "ProtoObjectMineral",
+                    "ProtoObjectStructure",
+                    "ProtoObjectVegetation",
+                    "ProtoVehicle"
+                };
+                settingExist = false;
+            }
+
+            // Version changes handling.
+            // if (VersionFromClientStorage.CompareTo(CurrentVersion) > 0)
+
+            LoadDefaultViewFromSettings();
+
+            if (!settingExist)
+            {
+                defaultViewStorage.Save(defaultViewPresetFromSettings);
+            }
+        }
+
+        public static void LoadGlobalSettingsFromClientStorage()
+        {
+            settingsStorage = Api.Client.Storage.GetStorage("Mods/CNEI/GlobalSettings");
             settingsStorage.RegisterType(typeof(ViewType));
             settingsStorage.RegisterType(typeof(Settings));
 
@@ -255,18 +389,9 @@
                 // Default settings.
                 settingsInstance.View = ViewType.Default;
 
-                settingsInstance.DefaultViewPreset = new List<string>()
-                {
-                    "ProtoCharacterMob",
-                    "ProtoItem",
-                    "ProtoObjectLoot",
-                    "ProtoObjectLootContainer",
-                    "ProtoObjectMineral",
-                    "ProtoObjectStructure",
-                    "ProtoObjectVegetation"
-                };
-
                 settingsInstance.IsTypeVisible = false;
+
+                settingsInstance.HideUnreachableObjects = true;
 
                 isSettingsChanged = true;
             }
@@ -274,9 +399,9 @@
             // Temp settings values to check if they changed.
             tempView = settingsInstance.View;
             IsTypeVisible = settingsInstance.IsTypeVisible;
+            HideUnreachableObjects = settingsInstance.HideUnreachableObjects;
 
             ChangeCurrentView();
-            LoadDefaultViewFromSettings();
         }
 
         /// <summary>
@@ -300,6 +425,14 @@
                 CurrentView.Refresh();
             }
 
+            // Check if HideUnreachableObjects changed.
+            if (HideUnreachableObjects != settingsInstance.HideUnreachableObjects)
+            {
+                settingsInstance.HideUnreachableObjects = HideUnreachableObjects;
+                isSettingsChanged = true;
+                ChangeCurrentView();
+            }
+
             // If settings changed - save to local storage.
             if (isSettingsChanged)
             {
@@ -316,7 +449,9 @@
             switch (settingsInstance.View)
             {
                 case ViewType.Default:
-                    CurrentView.BaseCollection = defaultViewCollection;
+                    CurrentView.BaseCollection = settingsInstance.HideUnreachableObjects
+                        ? defaultViewFilteredCollection
+                        : defaultViewCollection;
                     break;
                 case ViewType.EntityWithTemplates:
                     CurrentView.BaseCollection = allEntityWithTemplatesCollection;
@@ -335,7 +470,7 @@
         /// </summary>
         private static void LoadDefaultViewFromSettings()
         {
-            foreach (string s in settingsInstance.DefaultViewPreset)
+            foreach (string s in defaultViewPresetFromSettings)
             {
                 if (TypeHierarchyDictionary.ContainsKey(s))
                 {
@@ -357,10 +492,10 @@
         {
             var tempList = DefaultViewPreset.Select(t => t.ShortName).ToList();
             // tempList already sorted, as DefaultViewPreset sorted by ShortName
-            if (!tempList.SequenceEqual(settingsInstance.DefaultViewPreset))
+            if (!tempList.SequenceEqual(defaultViewPresetFromSettings))
             {
-                settingsInstance.DefaultViewPreset = tempList;
-                isSettingsChanged = true;
+                defaultViewPresetFromSettings = tempList;
+                defaultViewStorage.Save(defaultViewPresetFromSettings);
             }
         }
 
@@ -502,33 +637,6 @@
                                         recipeViewModel.ResourceDictionaryName);
         }
 
-        /// <summary>
-        /// Main function, called on game start.
-        /// </summary>
-        public static void Init()
-        {
-            SetAllEntitiesViewModels();
-            GetPlaneListOfAllTypesHierarchy();
-            InitSettings();
-            EntityDictionaryCreated = true;
-
-            foreach (ProtoEntityViewModel entityViewModel in allEntityDictionary.Values)
-            {
-                entityViewModel.InitAdditionalRecipes();
-                entityViewModel.InitInformation();
-            }
-
-            AssembleAllTemplates();
-
-            InitAllRecipesLinks();
-
-            foreach (ProtoEntityViewModel entityViewModel in allEntityDictionary.Values)
-            {
-                entityViewModel.FinalizeRecipeLinking();
-            }
-        }
-
-
         public static bool IsDefaultViewOn
         {
             get => tempView == ViewType.Default;
@@ -567,6 +675,8 @@
 
         public static bool IsTypeVisible { get; set; }
 
+        public static bool HideUnreachableObjects { get; set; }
+
         public static Visibility TypeVisibility =>
             settingsInstance.IsTypeVisible ? Visibility.Visible : Visibility.Collapsed;
 
@@ -575,7 +685,7 @@
         {
             public ViewType View;
 
-            public List<string> DefaultViewPreset;
+            public bool HideUnreachableObjects;
 
             public bool IsTypeVisible;
         }

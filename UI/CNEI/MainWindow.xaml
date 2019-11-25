@@ -184,37 +184,42 @@
 
                 <StackPanel Orientation="Vertical">
                     <GroupBox Header="Content">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel>
-                                <RadioButton x:Name="DefaultView"
-                                             GroupName="Content"
-                                             Content="Default View (Items, structures, creatures)"
-                                             IsChecked="{Binding IsDefaultViewOn}" />
-                                <RadioButton x:Name="ShowEntityWithTemplates"
-                                             GroupName="Content"
-                                             Content="Show all entity with templates"
-                                             IsChecked="{Binding IsShowingEntityWithTemplates}" />
-                                <RadioButton x:Name="ShowAllEntity"
-                                             GroupName="Content"
-                                             IsChecked="{Binding IsShowingAll}">
-                                    <RadioButton.Content>
-                                        <TextBlock>
-                                            <Run>Show all entity </Run>
-                                            <Run Foreground="Red">(only for development use)</Run>
-                                        </TextBlock>
-                                    </RadioButton.Content>
-                                </RadioButton>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1"
-                                        HorizontalAlignment="Right">
-                                <Button Content="Change default view preset"
-                                        Command="{Binding ChangeViewPreset}"/>
-                            </StackPanel>
-                        </Grid>
+                        <StackPanel Orientation="Vertical">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <RadioButton x:Name="DefaultView"
+                                                 GroupName="Content"
+                                                 Content="Default View (Items, structures, creatures)"
+                                                 IsChecked="{Binding IsDefaultViewOn}" />
+                                    <RadioButton x:Name="ShowEntityWithTemplates"
+                                                 GroupName="Content"
+                                                 Content="Show all entity with templates"
+                                                 IsChecked="{Binding IsShowingEntityWithTemplates}" />
+                                    <RadioButton x:Name="ShowAllEntity"
+                                                 GroupName="Content"
+                                                 IsChecked="{Binding IsShowingAll}">
+                                        <RadioButton.Content>
+                                            <TextBlock>
+                                                <Run>Show all entity </Run>
+                                                <Run Foreground="Red">(only for development use)</Run>
+                                            </TextBlock>
+                                        </RadioButton.Content>
+                                    </RadioButton>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1"
+                                            HorizontalAlignment="Right">
+                                    <Button Content="Change default view preset"
+                                            Command="{Binding ChangeViewPreset}"/>
+                                </StackPanel>
+                            </Grid>
+                            <CheckBox Content="Hide unreachable objects"
+                                      Margin="0,5,0,0"
+                                      IsChecked="{Binding HideUnreachableObjects}"/>
+                        </StackPanel>
                     </GroupBox>
                     <GroupBox Header="View">
                         <StackPanel>

@@ -129,6 +129,21 @@
             }
         }
 
+        public bool HideUnreachableObjects
+        {
+            get => EntityViewModelsManager.HideUnreachableObjects;
+            set
+            {
+                if (value == HideUnreachableObjects)
+                {
+                    return;
+                }
+
+                EntityViewModelsManager.HideUnreachableObjects = value;
+                NotifyThisPropertyChanged();
+            }
+        }
+
         // TODO: Update this on Operator status change.
         public bool IsCreativePanelVisible => ServerOperatorSystem.ClientIsOperator();
 
