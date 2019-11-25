@@ -80,7 +80,7 @@
                     break;
                 case ItemAntiToxin _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 0.3));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 0.4));
                     break;
                 case ItemAntiToxinPreExposure _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
@@ -170,7 +170,7 @@
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectNausea>(), 1.0));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.35));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectHealingSlow>(), 0.3));
                     break;
                 case ItemSplint _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
