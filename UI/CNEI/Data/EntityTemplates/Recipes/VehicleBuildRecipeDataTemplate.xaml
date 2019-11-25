@@ -1,0 +1,89 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls"
+    xmlns:data="clr-namespace:CryoFall.CNEI.UI.Data">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/UI/CNEI/Data/AdditionalTemplates.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Detail info -->
+    <DataTemplate DataType="{x:Type data:VehicleBuildRecipeViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0"
+                  Margin="10,20,10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <ListBox Grid.Column="0"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource IngredientListBox}"
+                         ItemsSource="{Binding InputItemsVMList}"
+                         MaxHeight="{StaticResource MaxItemListHeight}" />
+
+                <TextBlock Grid.Column="1"
+                           Text="--&gt;"
+                           Margin="10,0,10,0"
+                           VerticalAlignment="Center" />
+
+                <controls:EntitySlotControl Grid.Column="2"
+                                            Width="150"
+                                            Height="150"
+                                            VerticalAlignment="Center"
+                                            DataContext="{Binding VehicleVM}" />
+            </Grid>
+
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        MinHeight="35">
+                <TextBlock Text="Build in:"
+                           Margin="0,0,20,0"
+                           VerticalAlignment="Center" />
+
+                <ListBox Style="{StaticResource ListBoxRow}"
+                         VerticalAlignment="Center"
+                         ItemsSource="{Binding StationsList}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        MinHeight="35">
+                <TextBlock Text="Required energy:"
+                           Margin="0,0,10,0"
+                           VerticalAlignment="Center" />
+                <Image Source="/Content/Textures/Icons/IconElectricity.png"
+                       Width="20"
+                       Height="20" />
+                <TextBlock Text="{Binding BuildRequiredElectricityAmount}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        MinHeight="35">
+                <TextBlock Text="Technologies:"
+                           Margin="0,0,20,0"
+                           VerticalAlignment="Center" />
+
+                <ListBox Style="{StaticResource ListBoxRow}"
+                         VerticalAlignment="Center"
+                         ItemsSource="{Binding ListedInTechNodes}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>
