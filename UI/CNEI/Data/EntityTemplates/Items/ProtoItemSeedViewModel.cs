@@ -11,7 +11,7 @@
         }
 
         /// <summary>
-        /// Initilize entity reletionships with each other - invoked after all entity view Models created,
+        /// Initialize entity relationships with each other - invoked after all entity view Models created,
         /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
@@ -28,7 +28,7 @@
         }
 
         /// <summary>
-        /// Initilize information about entity - invoked after all entity view Models created,
+        /// Initialize information about entity - invoked after all entity view Models created,
         /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>

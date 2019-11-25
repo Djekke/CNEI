@@ -6,7 +6,6 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
-    using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi;
     using AtomicTorch.CBND.GameApi.Data;
     using AtomicTorch.CBND.GameApi.Scripting;
@@ -17,7 +16,7 @@
 
     public static class EntityViewModelsManager
     {
-        private static Dictionary<IProtoEntity, ProtoEntityViewModel> allEntityDictonary =
+        private static Dictionary<IProtoEntity, ProtoEntityViewModel> allEntityDictionary =
             new Dictionary<IProtoEntity, ProtoEntityViewModel>();
 
         private static List<RecipeViewModel> recipeList = new List<RecipeViewModel>();
@@ -50,7 +49,7 @@
         public static Dictionary<string, TypeHierarchy> TypeHierarchyDictionary;
 
         /// <summary>
-        /// Observable coolction with all nodes of TypeHierarchy tree.
+        /// Observable collection with all nodes of TypeHierarchy tree.
         /// </summary>
         public static ObservableCollection<TypeHierarchy> TypeHierarchyPlaneCollection;
 
@@ -78,7 +77,7 @@
         /// <summary>
         /// Is it safe to work with entity view models.
         /// </summary>
-        public static bool EntityDictonaryCreated = false;
+        public static bool EntityDictionaryCreated = false;
 
         /// <summary>
         /// Return substring before ` symbol.
@@ -91,7 +90,7 @@
         }
 
         /// <summary>
-        /// Populate allEntityDictonary for all instance of IProtoEntity with corresponding ViewModels.
+        /// Populate allEntityDictionary for all instance of IProtoEntity with corresponding ViewModels.
         /// </summary>
         private static void SetAllEntitiesViewModels()
         {
@@ -132,7 +131,7 @@
                                 AddRecipe(newRecipeViewModel);
                             }
                             EntityTypeHierarchy.Add(entity.GetType(), newEntityViewModel);
-                            allEntityDictonary.Add(entity, newEntityViewModel);
+                            allEntityDictionary.Add(entity, newEntityViewModel);
                             resourceDictionaryPaths.Add(newEntityViewModel.ResourceDictionaryFolderName +
                                                         newEntityViewModel.ResourceDictionaryName);
                             templateFound = true;
@@ -145,19 +144,19 @@
                     Api.Logger.Warning("CNEI: Template for " + entity + "not found");
                     newEntityViewModel = new ProtoEntityViewModel(entity);
                     EntityTypeHierarchy.Add(entity.GetType(), newEntityViewModel);
-                    allEntityDictonary.Add(entity, newEntityViewModel);
+                    allEntityDictionary.Add(entity, newEntityViewModel);
                     resourceDictionaryPaths.Add(newEntityViewModel.ResourceDictionaryFolderName +
                                                 newEntityViewModel.ResourceDictionaryName);
                 }
             }
 
-            allEntityCollection = new ObservableCollection<ProtoEntityViewModel>(allEntityDictonary.Values);
+            allEntityCollection = new ObservableCollection<ProtoEntityViewModel>(allEntityDictionary.Values);
             allEntityWithTemplatesCollection = new ObservableCollection<ProtoEntityViewModel>(
                 allEntityCollection.Where(vm => vm.GetType().IsSubclassOf(typeof(ProtoEntityViewModel))));
         }
 
         /// <summary>
-        /// Get plane represantation from tree TypeHierarchy to list.
+        /// Get plane representation from tree TypeHierarchy to list.
         /// </summary>
         private static void GetPlaneListOfAllTypesHierarchy()
         {
@@ -243,7 +242,7 @@
         }
 
         /// <summary>
-        /// Try to load settings from client storage or init deafult one.
+        /// Try to load settings from client storage or init default one.
         /// </summary>
         public static void InitSettings()
         {
@@ -267,14 +266,14 @@
                     "ProtoObjectVegetation"
                 };
 
-                settingsInstance.IsTypeVisibile = false;
+                settingsInstance.IsTypeVisible = false;
 
                 isSettingsChanged = true;
             }
 
             // Temp settings values to check if they changed.
             tempView = settingsInstance.View;
-            IsTypeVisible = settingsInstance.IsTypeVisibile;
+            IsTypeVisible = settingsInstance.IsTypeVisible;
 
             ChangeCurrentView();
             LoadDefaultViewFromSettings();
@@ -293,10 +292,10 @@
                 ChangeCurrentView();
             }
 
-            // Check if type visibilty changed.
-            if (IsTypeVisible != settingsInstance.IsTypeVisibile)
+            // Check if type visibility changed.
+            if (IsTypeVisible != settingsInstance.IsTypeVisible)
             {
-                settingsInstance.IsTypeVisibile = IsTypeVisible;
+                settingsInstance.IsTypeVisible = IsTypeVisible;
                 isSettingsChanged = true;
                 CurrentView.Refresh();
             }
@@ -331,7 +330,7 @@
         }
 
         /// <summary>
-        /// Load default view preset from settings (convert list from string to TypeHierarhy).
+        /// Load default view preset from settings (convert list from string to TypeHierarchy).
         /// And set corresponding nodes IsChecked state.
         /// </summary>
         private static void LoadDefaultViewFromSettings()
@@ -352,7 +351,7 @@
         }
 
         /// <summary>
-        /// Save default view preset to settings (convert list from TypeHierarhy to string).
+        /// Save default view preset to settings (convert list from TypeHierarchy to string).
         /// </summary>
         private static void SaveDefaultViewToSettings()
         {
@@ -419,13 +418,13 @@
         /// </summary>
         public static ProtoEntityViewModel GetEntityViewModel([NotNull] IProtoEntity entity)
         {
-            if (!EntityDictonaryCreated)
+            if (!EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Call GetEntityViewModel before all entity VMs sets.");
             }
-            if (allEntityDictonary.ContainsKey(entity))
+            if (allEntityDictionary.ContainsKey(entity))
             {
-                return allEntityDictonary[entity];
+                return allEntityDictionary[entity];
             }
             else
             {
@@ -439,7 +438,7 @@
         public static ProtoEntityViewModel GetEntityViewModelByType<TProtoEntity>()
             where TProtoEntity : class, IProtoEntity
         {
-            if (!EntityDictonaryCreated)
+            if (!EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Call GetEntityViewModelByType before all entity VMs sets.");
             }
@@ -452,12 +451,12 @@
         /// </summary>
         public static List<ProtoEntityViewModel> GetEntityViewModelByInterface(Type interfaceType)
         {
-            if (!EntityDictonaryCreated)
+            if (!EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Call GetEntityViewModelByType before all entity VMs sets.");
             }
 
-            return allEntityDictonary.Where(p => interfaceType.IsAssignableFrom(p.Key.GetType()))
+            return allEntityDictionary.Where(p => interfaceType.IsAssignableFrom(p.Key.GetType()))
                                      .Select(p => p.Value)
                                      .ToList();
         }
@@ -471,7 +470,7 @@
         public static List<ProtoEntityViewModel> GetAllEntityViewModelsByType<TProtoEntity>()
             where TProtoEntity : class, IProtoEntity
         {
-            if (!EntityDictonaryCreated)
+            if (!EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Call GetAllEntityViewModelsByType before all entity VMs sets.");
             }
@@ -484,7 +483,7 @@
         /// </summary>
         public static ObservableCollection<ProtoEntityViewModel> GetAllEntityViewModels()
         {
-            if (!EntityDictonaryCreated)
+            if (!EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Call GetAllEntityViewModels before all entity VMs sets.");
             }
@@ -511,9 +510,9 @@
             SetAllEntitiesViewModels();
             GetPlaneListOfAllTypesHierarchy();
             InitSettings();
-            EntityDictonaryCreated = true;
+            EntityDictionaryCreated = true;
 
-            foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
+            foreach (ProtoEntityViewModel entityViewModel in allEntityDictionary.Values)
             {
                 entityViewModel.InitAdditionalRecipes();
                 entityViewModel.InitInformation();
@@ -523,7 +522,7 @@
 
             InitAllRecipesLinks();
 
-            foreach (ProtoEntityViewModel entityViewModel in allEntityDictonary.Values)
+            foreach (ProtoEntityViewModel entityViewModel in allEntityDictionary.Values)
             {
                 entityViewModel.FinalizeRecipeLinking();
             }
@@ -569,7 +568,7 @@
         public static bool IsTypeVisible { get; set; }
 
         public static Visibility TypeVisibility =>
-            settingsInstance.IsTypeVisibile ? Visibility.Visible : Visibility.Collapsed;
+            settingsInstance.IsTypeVisible ? Visibility.Visible : Visibility.Collapsed;
 
         // Settings that save\load from\to ClientStorage.
         public struct Settings
@@ -578,7 +577,7 @@
 
             public List<string> DefaultViewPreset;
 
-            public bool IsTypeVisibile;
+            public bool IsTypeVisible;
         }
 
         [NotPersistent]

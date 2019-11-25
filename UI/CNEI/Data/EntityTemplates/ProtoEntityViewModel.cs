@@ -35,8 +35,8 @@
             TitleLower = entity.Name.ToLower();
             Type = entity.Id;
             TypeLower = entity.Id.ToLower();
-            RecipeVMWrappersList = new List<RecipeViewModelComboBoxWraper>();
-            UsageVMWrappersList = new List<RecipeViewModelComboBoxWraper>();
+            RecipeVMWrappersList = new List<RecipeViewModelComboBoxWrapper>();
+            UsageVMWrappersList = new List<RecipeViewModelComboBoxWrapper>();
             EntityInformation = new ObservableCollection<ViewModelEntityInformation>();
         }
 
@@ -107,12 +107,12 @@
 
         public ObservableCollection<ViewModelEntityInformation> EntityInformation { get; set; }
 
-        public List<RecipeViewModelComboBoxWraper> RecipeVMWrappersList { get; private set; }
+        public List<RecipeViewModelComboBoxWrapper> RecipeVMWrappersList { get; private set; }
 
-        public List<RecipeViewModelComboBoxWraper> UsageVMWrappersList { get; private set; }
+        public List<RecipeViewModelComboBoxWrapper> UsageVMWrappersList { get; private set; }
 
         /// <summary>
-        /// Initilize entity reletionships with each other - invoked after all entity view Models created,
+        /// Initialize entity relationships with each other - invoked after all entity view Models created,
         /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
@@ -121,7 +121,7 @@
         }
 
         /// <summary>
-        /// Initilize information about entity - invoked after all entity view Models created,
+        /// Initialize information about entity - invoked after all entity view Models created,
         /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
@@ -129,7 +129,7 @@
         {
         }
 
-        // TODO: Add Linktype enum.
+        // TODO: Add LinkType enum.
         /// <summary>
         /// Add recipe View Model reference to current View Model.
         /// Recipe View Model describe how this entity can be acquired.
@@ -176,13 +176,13 @@
             var i = 0;
             foreach (var group in sortedRecipeGroups)
             {
-                RecipeVMWrappersList.Add(new RecipeViewModelComboBoxWraper(null,
+                RecipeVMWrappersList.Add(new RecipeViewModelComboBoxWrapper(null,
                     group.Name + " (" + group.Entities.Count() + ")", false, i));
                 i++;
                 foreach (var recipeVM in group.Entities)
                 {
                     RecipeVMWrappersList.Add(
-                        new RecipeViewModelComboBoxWraper(recipeVM, recipeVM.Title, true, i));
+                        new RecipeViewModelComboBoxWrapper(recipeVM, recipeVM.Title, true, i));
                     i++;
                 }
             }
@@ -197,13 +197,13 @@
             var j = 0;
             foreach (var group in sortedUsageGroups)
             {
-                UsageVMWrappersList.Add(new RecipeViewModelComboBoxWraper(null,
+                UsageVMWrappersList.Add(new RecipeViewModelComboBoxWrapper(null,
                     group.Name + " (" + group.Entities.Count() + ")", false, j));
                 j++;
                 foreach (var recipeVM in group.Entities)
                 {
                     UsageVMWrappersList.Add(
-                        new RecipeViewModelComboBoxWraper(recipeVM, recipeVM.Title, true, j));
+                        new RecipeViewModelComboBoxWrapper(recipeVM, recipeVM.Title, true, j));
                     j++;
                 }
             }

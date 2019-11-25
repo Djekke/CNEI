@@ -14,6 +14,11 @@
 
     public class ViewModelEntityInformation : BaseViewModel
     {
+        /// <summary>
+        /// Simple text information line "Header: text"
+        /// </summary>
+        /// <param name="header">header</param>
+        /// <param name="text">text</param>
         public ViewModelEntityInformation(string header, string text)
         {
             Header = header;
@@ -21,20 +26,40 @@
             TextVisibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Simple numeric information line "Header: number"
+        /// </summary>
+        /// <param name="header">header</param>
+        /// <param name="i">number</param>
         public ViewModelEntityInformation(string header, int i) : this(header, i.ToString())
         {
         }
 
+        /// <summary>
+        /// Simple numeric information line "Header: number"
+        /// </summary>
+        /// <param name="header">header</param>
+        /// <param name="d">number</param>
         public ViewModelEntityInformation(string header, double d)
             : this(header, d.ToString("0.###", CultureInfo.CurrentCulture))
         {
         }
 
+        /// <summary>
+        /// Simple formatted time information "Header: time"
+        /// </summary>
+        /// <param name="header">header</param>
+        /// <param name="timeSpan">time</param>
         public ViewModelEntityInformation(string header, TimeSpan timeSpan)
             : this(header, ClientTimeFormatHelper.FormatTimeDuration(timeSpan))
         {
         }
 
+        /// <summary>
+        /// Information with list on entity "Header: entity list"
+        /// </summary>
+        /// <param name="header">header</param>
+        /// <param name="collection">entity collection</param>
         public ViewModelEntityInformation(string header, List<ProtoEntityViewModel> collection)
         {
             HeaderVisibility = Visibility.Collapsed;
@@ -43,11 +68,21 @@
             InformationArrayVisibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Information with list on entity "Header: entity list"
+        /// </summary>
+        /// <param name="header">header</param>
+        /// <param name="collection">entity collection</param>
         public ViewModelEntityInformation(string header, IEnumerable<ProtoEntityViewModel> collection)
             : this(header, collection.ToList())
         {
         }
 
+        /// <summary>
+        /// Information with single entity "Header: entity"
+        /// </summary>
+        /// <param name="header">header</param>
+        /// <param name="protoEntityViewModel">entity</param>
         public ViewModelEntityInformation(string header, ProtoEntityViewModel protoEntityViewModel)
         {
             Header = header;
@@ -55,6 +90,12 @@
             CollectionVisibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Information with status effect "Header: effect icon with intensity"
+        /// </summary>
+        /// <param name="header">header</param>
+        /// <param name="protoEntityViewModel">effect entity</param>
+        /// <param name="intensity">intensity</param>
         public ViewModelEntityInformation(string header, ProtoEntityViewModel protoEntityViewModel, double intensity)
         {
             if (protoEntityViewModel is ProtoStatusEffectViewModel protoStatusEffectViewModel)

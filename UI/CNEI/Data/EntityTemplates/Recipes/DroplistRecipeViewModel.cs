@@ -24,7 +24,7 @@
             [NotNull] IEnumerable<IProtoItem> droplist)
             : base(entityViewModel.ProtoEntity)
         {
-            if (!EntityViewModelsManager.EntityDictonaryCreated)
+            if (!EntityViewModelsManager.EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Droplist constructor used before all entity VMs sets.");
             }

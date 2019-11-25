@@ -24,7 +24,7 @@
             [NotNull] IConstructionUpgradeEntryReadOnly upgradeEntry)
             : base(upgradeEntry.ProtoStructure)
         {
-            if (!EntityViewModelsManager.EntityDictonaryCreated)
+            if (!EntityViewModelsManager.EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Upgrade constructor used before all entity VMs sets.");
             }
@@ -52,7 +52,7 @@
 
             UpgradedStructureVM = newStructureViewModel;
 
-            // Can not simply get it from result entityVM because it can has not initilized Tech.
+            // Can not simply get it from result entityVM because it can has not Initialized Tech.
             //ListedInTechNodes = newStructureViewModel.ListedInTechNodes;
             ListedInTechNodes = upgradeEntry.ProtoStructure.ListedInTechNodes
                 .Select(EntityViewModelsManager.GetEntityViewModel)

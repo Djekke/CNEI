@@ -22,7 +22,7 @@
         }
 
         /// <summary>
-        /// Initilize entity reletionships with each other - invoked after all entity view Models created,
+        /// Initialize entity relationships with each other - invoked after all entity view Models created,
         /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
@@ -57,7 +57,7 @@
 
             if (ProtoEntity is IProtoObjectElectricityConsumer protoConsumer)
             {
-                EntityInformation.Add(new ViewModelEntityInformation("Electricity consumtion rate",
+                EntityInformation.Add(new ViewModelEntityInformation("Electricity consumption rate",
                     protoConsumer.ElectricityConsumptionPerSecondWhenActive));
             }
 

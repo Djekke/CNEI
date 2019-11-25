@@ -197,7 +197,7 @@
         }
 
         /// <summary>
-        /// Call this on main node to reset whole tree to previus saved state.
+        /// Call this on main node to reset whole tree to previous saved state.
         /// </summary>
         public void ResetState()
         {

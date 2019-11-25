@@ -20,7 +20,7 @@
             [NotNull] ProtoEntityViewModel plantEntityViewModel)
             : base(seedEntityViewModel.ProtoEntity)
         {
-            if (!EntityViewModelsManager.EntityDictonaryCreated)
+            if (!EntityViewModelsManager.EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Droplist constructor used before all entity VMs sets.");
             }

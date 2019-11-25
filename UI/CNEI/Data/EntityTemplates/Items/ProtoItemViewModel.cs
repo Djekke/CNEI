@@ -18,7 +18,7 @@
         }
 
         /// <summary>
-        /// Initilize information about entity - invoked after all entity view Models created,
+        /// Initialize information about entity - invoked after all entity view Models created,
         /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
@@ -31,10 +31,10 @@
                 EntityInformation.Add(new ViewModelEntityInformation("Stack size",
                     item.MaxItemsPerStack.ToString()));
             }
-            if (ProtoEntity is IProtoItemWithDurablity itemWithDurablity)
+            if (ProtoEntity is IProtoItemWithDurablity itemWithDurability)
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Durability max",
-                    itemWithDurablity.DurabilityMax));
+                    itemWithDurability.DurabilityMax));
             }
             if (ProtoEntity is IProtoItemOrganic itemOrganic)
             {

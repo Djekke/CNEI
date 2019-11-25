@@ -11,7 +11,7 @@
         }
 
         /// <summary>
-        /// Initilize information about entity - invoked after all entity view Models created,
+        /// Initialize information about entity - invoked after all entity view Models created,
         /// so you can use links to other entity by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
         /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
         /// </summary>
@@ -27,7 +27,7 @@
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Structure damage",
                         explosive.ObjectExplosiveProto.StructureDamage));
-                    EntityInformation.Add(new ViewModelEntityInformation("Structure defence penetartion",
+                    EntityInformation.Add(new ViewModelEntityInformation("Structure defense penetration",
                         explosive.ObjectExplosiveProto.StructureDefensePenetrationCoef));
                 }
             }

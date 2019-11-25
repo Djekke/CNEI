@@ -401,7 +401,7 @@
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                     <ContentControl Content="{Binding}"
                                     ContentTemplateSelector="{StaticResource InformationTemplateSelector}"
-                                    x:Name="InfromationContent">
+                                    x:Name="InformationContent">
                         <ContentControl.Resources>
                             <DataTemplate x:Key="EntityTemplate">
                                 <controls:EntitySlotControl />

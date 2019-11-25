@@ -24,7 +24,7 @@
         public VehicleRepairRecipeViewModel([NotNull] ProtoVehicleViewModel vehicleViewModel, IProtoVehicle vehicle)
             : base(vehicleViewModel.ProtoEntity)
         {
-            if (!EntityViewModelsManager.EntityDictonaryCreated)
+            if (!EntityViewModelsManager.EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Build constructor used before all entity VMs sets.");
             }

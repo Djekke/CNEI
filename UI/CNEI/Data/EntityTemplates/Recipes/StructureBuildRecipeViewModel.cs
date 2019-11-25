@@ -25,7 +25,7 @@
             [NotNull] IConstructionStageConfigReadOnly config)
             : base(structureViewModel.ProtoEntity)
         {
-            if (!EntityViewModelsManager.EntityDictonaryCreated)
+            if (!EntityViewModelsManager.EntityDictionaryCreated)
             {
                 throw new Exception("CNEI: Build constructor used before all entity VMs sets.");
             }

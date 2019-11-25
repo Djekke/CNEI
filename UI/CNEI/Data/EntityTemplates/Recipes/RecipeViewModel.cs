@@ -54,7 +54,7 @@
             = new List<ProtoEntityViewModel>();
     }
 
-    public class RecipeViewModelComboBoxWraper
+    public class RecipeViewModelComboBoxWrapper
     {
         /// <summary>
         /// Name that appear in ComboBox dropdown list.
@@ -78,7 +78,7 @@
         /// </summary>
         public int Index { get; set; }
 
-        public RecipeViewModelComboBoxWraper(RecipeViewModel recipeVM, string name, bool isEnabled, int index = -1)
+        public RecipeViewModelComboBoxWrapper(RecipeViewModel recipeVM, string name, bool isEnabled, int index = -1)
         {
             RecipeVM = recipeVM;
             Icon = recipeVM?.Icon;

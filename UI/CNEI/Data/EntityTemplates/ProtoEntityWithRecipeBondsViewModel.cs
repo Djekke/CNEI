@@ -40,25 +40,25 @@
             if (SelectedUsageVMWrapper == null) UsageVisibility = Visibility.Hidden;
         }
 
-        private RecipeViewModelComboBoxWraper selectedRecipeVMWraper;
+        private RecipeViewModelComboBoxWrapper selectedRecipeVMWrapper;
 
-        private RecipeViewModelComboBoxWraper selectedUsageVMWrapper;
+        private RecipeViewModelComboBoxWrapper selectedUsageVMWrapper;
 
-        public RecipeViewModelComboBoxWraper SelectedRecipeVMWrapper
+        public RecipeViewModelComboBoxWrapper SelectedRecipeVMWrapper
         {
-            get => selectedRecipeVMWraper;
+            get => selectedRecipeVMWrapper;
             set
             {
-                if (value == selectedRecipeVMWraper)
+                if (value == selectedRecipeVMWrapper)
                 {
                     return;
                 }
-                selectedRecipeVMWraper = value;
+                selectedRecipeVMWrapper = value;
                 NotifyThisPropertyChanged();
             }
         }
 
-        public RecipeViewModelComboBoxWraper SelectedUsageVMWrapper
+        public RecipeViewModelComboBoxWrapper SelectedUsageVMWrapper
         {
             get => selectedUsageVMWrapper;
             set
@@ -90,9 +90,9 @@
 
         public Visibility UsageVisibility { get; private set; } = Visibility.Visible;
 
-        public static RecipeViewModelComboBoxWraper PrevRecipe(
-            List<RecipeViewModelComboBoxWraper> list,
-            RecipeViewModelComboBoxWraper current)
+        public static RecipeViewModelComboBoxWrapper PrevRecipe(
+            List<RecipeViewModelComboBoxWrapper> list,
+            RecipeViewModelComboBoxWrapper current)
         {
             var i = current.Index;
             do
@@ -106,9 +106,9 @@
             return list[i];
         }
 
-        public static RecipeViewModelComboBoxWraper NextRecipe(
-            List<RecipeViewModelComboBoxWraper> list,
-            RecipeViewModelComboBoxWraper current)
+        public static RecipeViewModelComboBoxWrapper NextRecipe(
+            List<RecipeViewModelComboBoxWrapper> list,
+            RecipeViewModelComboBoxWrapper current)
         {
             var i = current.Index;
             do
