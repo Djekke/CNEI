@@ -31,7 +31,7 @@
                 EntityInformation.Add(new ViewModelEntityInformation("Stack size",
                     item.MaxItemsPerStack.ToString()));
             }
-            if (ProtoEntity is IProtoItemWithDurablity itemWithDurability)
+            if (ProtoEntity is IProtoItemWithDurability itemWithDurability)
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Durability max",
                     itemWithDurability.DurabilityMax));

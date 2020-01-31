@@ -128,7 +128,7 @@
                     break;
                 case ItemHerbRed _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectEnergyRush>(), 0.05));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectEnergyRush>(), 0.1));
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectToxins>(), 0.1));
                     break;

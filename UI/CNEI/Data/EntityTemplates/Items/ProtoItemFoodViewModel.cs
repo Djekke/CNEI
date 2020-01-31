@@ -108,11 +108,11 @@
                     break;
                 case ItemCoffeeCup _:
                     EntityInformation.Add(new ViewModelEntityInformation("Effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectEnergyRush>(), 0.2));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectEnergyRush>(), 0.4));
                     break;
                 case ItemDrinkEnergy _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectEnergyRush>(), 0.3));
+                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectEnergyRush>(), 0.4));
                     break;
                 case ItemDrinkHerbal _:
                     EntityInformation.Add(new ViewModelEntityInformation("Remove effect",
@@ -216,10 +216,6 @@
                 case ItemWine _:
                     EntityInformation.Add(new ViewModelEntityInformation("Add effect",
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectDrunk>(), 0.25));
-                    break;
-                case ItemYuccaFried _:
-                    EntityInformation.Add(new ViewModelEntityInformation("Add effect",
-                        EntityViewModelsManager.GetEntityViewModelByType<StatusEffectSavoryFood>(), 0.1));
                     break;
             }
         }
