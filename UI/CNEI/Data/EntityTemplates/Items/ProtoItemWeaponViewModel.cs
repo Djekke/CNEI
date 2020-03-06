@@ -64,14 +64,6 @@
                         EntityViewModelsManager.GetEntityViewModel(itemWeapon.WeaponSkillProto)));
                 }
 
-                if (itemWeapon.OverrideDamageDescription != null)
-                {
-                    EntityInformation.Add(new ViewModelEntityInformation("Weapon range",
-                        itemWeapon.OverrideDamageDescription.RangeMax));
-                    EntityInformation.Add(new ViewModelEntityInformation("Raw damage",
-                        itemWeapon.OverrideDamageDescription.DamageValue));
-                }
-
                 if (itemWeapon.AmmoCapacity > 0)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Reload time",
@@ -83,12 +75,21 @@
                     EntityInformation.Add(new ViewModelEntityInformation("Compatible ammo",
                         CompatibleAmmo));
                 }
-            }
 
-            if (ProtoEntity is ProtoItemWeaponRangedEnergy weaponRangedEnergy)
-            {
-                EntityInformation.Add(new ViewModelEntityInformation("Energy use per shot",
-                    weaponRangedEnergy.EnergyUsePerShot));
+                if (itemWeapon.OverrideDamageDescription != null)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation("Weapon range",
+                        itemWeapon.OverrideDamageDescription.RangeMax));
+                    EntityInformation.Add(new ViewModelEntityInformation("Raw damage",
+                        itemWeapon.OverrideDamageDescription.DamageValue));
+                }
+
+                EntityInformation.Add(new ViewModelEntityInformation("Damage multiplier",
+                    itemWeapon.DamageMultiplier));
+                EntityInformation.Add(new ViewModelEntityInformation("Range multiplier",
+                    itemWeapon.RangeMultipier));
+                EntityInformation.Add(new ViewModelEntityInformation("Armor piercing multiplier",
+                    itemWeapon.ArmorPiercingMultiplier));
             }
         }
 

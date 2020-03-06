@@ -32,7 +32,8 @@
             InputItemsList.Add(ammoViewModel);
 
             //GunsVMList.Add(gunViewModel);
-            GunsInformationList.Add(new ViewModelEntityWithCount(gunViewModel));
+            //GunsInformationList.Add(new ViewModelEntityWithCount(gunViewModel));
+            AddAmmoUsage(gunViewModel);
         }
 
         public void AddAmmoUsage([NotNull] ProtoEntityViewModel gunViewModel)
