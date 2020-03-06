@@ -14,9 +14,6 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Constants -->
-    <system:Single x:Key="SidePanelWidth">180</system:Single>
-    <Thickness x:Key="SidePanelMarginLeft">-200,0,0,0</Thickness>
-
     <system:Double x:Key="EntityItemSize">32</system:Double>
 
     <!-- Converters -->
@@ -668,41 +665,6 @@
                    BasedOn="{StaticResource TabItemStretched}" />
         </Style.Resources>
     </Style>
-
-    <!-- Side Panel template -->
-    <ControlTemplate x:Key="SidePanelTemplate">
-        <Grid x:Name="LayoutRoot"
-              Margin="{StaticResource SidePanelMarginLeft}"
-              Width="{StaticResource SidePanelWidth}"
-              Background="{StaticResource WindowBackground}">
-            <Border Style="{StaticResource WidgetBackgroundBorder}" />
-
-            <Border BorderThickness="1,1,0,1"
-                    CornerRadius="3,0,0,3">
-                <Grid Margin="10">
-                    <ContentPresenter />
-                </Grid>
-            </Border>
-
-            <Grid x:Name="WidgetBackground"
-                  IsHitTestVisible="False">
-                <!--<Border CornerRadius="3" Background="{StaticResource WidgetBackgroundImageTexture}" />-->
-                <Border VerticalAlignment="Top" Height="10" CornerRadius="3"
-                        Background="{StaticResource WidgetBackgroundGradientHorizontal}" />
-                <Border VerticalAlignment="Bottom" Height="10" CornerRadius="3"
-                        Background="{StaticResource WidgetBackgroundGradientHorizontal}"
-                        RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform>
-                        <ScaleTransform ScaleY="-1" />
-                    </Border.RenderTransform>
-                </Border>
-                <Border HorizontalAlignment="Left" Width="10" CornerRadius="3"
-                        Background="{StaticResource WidgetBackgroundGradientVertical}" />
-                <Border Style="{StaticResource WidgetBorderStyle}"
-                        BorderThickness="1,1,0,1" />
-            </Grid>
-        </Grid>
-    </ControlTemplate>
 
     <!-- Default entity slot control style -->
     <Style TargetType="{x:Type controls:EntitySlotControl}">

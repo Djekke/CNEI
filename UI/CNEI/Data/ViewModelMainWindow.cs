@@ -1,7 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System.Collections.ObjectModel;
-    using AtomicTorch.CBND.CoreMod.Systems.ServerOperator;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.GameEngine.Common.Client.MonoGame.UI;
     using CryoFall.CNEI.Managers;
@@ -143,14 +142,6 @@
                 EntityViewModelsManager.HideUnreachableObjects = value;
                 NotifyThisPropertyChanged();
             }
-        }
-
-        // TODO: Update this on Operator status change.
-        public bool IsCreativePanelVisible => ServerOperatorSystem.ClientIsOperator();
-
-        public void UpdateCreativeStatus()
-        {
-            NotifyPropertyChanged(nameof(IsCreativePanelVisible));
         }
     }
 }

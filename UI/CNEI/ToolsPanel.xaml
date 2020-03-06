@@ -1,0 +1,33 @@
+﻿<base:BaseUserControl
+    x:Class="CryoFall.CNEI.UI.ToolsPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core">
+
+    <base:BaseUserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UI/CNEI/Styles/DefaultStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </base:BaseUserControl.Resources>
+
+    <Grid x:Name="ToolsPanelRoot">
+        <core:WidgetPanel Grid.RowSpan="2"
+                          InnerGlowSize="7"
+                          VisibilityBackgroundImage="Collapsed" />
+
+        <StackPanel Margin="0, 5, 0, 5"
+                    Orientation="Vertical">
+            <TextBlock Text="Tools Panel"
+                       HorizontalAlignment="Center" />
+
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center">
+                <Button Content="Test tool" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+</base:BaseUserControl>

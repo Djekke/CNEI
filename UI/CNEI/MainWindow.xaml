@@ -3,8 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core"
-    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
-    xmlns:ui="clr-namespace:CryoFall.CNEI.UI">
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
 
     <base:BaseUserControl.Resources>
         <ResourceDictionary>
@@ -19,11 +18,7 @@
                      Height="{StaticResource GameMenuStandardWindowHeight}"
                      IsCached="True">
 
-        <Grid x:Name="RootGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <Grid x:Name="CNEIRootGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -37,11 +32,11 @@
 
             <!-- Header -->
             <Grid Grid.Row="0"
-                  Grid.Column="1"
                   Margin="0,0,0,3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <!--<ColumnDefinition Width="*"/>-->
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
@@ -99,12 +94,21 @@
                            Width="32"
                            Height="32" />
                 </Button>
+
+                <ToggleButton Grid.Column="3"
+                              x:Name="ToolsButton"
+                              Style="{StaticResource IconToggleButton}"
+                              Margin="3,0,0,0"
+                              IsTabStop="False">
+                    <Image Source="/UI/CNEI/Images/Icons/icon_tools.png"
+                           Width="32"
+                           Height="32" />
+                </ToggleButton>
             </Grid>
 
             <!-- Entity list -->
             <Grid x:Name="EntityListGrid"
-                  Grid.Row="1"
-                  Grid.Column="1">
+                  Grid.Row="1">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Visible" />
@@ -163,8 +167,7 @@
 
             <!-- Settings -->
             <Grid x:Name="SettingsGrid"
-                  Grid.Row="1"
-                  Grid.Column="1">
+                  Grid.Row="1">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Collapsed" />
@@ -238,14 +241,6 @@
                     </GroupBox>
                 </StackPanel>
             </Grid>
-
-            <ContentControl Template="{StaticResource SidePanelTemplate}"
-                            Visibility="{Binding IsCreativePanelVisible,
-                                                 Converter={StaticResource BoolToVisibilityConverter}}"
-                            Grid.Row="0" Grid.RowSpan="2"
-                            Grid.Column="0">
-                <ui:CreativePanel />
-            </ContentControl>
         </Grid>
 
     </core:GameWindow>

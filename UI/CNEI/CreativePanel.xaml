@@ -2,7 +2,8 @@
     x:Class="CryoFall.CNEI.UI.CreativePanel"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs">
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core">
 
     <base:BaseUserControl.Resources>
         <ResourceDictionary>
@@ -12,72 +13,80 @@
         </ResourceDictionary>
     </base:BaseUserControl.Resources>
 
-    <DockPanel LastChildFill="False">
-        <TextBlock Text="Creative Panel"
+    <Grid x:Name="CreativePanelRoot">
+        <!--Width="{StaticResource SidePanelWidth}">-->
+        <core:WidgetPanel Grid.RowSpan="2"
+                          InnerGlowSize="7"
+                          VisibilityBackgroundImage="Collapsed" />
+
+        <DockPanel LastChildFill="False"
+                   Margin="0, 5, 0, 5">
+            <TextBlock Text="Creative Panel"
                    HorizontalAlignment="Center"
                    DockPanel.Dock="Top" />
-        
-        <WrapPanel Orientation="Horizontal"
+
+            <WrapPanel Orientation="Horizontal"
                    DockPanel.Dock="Top"
                    HorizontalAlignment="Center">
-            <WrapPanel.Resources>
-                <Style TargetType="{x:Type Button}"
+                <WrapPanel.Resources>
+                    <Style TargetType="{x:Type Button}"
                        BasedOn="{StaticResource IconButton}">
-                    <Setter Property="Margin" Value="3" />
-                </Style>
-                <Style TargetType="{x:Type ToggleButton}"
+                        <Setter Property="Margin" Value="3" />
+                    </Style>
+                    <Style TargetType="{x:Type ToggleButton}"
                        BasedOn="{StaticResource IconToggleButton}">
-                    <Setter Property="Margin" Value="3" />
-                </Style>
-            </WrapPanel.Resources>
-            <Button Command="{Binding SetTimeOfDay}"
+                        <Setter Property="Margin" Value="3" />
+                    </Style>
+                </WrapPanel.Resources>
+                <Button Command="{Binding SetTimeOfDay}"
                     CommandParameter="6"
                     base:ToolTipServiceExtend.ToolTip="Set time at sunrise">
-                <Button.Content>
-                    <Image Source="/UI/CNEI/Images/Icons/icon_sunrise.png" />
-                </Button.Content>
-            </Button>
-            <Button Command="{Binding SetTimeOfDay}"
+                    <Button.Content>
+                        <Image Source="/UI/CNEI/Images/Icons/icon_sunrise.png" />
+                    </Button.Content>
+                </Button>
+                <Button Command="{Binding SetTimeOfDay}"
                     CommandParameter="12"
                     base:ToolTipServiceExtend.ToolTip="Set time at noon">
-                <Button.Content>
-                    <Image Source="/UI/CNEI/Images/Icons/icon_sun.png" />
-                </Button.Content>
-            </Button>
-            <Button Command="{Binding SetTimeOfDay}"
+                    <Button.Content>
+                        <Image Source="/UI/CNEI/Images/Icons/icon_sun.png" />
+                    </Button.Content>
+                </Button>
+                <Button Command="{Binding SetTimeOfDay}"
                     CommandParameter="20"
                     base:ToolTipServiceExtend.ToolTip="Set time at sunset">
-                <Button.Content>
-                    <Image Source="/UI/CNEI/Images/Icons/icon_sunset.png" />
-                </Button.Content>
-            </Button>
-            <Button Command="{Binding SetTimeOfDay}"
+                    <Button.Content>
+                        <Image Source="/UI/CNEI/Images/Icons/icon_sunset.png" />
+                    </Button.Content>
+                </Button>
+                <Button Command="{Binding SetTimeOfDay}"
                     CommandParameter="0"
                     base:ToolTipServiceExtend.ToolTip="Set time at midnight">
-                <Button.Content>
-                    <Image Source="/UI/CNEI/Images/Icons/icon_moon.png" />
-                </Button.Content>
-            </Button>
-            <Button Command="{Binding Heal}"
+                    <Button.Content>
+                        <Image Source="/UI/CNEI/Images/Icons/icon_moon.png" />
+                    </Button.Content>
+                </Button>
+                <Button Command="{Binding Heal}"
                     base:ToolTipServiceExtend.ToolTip="Heal myself">
-                <Button.Content>
-                    <Image Source="/UI/CNEI/Images/Icons/icon_heart.png" />
-                </Button.Content>
-            </Button>
-            <ToggleButton IsChecked="{Binding IsGodModeOn}"
+                    <Button.Content>
+                        <Image Source="/UI/CNEI/Images/Icons/icon_heart.png" />
+                    </Button.Content>
+                </Button>
+                <ToggleButton IsChecked="{Binding IsGodModeOn}"
                           base:ToolTipServiceExtend.ToolTip="Toggle god mode">
-                <ToggleButton.Content>
-                    <Image Source="/UI/CNEI/Images/Icons/icon_godmod.png" />
-                </ToggleButton.Content>
-            </ToggleButton>
-            <ToggleButton IsChecked="{Binding IsCreativeModeOn}"
+                    <ToggleButton.Content>
+                        <Image Source="/UI/CNEI/Images/Icons/icon_godmod.png" />
+                    </ToggleButton.Content>
+                </ToggleButton>
+                <ToggleButton IsChecked="{Binding IsCreativeModeOn}"
                           base:ToolTipServiceExtend.ToolTip="Toggle creative mode">
-                <ToggleButton.Content>
-                    <Image Source="/UI/CNEI/Images/Icons/icon_creative.png" />
-                </ToggleButton.Content>
-            </ToggleButton>
-        </WrapPanel>
+                    <ToggleButton.Content>
+                        <Image Source="/UI/CNEI/Images/Icons/icon_creative.png" />
+                    </ToggleButton.Content>
+                </ToggleButton>
+            </WrapPanel>
 
-    </DockPanel>
-    
+        </DockPanel>
+    </Grid>
+
 </base:BaseUserControl>
