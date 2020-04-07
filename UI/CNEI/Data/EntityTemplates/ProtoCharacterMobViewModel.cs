@@ -130,7 +130,7 @@
                     return;
                 }
                 var multiplier = skillHunting.ExperienceToLearningPointsConversionMultiplier
-                                 * TechConstants.SkillExperienceToLearningPointsConversionMultiplier;
+                                 * TechConstants.ServerSkillExperienceToLearningPointsConversionMultiplier;
                 if (multiplier <= 0)
                 {
                     Api.Logger.Error("CNEI: Error LP multiplier less then zero for mob " + Title + " kill.");

@@ -1,7 +1,7 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System.Linq;
-    using AtomicTorch.CBND.CoreMod.Items.Tools.Lights;
+    using AtomicTorch.CBND.CoreMod.Items.Tools;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 

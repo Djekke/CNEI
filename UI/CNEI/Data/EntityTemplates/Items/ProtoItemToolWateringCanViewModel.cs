@@ -1,6 +1,6 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
-    using AtomicTorch.CBND.CoreMod.Items.Tools.WateringCans;
+    using AtomicTorch.CBND.CoreMod.Items.Tools;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
