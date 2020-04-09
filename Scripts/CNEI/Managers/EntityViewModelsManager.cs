@@ -90,7 +90,7 @@
         /// </summary>
         public static bool EntityDictionaryCreated = false;
 
-        public static Version CurrentVersion => new Version("0.4.2");
+        public static Version CurrentVersion => new Version("0.4.3");
 
         public static Version VersionFromClientStorage = null;
 
@@ -350,13 +350,17 @@
         {
             defaultViewStorage = Api.Client.Storage.GetStorage("Mods/CNEI/DefaultView");
             bool settingExist = true;
-            if (!defaultViewStorage.TryLoad(out defaultViewPresetFromSettings))
+
+            // Force reload preset if saved version is too old.
+            if (VersionFromClientStorage.CompareTo(new Version("0.4.3")) < 0 ||
+                !defaultViewStorage.TryLoad(out defaultViewPresetFromSettings))
             {
                 // Default settings.
                 defaultViewPresetFromSettings = new List<string>()
                 {
                     "ProtoCharacterMob",
                     "ProtoItem",
+                    "ProtoObjectHackableContainer",
                     "ProtoObjectLoot",
                     "ProtoObjectLootContainer",
                     "ProtoObjectMineral",
@@ -366,9 +370,6 @@
                 };
                 settingExist = false;
             }
-
-            // Version changes handling.
-            // if (VersionFromClientStorage.CompareTo(CurrentVersion) > 0)
 
             LoadDefaultViewFromSettings();
 
