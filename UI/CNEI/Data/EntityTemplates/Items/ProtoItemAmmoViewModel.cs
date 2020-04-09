@@ -21,20 +21,23 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is IProtoItemAmmo ammo &&
-                ammo.DamageDescription != null)
+            if (ProtoEntity is IProtoItemAmmo ammo && ammo.DamageDescription != null)
             {
-                if (ammo.DamageDescription?.DamageProportions.Count > 0)
-                {
-                    EntityInformation.Add(new ViewModelEntityInformation("Range",
-                        ammo.DamageDescription.RangeMax));
-                    EntityInformation.Add(new ViewModelEntityInformation("Damage value",
-                        ammo.DamageDescription.DamageValue));
-                    EntityInformation.Add(new ViewModelEntityInformation("Armor piercing coefficient",
-                        ammo.DamageDescription.ArmorPiercingCoef));
-                    EntityInformation.Add(new ViewModelEntityInformation("Final damage multiplier",
-                        ammo.DamageDescription.FinalDamageMultiplier));
+                var damageDescription = ProtoEntity is IAmmoGrenade grenade
+                    ? grenade.DamageDescriptionCharacters
+                    : ammo.DamageDescription;
 
+                EntityInformation.Add(new ViewModelEntityInformation("Range",
+                    damageDescription.RangeMax));
+                EntityInformation.Add(new ViewModelEntityInformation("Damage value",
+                    damageDescription.DamageValue));
+                EntityInformation.Add(new ViewModelEntityInformation("Armor piercing coefficient",
+                    damageDescription.ArmorPiercingCoef));
+                EntityInformation.Add(new ViewModelEntityInformation("Final damage multiplier",
+                    damageDescription.FinalDamageMultiplier));
+
+                if (damageDescription?.DamageProportions.Count > 0)
+                {
                     foreach (DamageProportion proportion in ammo.DamageDescription.DamageProportions)
                     {
                         EntityInformation.Add(new ViewModelEntityInformation("Damage by " + proportion.DamageType,
