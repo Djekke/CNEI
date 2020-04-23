@@ -9,7 +9,7 @@ namespace CryoFall.CNEI
     public enum CNEIButton
     {
         [Description("Open CNEI")]
-        [ButtonInfo(InputKey.N, Category = "CNEI")]
+        [ButtonInfo(InputKey.OemQuestion, Category = "CNEI")]
         MenuOpen,
 
         [Description("Show item info")]
