@@ -11,12 +11,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UI/CNEI/Styles/DefaultStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <Style TargetType="{x:Type RadioButton}">
-                <Setter Property="core:SoundUI.ClickSound" Value="{x:Null}" />
-                <Setter Property="core:SoundUI.EnterSound" Value="{x:Null}" />
-                <Setter Property="IsTabStop" Value="False" />
-            </Style>
         </ResourceDictionary>
     </base:BaseUserControl.Resources>
 
@@ -36,7 +30,7 @@
             </Grid.RowDefinitions>
 
             <Grid.Resources>
-                <Style TargetType="{x:Type Button}">
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="IsTabStop" Value="False" />
                 </Style>
             </Grid.Resources>
@@ -82,22 +76,28 @@
                               x:Name="SettingsButton"
                               Command="{Binding ToggleSettings}"
                               CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                              Style="{StaticResource IconToggleButton}"
+                              Width="85"
                               IsTabStop="False"
                               Margin="4,0,0,0">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center">
                         <Image Source="/Content/Textures/Options/General.png"
                                Width="20"
                                Height="20" />
-                        <TextBlock Text="Settings" />
+                        <TextBlock Text="Settings"
+                                   VerticalAlignment="Center" />
                     </StackPanel>
                 </ToggleButton>
 
                 <Button Grid.Column="2"
                         x:Name="InfoButton"
+                        Style="{StaticResource IconButton}"
+                        Margin="3,0,0,0"
                         Command="{Binding ShowInfo}">
                     <Image Source="/UI/CNEI/Images/Icons/icon_info.png"
-                           Width="20"
-                           Height="20" />
+                           Width="32"
+                           Height="32" />
                 </Button>
             </Grid>
 
@@ -177,13 +177,18 @@
                     </Style>
                 </Grid.Style>
                 <Grid.Resources>
-                    <Style TargetType="{x:Type CheckBox}">
+                    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
+                        <Setter Property="IsTabStop" Value="False" />
+                    </Style>
+                    <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
+                        <Setter Property="Margin" Value="0,0,0,1" />
                         <Setter Property="IsTabStop" Value="False" />
                     </Style>
                 </Grid.Resources>
 
                 <StackPanel Orientation="Vertical">
-                    <GroupBox Header="Content">
+                    <GroupBox Header="Content"
+                              Style="{StaticResource DefaultGroupBoxStyle}">
                         <StackPanel Orientation="Vertical">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -217,14 +222,17 @@
                                 </StackPanel>
                             </Grid>
                             <CheckBox Content="Hide unreachable objects"
+                                      HorizontalAlignment="Left"
                                       Margin="0,5,0,0"
                                       IsChecked="{Binding HideUnreachableObjects}"/>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="View">
+                    <GroupBox Header="View"
+                              Style="{StaticResource DefaultGroupBoxStyle}">
                         <StackPanel>
                             <CheckBox x:Name="ShowTypeInTooltip"
                                       Content="Show type in tooltip"
+                                      HorizontalAlignment="Left"
                                       IsChecked="{Binding IsTypeVisible}"/>
                         </StackPanel>
                     </GroupBox>

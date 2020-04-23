@@ -278,6 +278,62 @@
         </Setter>
     </Style>
 
+    <!-- GroupBox Style -->
+    <Style x:Key="DefaultGroupBoxStyle" TargetType="{x:Type GroupBox}">
+        <Setter Property="BorderBrush" Value="{StaticResource BrushColorAlt5}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="Margin" Value="0,1,0,1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GroupBox}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4"/>
+                            <ColumnDefinition Width="26"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="4"/>
+                        </Grid.RowDefinitions>
+                        <!-- Outer line -->
+                        <Border CornerRadius="1"
+                                Grid.Row="1"
+                                Grid.RowSpan="3"
+                                Grid.ColumnSpan="5"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}">
+                        </Border>
+                        <!-- ContentPresenter for the header -->
+                        <Border x:Name="Header"
+                                Padding="6,0,6,0"
+                                Background="Black"
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="2"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter ContentSource="Header"
+                                              RecognizesAccessKey="True" />
+                        </Border>
+                        <!-- Primary content for GroupBox -->
+                        <ContentPresenter Grid.Row="2"
+                                          Grid.Column="1"
+                                          Grid.ColumnSpan="3"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--ListBox Styles -->
     <Style x:Key="DefaultListBoxItems"  TargetType="{x:Type ListBoxItem}">
         <Setter Property="core:SoundUI.ClickSound" Value="{StaticResource SoundListElementClick}" />

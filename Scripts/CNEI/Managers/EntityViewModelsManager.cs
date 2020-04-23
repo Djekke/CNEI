@@ -536,9 +536,9 @@
                     "UI/CNEI/Data/EntityTemplates/" + resourceDictionaryName);
                 if (newDict != null)
                 {
-                    foreach (DictionaryEntry entry in newDict)
+                    foreach (var key in newDict.Keys)
                     {
-                        AllEntityTemplatesResourceDictionary.Add(entry.Key, entry.Value);
+                        AllEntityTemplatesResourceDictionary.Add(key, newDict[key]);
                     }
                 }
                 else

@@ -11,11 +11,12 @@
                 <ResourceDictionary Source="/UI/CNEI/Styles/DefaultStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style TargetType="{x:Type CheckBox}">
+            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
                 <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
                 <Setter Property="IsTabStop" Value="False" />
             </Style>
-            <Style TargetType="{x:Type Button}">
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="IsTabStop" Value="False" />
