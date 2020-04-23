@@ -41,11 +41,19 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is ProtoCharacterMob characterMob)
+            if (ProtoEntity is IProtoCharacterCore characterCore)
             {
-                foreach (var effect in characterMob.ProtoCharacterDefaultEffects.Values)
+                foreach (var effect in characterCore.ProtoCharacterDefaultEffects.Values)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation(effect.Key.ToString(), effect.Value));
+                }
+            }
+
+            if (ProtoEntity is IProtoCharacterMob characterMob)
+            {
+                if(characterMob.IsBoss)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation("Boss", "Yes"));
                 }
 
                 EntityInformation.Add(new ViewModelEntityInformation("On a server with default x1 rates", ""));
