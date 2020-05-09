@@ -3,9 +3,9 @@
     using AtomicTorch.CBND.CoreMod.Items.Generic;
     using JetBrains.Annotations;
 
-    public class ItemMulchViewModel : ProtoItemFertilizerViewModel
+    public class ProtoItemFertilizerViewModel : ProtoItemViewModel
     {
-        public ItemMulchViewModel([NotNull] IProtoItemFertilizer mulch) : base(mulch)
+        public ProtoItemFertilizerViewModel([NotNull] IProtoItemFertilizer fertilizer) : base(fertilizer)
         {
         }
 
@@ -18,7 +18,11 @@
         {
             base.InitInformation();
 
-            EntityInformation.Add(new ViewModelEntityInformation("Organic value for craft", 10));
+            if (ProtoEntity is IProtoItemFertilizer itemFertilizer)
+            {
+                EntityInformation.Add(new ViewModelEntityInformation("Plant grow speed increase",
+                    "+" + ((itemFertilizer.PlantGrowthSpeedMultiplier - 1.0) * 100) + "%"));
+            }
         }
     }
 }

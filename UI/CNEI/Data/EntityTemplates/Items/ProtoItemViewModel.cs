@@ -41,11 +41,6 @@
                 EntityInformation.Add(new ViewModelEntityInformation("Organic value",
                     itemOrganic.OrganicValue));
             }
-            if (ProtoEntity is IProtoItemFertilizer itemFertilizer)
-            {
-                EntityInformation.Add(new ViewModelEntityInformation("Plant grow speed increase",
-                    (itemFertilizer.PlantGrowthSpeedMultiplier * 100) + "%"));
-            }
             if (ProtoEntity is IProtoItemFuel itemFuel)
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Fuel amount",
