@@ -43,8 +43,13 @@
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
-    <Style TargetType="{x:Type ComboBoxItem}" x:Key="ComboBoxRecipeItemContainerStyle">
+    <Style TargetType="{x:Type ComboBoxItem}" x:Key="ComboBoxRecipeItemContainerStyle" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
         <Setter Property="IsEnabled" Value="{Binding IsItemEnabled}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!-- DataTemplates for custom types -->
