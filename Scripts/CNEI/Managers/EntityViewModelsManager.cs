@@ -337,7 +337,10 @@
             // Load settings.
             versionStorage = Api.Client.Storage.GetStorage("Mods/CNEI/Version");
             versionStorage.RegisterType(typeof(Version));
-            versionStorage.TryLoad(out VersionFromClientStorage);
+            if (!versionStorage.TryLoad(out VersionFromClientStorage))
+            {
+                VersionFromClientStorage = new Version("0.0.1");
+            }
 
             // Version changes handling.
             // if (VersionFromClientStorage.CompareTo(CurrentVersion) > 0)
