@@ -91,6 +91,10 @@
                 <ListBox ItemsSource="{Binding Collection}"
                          Style="{StaticResource ListBoxRow}"
                          Visibility="{Binding CollectionVisibility}" />
+                <TextBlock Text="{Binding ToolTipIntensityPercent, StringFormat={}{0}%}"
+                           Visibility="{Binding StatusEffectVisibility}"
+                           Margin="0,0,3,0"
+                           VerticalAlignment="Center" />
                 <controls:EntitySlotControl DataContext="{Binding StatusEffect}"
                                             IsBackgroundEnabled="False"
                                             Visibility="{Binding DataContext.StatusEffectVisibility,
@@ -102,17 +106,6 @@
                             <TextBlock Text="{Binding Title}"
                                        TextWrapping="Wrap"
                                        FontWeight="Bold" />
-
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,2">
-                                <TextBlock Text="Intensity: " />
-                                <TextBlock
-                                    Text="{Binding DataContext.ToolTipIntensityPercent,
-                                                   RelativeSource={RelativeSource AncestorType=Grid}}"
-                                    FontWeight="Bold" />
-                                <TextBlock Text="%" FontWeight="Bold" />
-                            </StackPanel>
-
                             <TextBlock Text="{Binding Description}"
                                        TextWrapping="Wrap" />
                         </StackPanel>

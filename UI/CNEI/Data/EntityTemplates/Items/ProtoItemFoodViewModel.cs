@@ -1,6 +1,7 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System;
+    using AtomicTorch.CBND.CoreMod.CharacterStatusEffects;
     using AtomicTorch.CBND.CoreMod.Helpers.Client;
     using AtomicTorch.CBND.CoreMod.Items.Food;
     using CryoFall.CNEI.Managers;
@@ -43,11 +44,12 @@
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Stamina restore", food.StaminaRestore));
                 }
+                foreach(EffectAction effect in food.Effects)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation(effect.Intensity > 0 ? "Add effect" : "Remove effect",
+                        EntityViewModelsManager.GetEntityViewModel(effect.ProtoStatusEffect), effect.Intensity));
+                }
             }
-
-            // TODO: Rework this.
-            // Hardcoded information
-            AddStatusEffectsInformation();
         }
     }
 }

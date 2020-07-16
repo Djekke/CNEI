@@ -1,6 +1,7 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
     using System;
+    using AtomicTorch.CBND.CoreMod.CharacterStatusEffects;
     using AtomicTorch.CBND.CoreMod.CharacterStatusEffects.Neutral;
     using AtomicTorch.CBND.CoreMod.Items.Medical;
     using CryoFall.CNEI.Managers;
@@ -46,11 +47,12 @@
                         EntityViewModelsManager.GetEntityViewModelByType<StatusEffectMedicineOveruse>(),
                         medical.MedicalToxicity));
                 }
+                foreach (EffectAction effect in medical.Effects)
+                {
+                    EntityInformation.Add(new ViewModelEntityInformation(effect.Intensity > 0 ? "Add effect" : "Remove effect",
+                        EntityViewModelsManager.GetEntityViewModel(effect.ProtoStatusEffect), effect.Intensity));
+                }
             }
-
-            // TODO: Rework this.
-            // Hardcoded information
-            AddStatusEffectsInformation();
         }
     }
 }
