@@ -740,13 +740,6 @@
                         </VisualStateManager.VisualStateGroups>
                         <Grid x:Name="LayoutRoot"
                               Background="Transparent">
-                            <base:ToolTipServiceExtend.ToolTip>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Title}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Type}" FontWeight="Bold"
-                                               Visibility="{Binding TypeVisibility}" />
-                                </StackPanel>
-                            </base:ToolTipServiceExtend.ToolTip>
                             <Rectangle x:Name="BackgroundTexture" Fill="{StaticResource WidgetBackgroundImageTexture}" />
                             <Grid x:Name="IconHolder"
                                   Visibility="{Binding Visibility, FallbackValue=Collapsed}">

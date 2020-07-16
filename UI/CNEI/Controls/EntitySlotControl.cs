@@ -3,9 +3,11 @@
     using System;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Media;
     using AtomicTorch.CBND.CoreMod.Characters;
+    using AtomicTorch.CBND.CoreMod.UI.Controls.Game.Items.Controls.Tooltips;
     using AtomicTorch.CBND.GameApi.Data.Items;
     using AtomicTorch.CBND.GameApi.Scripting;
     using AtomicTorch.CBND.GameApi.ServicesClient;
@@ -22,6 +24,10 @@
                                         new PropertyMetadata(defaultValue: true));
 
         private Border border;
+
+        private FrameworkElement layoutRoot;
+
+        private FrameworkElement tooltip;
 
         private string currentSecondaryStateName;
 
@@ -69,6 +75,9 @@
             // this cannot be done in InitControl, as later control might be removed and re-added
             var templateRoot = (FrameworkElement)VisualTreeHelper.GetChild(this, 0);
             border = templateRoot.GetByName<Border>("Border");
+            layoutRoot = templateRoot.GetByName<Grid>("LayoutRoot");
+
+            RefreshTooltip();
 
             ResetStates();
         }
@@ -81,6 +90,73 @@
             }
 
             base.OnUnloaded();
+        }
+
+        private void DestroyTooltip()
+        {
+            if (tooltip == null)
+            {
+                return;
+            }
+
+            ToolTipServiceExtend.SetToolTip(layoutRoot, null);
+            tooltip = null;
+        }
+
+        private FrameworkElement CreateToolTip()
+        {
+            FrameworkElement baseToolTip;
+            if (DataContext is ProtoItemViewModel itemViewModel)
+            {
+                baseToolTip = ItemTooltipControl.Create(itemViewModel.ProtoEntity as IProtoItem);
+            }
+            else
+            {
+                var header = new TextBlock()
+                {
+                    FontWeight = FontWeights.Bold
+                };
+                header.SetBinding(TextBlock.TextProperty, new Binding()
+                {
+                    Path = new PropertyPath("Title")
+                });
+                baseToolTip = header;
+            }
+            var stackPanel = new StackPanel()
+            {
+                Orientation = Orientation.Vertical
+            };
+            stackPanel.Children.Add(baseToolTip);
+
+            var typeText = new TextBlock()
+            {
+                FontWeight = FontWeights.Bold
+            };
+            typeText.SetBinding(TextBlock.TextProperty, new Binding()
+            {
+                Path = new PropertyPath("Type")
+            });
+            typeText.SetBinding(VisibilityProperty, new Binding()
+            {
+                Path = new PropertyPath("TypeVisibility")
+            });
+            stackPanel.Children.Add(typeText);
+
+            return stackPanel;
+        }
+
+        private void RefreshTooltip()
+        {
+            DestroyTooltip();
+
+            if (!IsMouseOver || DataContext == null)
+            {
+                // no need to display the tooltip
+                return;
+            }
+
+            tooltip = CreateToolTip();
+            ToolTipServiceExtend.SetToolTip(layoutRoot, tooltip);
         }
 
         private void ResetStates()
@@ -180,11 +256,13 @@
 
             private void SlotMouseEnterHandler(object sender, MouseEventArgs e)
             {
+                entitySlotControl.RefreshTooltip();
                 entitySlotControl.SetCurrentSecondaryState("MouseOver", true);
             }
 
             private void SlotMouseLeaveHandler(object sender, MouseEventArgs e)
             {
+                entitySlotControl.DestroyTooltip();
                 entitySlotControl.SetCurrentSecondaryState("Normal", true);
             }
         }
