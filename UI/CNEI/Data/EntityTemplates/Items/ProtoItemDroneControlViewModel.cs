@@ -1,12 +1,12 @@
 ﻿namespace CryoFall.CNEI.UI.Data
 {
-    using AtomicTorch.CBND.GameApi.Data.World;
+    using AtomicTorch.CBND.CoreMod.Items.Drones;
+    using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
-    public abstract class ProtoDynamicWorldObjectViewModel : ProtoEntityWithRecipeBondsViewModel
+    public class ProtoItemDroneControlViewModel : ProtoItemViewModel
     {
-        protected ProtoDynamicWorldObjectViewModel([NotNull] IProtoDynamicWorldObject dynamicWorldObject)
-            : base(dynamicWorldObject)
+        public ProtoItemDroneControlViewModel([NotNull] IProtoItemDroneControl droneControl) : base(droneControl)
         {
         }
 
@@ -19,10 +19,10 @@
         {
             base.InitInformation();
 
-            if (ProtoEntity is IProtoDynamicWorldObject dynamicWorldObject)
+            if (ProtoEntity is IProtoItemDroneControl droneControl)
             {
-                EntityInformation.Add(new ViewModelEntityInformation("HP",
-                    dynamicWorldObject.StructurePointsMax));
+                EntityInformation.Add(new ViewModelEntityInformation("Max drones to control",
+                    droneControl.MaxDronesToControl));
             }
         }
     }
