@@ -11,6 +11,11 @@
             CountString = "";
         }
 
+        public ViewModelEntityWithCount(ProtoEntityViewModel entityViewModel, string text) : this(entityViewModel)
+        {
+            CountString = text;
+        }
+
         public ViewModelEntityWithCount(ProtoEntityViewModel entityViewModel, int count) : this(entityViewModel)
         {
             CountString += count + " x";

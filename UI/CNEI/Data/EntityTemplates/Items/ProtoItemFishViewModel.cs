@@ -46,6 +46,8 @@
             {
                 Droplist = new DroplistRecipeViewModel(this, fish.DropItemsList.EnumerateAllItems());
                 EntityViewModelsManager.AddRecipe(Droplist);
+
+                EntityViewModelsManager.AddRecipe(new FishingRecipeViewModel(this));
             }
         }
 
