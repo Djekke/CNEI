@@ -30,8 +30,6 @@
             {
                 EntityInformation.Add(new ViewModelEntityInformation("Cargo items slots count",
                     vehicle.CargoItemsSlotsCount));
-                EntityInformation.Add(new ViewModelEntityInformation("Energy max",
-                    vehicle.EnergyMax));
                 EntityInformation.Add(new ViewModelEntityInformation("Energy use (idle)",
                     vehicle.EnergyUsePerSecondIdle));
                 EntityInformation.Add(new ViewModelEntityInformation("Energy use (moving)",

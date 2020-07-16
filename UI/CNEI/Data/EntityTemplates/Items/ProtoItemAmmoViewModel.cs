@@ -23,20 +23,16 @@
 
             if (ProtoEntity is IProtoItemAmmo ammo && ammo.DamageDescription != null)
             {
-                var damageDescription = ProtoEntity is IAmmoGrenade grenade
-                    ? grenade.DamageDescriptionCharacters
-                    : ammo.DamageDescription;
-
                 EntityInformation.Add(new ViewModelEntityInformation("Range",
-                    damageDescription.RangeMax));
+                    ammo.DamageDescription.RangeMax));
                 EntityInformation.Add(new ViewModelEntityInformation("Damage value",
-                    damageDescription.DamageValue));
+                    ammo.DamageDescription.DamageValue));
                 EntityInformation.Add(new ViewModelEntityInformation("Armor piercing coefficient",
-                    damageDescription.ArmorPiercingCoef));
+                    ammo.DamageDescription.ArmorPiercingCoef));
                 EntityInformation.Add(new ViewModelEntityInformation("Final damage multiplier",
-                    damageDescription.FinalDamageMultiplier));
+                    ammo.DamageDescription.FinalDamageMultiplier));
 
-                if (damageDescription?.DamageProportions.Count > 0)
+                if (ammo.DamageDescription?.DamageProportions.Count > 0)
                 {
                     foreach (DamageProportion proportion in ammo.DamageDescription.DamageProportions)
                     {

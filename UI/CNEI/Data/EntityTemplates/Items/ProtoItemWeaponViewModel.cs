@@ -87,9 +87,7 @@
                 EntityInformation.Add(new ViewModelEntityInformation("Damage multiplier",
                     itemWeapon.DamageMultiplier));
                 EntityInformation.Add(new ViewModelEntityInformation("Range multiplier",
-                    itemWeapon.RangeMultipier));
-                EntityInformation.Add(new ViewModelEntityInformation("Armor piercing multiplier",
-                    itemWeapon.ArmorPiercingMultiplier));
+                    itemWeapon.RangeMultiplier));
             }
         }
 
