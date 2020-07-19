@@ -36,6 +36,7 @@
         public ViewModelMainWindow()
         {
             EntityViewModelCollection = EntityViewModelsManager.CurrentView;
+            EntityViewModelCollection.RemoveAllFilters();
             EntityViewModelCollection.AddFilter(SearchFilter);
             EntityViewModelCollection.SetPageCapacity(PageCapacity);
 

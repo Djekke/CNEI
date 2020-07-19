@@ -140,6 +140,14 @@
         }
 
         /// <summary>
+        /// Remove all filtering rules.
+        /// </summary>
+        public void RemoveAllFilters()
+        {
+            filters.Clear();
+        }
+
+        /// <summary>
         /// Refresh filtered collection.
         /// <para>Use this in case of filter condition change.</para>
         /// </summary>
