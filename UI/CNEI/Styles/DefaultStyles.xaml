@@ -728,7 +728,7 @@
     </Style>
 
     <!-- ListView Styles -->
-    <Style x:Key="Style.GridView.Scroll" TargetType="ScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+    <Style x:Key="Style.GridView.Scroll" TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollViewer">
@@ -781,6 +781,7 @@
                                        Grid.Column="1"
                                        Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                                        Orientation="Vertical"
+                                       Style="{StaticResource VerticalScrollBar}"
                                        ViewportSize="{TemplateBinding ViewportHeight}"
                                        Maximum="{TemplateBinding ScrollableHeight}"
                                        Minimum="0.0"
@@ -791,6 +792,7 @@
                                        Grid.Column="0"
                                        Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                                        Orientation="Horizontal"
+                                       Style="{StaticResource HorizontalScrollBar}"
                                        ViewportSize="{TemplateBinding ViewportWidth}"
                                        Maximum="{TemplateBinding ScrollableWidth}"
                                        Minimum="0.0"
