@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using AtomicTorch.CBND.CoreMod.Items.Fishing.Base;
+    using AtomicTorch.CBND.GameApi.Scripting;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
@@ -40,14 +41,34 @@
         /// </summary>
         public override void InitAdditionalRecipes()
         {
-            if (ProtoEntity is IProtoItemFish fish &&
-                fish.DropItemsList != null &&
+            base.InitAdditionalRecipes();
+
+            if (!(ProtoEntity is IProtoItemFish fish))
+            {
+                return;
+            }
+
+            if(fish.DropItemsList != null &&
                 fish.DropItemsList.EnumerateAllItems().Any())
             {
                 Droplist = new DroplistRecipeViewModel(this, fish.DropItemsList.EnumerateAllItems());
                 EntityViewModelsManager.AddRecipe(Droplist);
+            }
 
-                EntityViewModelsManager.AddRecipe(new FishingRecipeViewModel(this));
+            if(fish.BaitWeightList.Entries.Count > 0)
+            {
+                foreach(var baitWithWeight in fish.BaitWeightList.Entries)
+                {
+                    var baitVM = EntityViewModelsManager.GetEntityViewModel(baitWithWeight.Value);
+                    if (baitVM is ProtoItemFishingBaitViewModel baitViewModel)
+                    {
+                        baitViewModel.AddRelatedFish(this, baitWithWeight.Weight);
+                    }
+                    else
+                    {
+                        Api.Logger.Error("CNEI: Wrong bait veiw model " + baitVM);
+                    }
+                }
             }
         }
 

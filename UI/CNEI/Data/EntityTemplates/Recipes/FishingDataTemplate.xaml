@@ -1,0 +1,107 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls"
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
+    xmlns:data="clr-namespace:CryoFall.CNEI.UI.Data">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/UI/CNEI/Data/AdditionalTemplates.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Detail info -->
+    <DataTemplate DataType="{x:Type data:FishingViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Margin="10,20,10,20"
+                  VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <controls:EntitySlotControl Grid.Column="0"
+                                            Width="100"
+                                            Height="100"
+                                            VerticalAlignment="Center"
+                                            DataContext="{Binding BaitEntity}" />
+
+                <TextBlock Grid.Column="1"
+                           Text="--&gt;"
+                           Margin="10,0,10,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+
+                <ListView Grid.Column="2"
+                          ItemsSource="{Binding FishDetailsList}"
+                          BorderBrush="{StaticResource WidgetBorderBrush}"
+                          BorderThickness="1"
+                          MaxHeight="{StaticResource MaxItemListHeight}">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False">
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}"
+                                       BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                    <Setter Property="TextElement.FontSize" Value="10" />
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn Header="Icon" Width="Auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <controls:EntitySlotControl DataContext="{Binding FishViewModel}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Name"
+                                            Width="110"
+                                            DisplayMemberBinding="{Binding Name}" />
+                            <GridViewColumn Width="Auto"
+                                            DisplayMemberBinding="{Binding Weight}">
+                                <GridViewColumn.Header>
+                                    <TextBlock Text="Chance*"
+                                               FontSize="10"
+                                               base:ToolTipServiceExtend.ToolTip="Not exactly chance, but it is calculated based on this number." />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="Auto"
+                                            DisplayMemberBinding="{Binding RequiredFishingKnowledgeLevel}">
+                                <GridViewColumn.Header>
+                                    <TextBlock Text="Knowledge"
+                                               FontSize="10"
+                                               base:ToolTipServiceExtend.ToolTip="Required fishing knowledge level." />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="Auto"
+                                            DisplayMemberBinding="{Binding IsSaltwaterFish}">
+                                <GridViewColumn.Header>
+                                    <TextBlock Text="Salty"
+                                               FontSize="10"
+                                               base:ToolTipServiceExtend.ToolTip="Is salt water fish." />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        MinHeight="35">
+                <TextBlock Text="Fishing rods:"
+                           Margin="0,0,20,0"
+                           VerticalAlignment="Center" />
+
+                <ListBox Style="{StaticResource ListBoxRow}"
+                         VerticalAlignment="Center"
+                         ItemsSource="{Binding StationsList}" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>
