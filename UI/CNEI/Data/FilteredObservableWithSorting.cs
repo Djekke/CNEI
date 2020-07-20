@@ -7,9 +7,10 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using AtomicTorch.CBND.GameApi.Extensions;
     using JetBrains.Annotations;
 
-    public class FilteredObservable<T> : INotifyPropertyChanged
+    public class FilteredObservableWithSorting<T> : INotifyPropertyChanged
     {
         private protected ObservableCollection<T> baseCollection;
 
@@ -17,7 +18,41 @@
 
         private protected List<Predicate<T>> filters = new List<Predicate<T>>();
 
+        private protected string sortPropertyName = "";
+
+        private protected bool sortDirection;
+
         private int entityCount = 0;
+
+        public string SortPropertyName
+        {
+            get => sortPropertyName;
+            set
+            {
+                if(sortPropertyName == value)
+                {
+                    return;
+                }
+
+                sortPropertyName = value;
+                Refresh();
+            }
+        }
+
+        public bool SortDirection
+        {
+            get => sortDirection;
+            set
+            {
+                if(sortDirection == value)
+                {
+                    return;
+                }
+
+                sortDirection = value;
+                Refresh();
+            }
+        }
 
         /// <summary>
         /// Original item collection.
@@ -47,10 +82,89 @@
             get
             {
                 items.Clear();
-                items = new ObservableCollection<T>(baseCollection.Where(x => filters.All(f => f(x))));
+                if (sortPropertyName != "" && IsPropertyExist(sortPropertyName))
+                {
+                    if (sortDirection)
+                    {
+                        items = new ObservableCollection<T>(baseCollection
+                          .Where(x => filters.All(f => f(x)))
+                          .OrderBy(x => GetPropertyValueFromPath(x, sortPropertyName)));
+                    }
+                    else
+                    {
+                        items = new ObservableCollection<T>(baseCollection
+                          .Where(x => filters.All(f => f(x)))
+                          .OrderByDescending(x => GetPropertyValueFromPath(x, sortPropertyName)));
+                    }
+                }
+                else
+                {
+                    items = new ObservableCollection<T>(baseCollection
+                        .Where(x => filters.All(f => f(x))));
+                }
                 EntityCount = items.Count;
                 return items;
             }
+        }
+
+        private bool IsPropertyExist(string path)
+        {
+            string[] pp = path.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            var type = typeof(T);
+            foreach (var prop in pp)
+            {
+                if (prop.Contains("["))
+                {
+                    string dictionary = prop.Substring(0, prop.IndexOf("["));
+                    string key = prop.Substring(prop.IndexOf("[") + 1, prop.IndexOf("]") - prop.IndexOf("[") - 1);
+
+                    var dictInfo = type.ScriptingGetProperty(dictionary);
+                    if (dictInfo == null)
+                    {
+                        return false;
+                    }
+                    type = dictInfo.PropertyType.GetGenericArguments()[1];
+                }
+                else
+                {
+                    var propInfo = type.ScriptingGetProperty(prop);
+                    if (propInfo == null)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public object GetPropertyValueFromPath(object baseObject, string path)
+        {
+            string[] pp = path.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            object valueObject = baseObject;
+            foreach (var prop in pp)
+            {
+                if (prop.Contains("["))
+                {
+                    string dictionary = prop.Substring(0, prop.IndexOf("["));
+                    string key = prop.Substring(prop.IndexOf("[") + 1, prop.IndexOf("]") - prop.IndexOf("[") - 1);
+
+                    var dictInfo = valueObject.GetType().ScriptingGetProperty(dictionary);
+                    if (dictInfo != null)
+                    {
+                        var dict = dictInfo.GetValue(valueObject, null);
+                        valueObject = dict.GetType().ScriptingGetProperty("Item").GetValue(dict, new object[] { key });
+                    }
+                }
+                else
+                {
+                    var propInfo = valueObject.GetType().ScriptingGetProperty(prop);
+                    if (propInfo != null)
+                    {
+                        valueObject = propInfo.GetValue(valueObject, null);
+                    }
+                }
+            }
+            return valueObject;
         }
 
         /// <summary>
@@ -171,19 +285,19 @@
             NotifyPropertyChange("Items");
         }
 
-        public FilteredObservable(ObservableCollection<T> collection)
+        public FilteredObservableWithSorting(ObservableCollection<T> collection)
         {
             BaseCollection = collection;
             EntityCount = collection.Count;
         }
 
-        public FilteredObservable(IEnumerable<T> collection)
+        public FilteredObservableWithSorting(IEnumerable<T> collection)
         {
             BaseCollection = new ObservableCollection<T>(collection);
             EntityCount = BaseCollection.Count;
         }
 
-        public FilteredObservable()
+        public FilteredObservableWithSorting()
         {
             BaseCollection = new ObservableCollection<T>();
         }

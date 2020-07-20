@@ -63,9 +63,24 @@
                             <GridViewColumn Width="Auto"
                                             DisplayMemberBinding="{Binding Weight}">
                                 <GridViewColumn.Header>
-                                    <TextBlock Text="Chance*"
-                                               FontSize="10"
-                                               base:ToolTipServiceExtend.ToolTip="Not exactly chance, but it is calculated based on this number." />
+                                    <GridViewColumnHeader>
+                                        <GridViewColumnHeader.Content>
+                                            <StackPanel Orientation="Vertical"
+                                                        MaxWidth="50">
+                                                <TextBlock Text="Chance weight"
+                                                           TextWrapping="Wrap"
+                                                           FontSize="10" />
+                                            </StackPanel>
+                                        </GridViewColumnHeader.Content>
+                                        <base:ToolTipServiceExtend.ToolTip>
+                                            <StackPanel Orientation="Vertical"
+                                                        MaxWidth="200">
+                                                <TextBlock Text="Chance is calculated based on this number. For more info see 'Fishing calculator' in CNEI tools."
+                                                           TextWrapping="Wrap"
+                                                           FontSize="10" />
+                                            </StackPanel>
+                                        </base:ToolTipServiceExtend.ToolTip>
+                                    </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="Auto"

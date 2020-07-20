@@ -18,14 +18,15 @@
                           InnerGlowSize="7"
                           VisibilityBackgroundImage="Collapsed" />
 
-        <StackPanel Margin="0, 5, 0, 5"
+        <StackPanel Margin="0,5,0,5"
                     Orientation="Vertical">
             <TextBlock Text="Tools Panel"
                        HorizontalAlignment="Center" />
 
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Center">
-                <Button Content="Test tool" />
+                <Button Command="{Binding OpenFishingCalculator}"
+                        Content="Fishing calculator" />
             </StackPanel>
         </StackPanel>
     </Grid>

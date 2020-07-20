@@ -1,0 +1,106 @@
+﻿<core:BaseUserControlWithWindow
+    x:Class="CryoFall.CNEI.UI.FishingCalculatorWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core"
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs"
+    xmlns:controls="clr-namespace:CryoFall.CNEI.UI.Controls">
+
+    <base:BaseUserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UI/CNEI/Styles/DefaultStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </base:BaseUserControl.Resources>
+
+    <core:GameWindow x:Name="GameWindow"
+                     Width="{StaticResource GameMenuStandardWindowWidth}"
+                     Height="{StaticResource GameMenuStandardWindowHeight}"
+                     IsCached="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="Fishing calculator"
+                       HorizontalAlignment="Center" />
+
+            <ListView Grid.Row="2"
+                      Grid.Column="0"
+                      x:Name="FishingListView"
+                      ItemsSource="{Binding FishDetailsList.Items}"
+                      BorderBrush="{StaticResource WidgetBorderBrush}"
+                      BorderThickness="1">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True"
+                              x:Name="FishingGridView">
+                        <GridView.ColumnHeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}"
+                                   BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                <Setter Property="TextElement.FontSize" Value="10" />
+                            </Style>
+                        </GridView.ColumnHeaderContainerStyle>
+                        <GridViewColumn Header="Icon" Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:EntitySlotControl DataContext="{Binding FishViewModel}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="Auto"
+                                        DisplayMemberBinding="{Binding Name}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Name"
+                                                      Command="{Binding SortByName}" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="Auto"
+                                        DisplayMemberBinding="{Binding RequiredFishingKnowledgeLevel}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Knowledge"
+                                                      Command="{Binding SortByKnowledge}" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <StackPanel Grid.Row="2"
+                        Grid.Column="1"
+                        Orientation="Vertical">
+                <TextBlock Text="Preferences"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20" />
+
+                <TextBlock Text="{Binding Path=Value,
+                                          ElementName=KnowledgeSlider,
+                                          StringFormat=Knowledge level: {0:N0}}"
+                           FontSize="10"
+                           HorizontalAlignment="Center" />
+                <Slider x:Name="KnowledgeSlider"
+                        Value="{Binding KnowledgeLevel, Mode=TwoWay}"
+                        base:ToolTipServiceExtend.ToolTip="{Binding Path=Value, ElementName=KnowledgeSlider}"
+                        Minimum="0"
+                        SmallChange="1"
+                        LargeChange="10"
+                        Maximum="100" />
+
+                <CheckBox Content="Is salt water fish"
+                          IsChecked="{Binding IsSaltWaterFish}"
+                          FontSize="10"
+                          HorizontalAlignment="Center" />
+            </StackPanel>
+
+        </Grid>
+    </core:GameWindow>
+</core:BaseUserControlWithWindow>
