@@ -89,6 +89,7 @@
                         x:Name="InfoButton"
                         Style="{StaticResource IconButton}"
                         Margin="3,0,0,0"
+                        base:ToolTipServiceExtend.ToolTip="Information"
                         Command="{Binding ShowInfo}">
                     <Image Source="/UI/CNEI/Images/Icons/icon_info.png"
                            Width="32"
@@ -99,6 +100,7 @@
                               x:Name="ToolsButton"
                               Style="{StaticResource IconToggleButton}"
                               Margin="3,0,0,0"
+                              base:ToolTipServiceExtend.ToolTip="Tools"
                               IsTabStop="False">
                     <Image Source="/UI/CNEI/Images/Icons/icon_tools.png"
                            Width="32"

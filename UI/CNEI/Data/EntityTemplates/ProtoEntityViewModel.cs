@@ -103,8 +103,6 @@
 
         public Visibility TypeVisibility => EntityViewModelsManager.TypeVisibility;
 
-        public virtual Visibility CountVisibility => Visibility.Collapsed;
-
         public ObservableCollection<ViewModelEntityInformation> EntityInformation { get; set; }
 
         public List<RecipeViewModelComboBoxWrapper> RecipeVMWrappersList { get; private set; }

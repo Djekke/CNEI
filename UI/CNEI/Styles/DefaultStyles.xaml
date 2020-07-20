@@ -277,9 +277,9 @@
 
     <!-- GroupBox Style -->
     <Style x:Key="DefaultGroupBoxStyle" TargetType="{x:Type GroupBox}">
-        <Setter Property="BorderBrush" Value="{StaticResource BrushColorAlt5}"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushColorAlt5}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="3" />
         <Setter Property="Margin" Value="0,1,0,1" />
         <Setter Property="Template">
@@ -287,17 +287,17 @@
                 <ControlTemplate TargetType="{x:Type GroupBox}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4"/>
-                            <ColumnDefinition Width="26"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="4"/>
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="26" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="4"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="4" />
                         </Grid.RowDefinitions>
                         <!-- Outer line -->
                         <Border CornerRadius="1"
@@ -317,14 +317,13 @@
                                 Grid.Column="2"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 BorderBrush="{TemplateBinding BorderBrush}">
-                            <ContentPresenter ContentSource="Header"
-                                              RecognizesAccessKey="True" />
+                            <ContentPresenter ContentSource="Header" />
                         </Border>
                         <!-- Primary content for GroupBox -->
                         <ContentPresenter Grid.Row="2"
                                           Grid.Column="1"
                                           Grid.ColumnSpan="3"
-                                          Margin="{TemplateBinding Padding}"/>
+                                          Margin="{TemplateBinding Padding}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -709,9 +708,6 @@
                                            Fill="{Binding Icon}"
                                            UseLayoutRounding="True"
                                            Margin="{TemplateBinding Padding}" />
-                                <TextBlock Text="{Binding Count}"
-                                           Visibility="{Binding CountVisibility}"
-                                           Style="{StaticResource ItemCountTextBlockStyle}" />
                             </Grid>
                             <Rectangle x:Name="RectangleMouseOver" Fill="#00FFFFFF" />
                         </Grid>
@@ -828,7 +824,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="FocusVisualStyle" Value="{StaticResource Style.Focus.Outer.Uniform}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="#ADADAD" />
@@ -861,7 +856,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="FocusVisualStyle" Value="{StaticResource Style.Focus.Inner.Uniform}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="#ADADAD" />
@@ -874,11 +868,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Border Background="Transparent" Margin="-12,0">
+                    <Border Background="Transparent" Margin="-3,0">
                         <Rectangle x:Name="Rect"
                                    Fill="{TemplateBinding BorderBrush}"
                                    Width="1"
-                                   Margin="12,0" />
+                                   Margin="3,0" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

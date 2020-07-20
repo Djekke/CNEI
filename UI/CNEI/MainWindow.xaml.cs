@@ -53,7 +53,7 @@
                         creativePanel.Width = 180;
                     }
                     creativePanelCanvas.Children.Add(creativePanel);
-                    Canvas.SetLeft(creativePanel, -190);
+                    Canvas.SetLeft(creativePanel, -185);
 
                     grid.Children.Add(creativePanelCanvas);
                 }
@@ -77,7 +77,7 @@
                             ? Visibility.Visible
                             : Visibility.Collapsed);
                     toolsPanelCanvas.Children.Add(toolsPanel);
-                    Canvas.SetLeft(toolsPanel, 10);
+                    Canvas.SetLeft(toolsPanel, 5);
 
                     grid.Children.Add(toolsPanelCanvas);
                 }
