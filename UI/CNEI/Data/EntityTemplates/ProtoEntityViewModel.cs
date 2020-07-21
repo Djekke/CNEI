@@ -211,5 +211,10 @@
         {
             return obj?.GetType().ScriptingGetProperty(name)?.GetValue(obj, null);
         }
+
+        public override string ToString()
+        {
+            return ProtoEntity.ToString();
+        }
     }
 }
