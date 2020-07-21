@@ -4,6 +4,7 @@
     using AtomicTorch.CBND.CoreMod.CharacterStatusEffects;
     using AtomicTorch.CBND.CoreMod.CharacterStatusEffects.Neutral;
     using AtomicTorch.CBND.CoreMod.Items.Medical;
+    using AtomicTorch.CBND.GameApi.Scripting;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
@@ -11,6 +12,44 @@
     {
         public ProtoItemMedicalViewModel([NotNull] IProtoItemMedical medical) : base(medical)
         {
+        }
+
+        /// <summary>
+        /// Initialize entity relationships with each other - invoked after all entity view Models created,
+        /// so you can access them by using <see cref="EntityViewModelsManager.GetEntityViewModel" />
+        /// and <see cref="EntityViewModelsManager.GetAllEntityViewModels" />.
+        /// </summary>
+        public override void InitAdditionalRecipes()
+        {
+            base.InitAdditionalRecipes();
+
+            if (!(ProtoEntity is ProtoItemMedical medical))
+            {
+                return;
+            }
+
+            foreach (EffectAction effect in medical.Effects)
+            {
+                var statusEffectVM = EntityViewModelsManager.GetEntityViewModel(effect.ProtoStatusEffect);
+                if (statusEffectVM is ProtoStatusEffectViewModel statusEffectViewModel)
+                {
+                    statusEffectViewModel.AddConsumable(this, effect.Intensity);
+                }
+                else
+                {
+                    Api.Logger.Error("CNEI: It's not a status effect " + statusEffectVM + " in " + this);
+                }
+            }
+
+            if (medical.MedicalToxicity > 0)
+            {
+                var medicineOveruseVM =
+                    EntityViewModelsManager.GetEntityViewModelByType<StatusEffectMedicineOveruse>();
+                if (medicineOveruseVM is ProtoStatusEffectViewModel medicineOveruseViewModel)
+                {
+                    medicineOveruseViewModel.AddConsumable(this, medical.MedicalToxicity);
+                }
+            }
         }
 
         /// <summary>

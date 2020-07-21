@@ -9,8 +9,10 @@
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
-    public class ProtoStatusEffectViewModel : ProtoEntityViewModel
+    public class ProtoStatusEffectViewModel : ProtoEntityWithRecipeBondsViewModel
     {
+        public override string ResourceDictionaryName => "ProtoStatusEffectDataTemplate.xaml";
+
         public ProtoStatusEffectViewModel([NotNull] IProtoStatusEffect statusEffect)
             : base(statusEffect)
         {
@@ -68,6 +70,26 @@
                 }
             }
         }
+
+        public void AddConsumable([NotNull] ProtoEntityViewModel consumableViewModel, double intensity)
+        {
+            if (Consumables.Count == 0)
+            {
+                ConsumableEffect = new ConsumableEffectViewModel(this, consumableViewModel, intensity);
+                EntityViewModelsManager.AddRecipe(ConsumableEffect);
+            }
+            else
+            {
+                ConsumableEffect.AddConsumable(consumableViewModel, intensity);
+            }
+
+            Consumables.Add(consumableViewModel);
+        }
+
+        public ConsumableEffectViewModel ConsumableEffect { get; private set; }
+
+        public List<ProtoEntityViewModel> Consumables { get; private set; }
+            = new List<ProtoEntityViewModel>();
 
         public StatusEffectKind Kind { get; }
 
