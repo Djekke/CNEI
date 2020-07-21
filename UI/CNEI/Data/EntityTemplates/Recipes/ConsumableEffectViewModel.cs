@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows.Media;
     using CryoFall.CNEI.Managers;
     using JetBrains.Annotations;
 
@@ -35,6 +36,8 @@
 
             AddConsumable(conumableViewModel, intensity);
         }
+
+        public override Brush Icon => StatusEffectEntity.Icon;
 
         public void AddConsumable([NotNull] ProtoEntityViewModel conumableViewModel, double intensity)
         {
