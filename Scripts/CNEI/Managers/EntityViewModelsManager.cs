@@ -355,7 +355,7 @@
             bool settingExist = true;
 
             // Force reload preset if saved version is too old.
-            if (VersionFromClientStorage.CompareTo(new Version("0.4.3")) < 0 ||
+            if (VersionFromClientStorage.CompareTo(new Version("0.4.7")) < 0 ||
                 !defaultViewStorage.TryLoad(out defaultViewPresetFromSettings))
             {
                 // Default settings.
@@ -369,6 +369,7 @@
                     "ProtoObjectMineral",
                     "ProtoObjectStructure",
                     "ProtoObjectVegetation",
+                    "ProtoStatusEffect",
                     "ProtoVehicle"
                 };
                 settingExist = false;
