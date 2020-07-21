@@ -60,5 +60,4 @@
                                         DataContext="{Binding StatusEffectEntity}" />
         </Grid>
     </DataTemplate>
-
 </ResourceDictionary>

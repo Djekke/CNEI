@@ -41,6 +41,11 @@
                       ItemsSource="{Binding FishDetailsList.Items}"
                       BorderBrush="{StaticResource WidgetBorderBrush}"
                       BorderThickness="1">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        <Setter Property="BorderThickness" Value="1" />
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView AllowsColumnReorder="True"
                               x:Name="FishingGridView">
