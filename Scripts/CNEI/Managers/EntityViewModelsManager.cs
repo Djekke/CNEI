@@ -90,7 +90,7 @@
         /// </summary>
         public static bool EntityDictionaryCreated = false;
 
-        public static Version CurrentVersion => new Version("0.4.6");
+        public static Version CurrentVersion => new Version("0.4.7");
 
         public static Version VersionFromClientStorage = null;
 
