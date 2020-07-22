@@ -84,11 +84,11 @@
         {
             fishViewModelList = EntityViewModelsManager.GetAllEntityViewModelsByType<ProtoItemFish>();
             baitViewModelList = EntityViewModelsManager.GetAllEntityViewModelsByType<ProtoItemFishingBait>();
-            BaitWeightSumDictionary = baitViewModelList.ToDictionary(b => b.Title, b => 0d);
+            BaitWeightSumDictionary = baitViewModelList.ToDictionary(b => b.Type, b => 0d);
             BaitSortDictionary = baitViewModelList
-                .ToDictionary(b => b.Title,
+                .ToDictionary(b => b.Type,
                               b => new ActionCommand(() =>
-                                SortByPropertyName("BaitWeightDictionary[" + b.Title + "].Chance")) as BaseCommand);
+                                SortByPropertyName("BaitWeightDictionary[" + b.Type + "].Chance")) as BaseCommand);
             FishDetailsList = new FilteredObservableWithSorting<FishDetails>();
             foreach (var fishViewModel in fishViewModelList)
             {
@@ -102,10 +102,11 @@
                         IsSaltWaterFish = fish.IsSaltwaterFish,
                         RequiredFishingKnowledgeLevel = fish.RequiredFishingKnowledgeLevel,
                         BaitWeightDictionary = fish.BaitWeightList.Entries
-                                               .ToDictionary(e => e.Value.Name,
+                                               .ToDictionary(e => e.Value.Id,
                                                e => new FishDetails.BaitWithWeight(this)
                                                {
                                                    Name = e.Value.Name,
+                                                   Id = e.Value.Id,
                                                    Weight = e.Weight
                                                })
                     });
@@ -124,13 +125,13 @@
         {
             foreach (var baitVM in baitViewModelList)
             {
-                BaitWeightSumDictionary[baitVM.Title] = 0d;
+                BaitWeightSumDictionary[baitVM.Type] = 0d;
             }
             foreach (FishDetails fishDetails in FishDetailsList.Items.ToList())
             {
                 foreach (var baitVM in baitViewModelList)
                 {
-                    BaitWeightSumDictionary[baitVM.Title] += fishDetails.BaitWeightDictionary[baitVM.Title].Weight;
+                    BaitWeightSumDictionary[baitVM.Type] += fishDetails.BaitWeightDictionary[baitVM.Type].Weight;
                 }
             }
         }
@@ -153,6 +154,8 @@
 
                 public string Name { get; set; }
 
+                public string Id { get; set; }
+
                 public double Weight { get; set; }
 
                 public double Chance
@@ -160,7 +163,7 @@
                     get
                     {
                         return (Weight /
-                                viewModelFishingCalculator.BaitWeightSumDictionary[Name]);
+                                viewModelFishingCalculator.BaitWeightSumDictionary[Id]);
                     }
                 }
 

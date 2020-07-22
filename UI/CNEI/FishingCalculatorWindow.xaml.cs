@@ -44,7 +44,7 @@
                 };
                 var commandBinding = new Binding()
                 {
-                    Path = new PropertyPath("BaitSortDictionary[" + baitViewModel.Title + "]")
+                    Path = new PropertyPath("BaitSortDictionary[" + baitViewModel.Type + "]")
                 };
                 gridViewColumnHeader.SetBinding(GridViewColumnHeader.CommandProperty, commandBinding);
                 var gridColumn = new GridViewColumn()
@@ -54,7 +54,7 @@
                 };
                 Binding ChanceBinding = new Binding()
                 {
-                    Path = new PropertyPath("BaitWeightDictionary[" + baitViewModel.Title + "].Chance"),
+                    Path = new PropertyPath("BaitWeightDictionary[" + baitViewModel.Type + "].Chance"),
                     StringFormat = "P0"
                 };
                 // Yep, it's error in VS2019, but it works for noesis.
