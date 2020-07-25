@@ -92,6 +92,11 @@
 
         public static Version CurrentVersion => new Version("0.4.8");
 
+        public const string ModId = "CNEI";
+
+        public const string RssFeed = //"http://github.com/Djekke/CNEI/releases.atom";
+            "https://feedmix.novaclic.com/atom2rss.php?source=https%3A%2F%2Fgithub.com%2FDjekke%2FCNEI%2Freleases.atom";
+
         public static Version VersionFromClientStorage = null;
 
         /// <summary>
@@ -335,7 +340,7 @@
         private static void LoadVersionFromClientStorage()
         {
             // Load settings.
-            versionStorage = Api.Client.Storage.GetStorage("Mods/CNEI/Version");
+            versionStorage = Api.Client.Storage.GetStorage("Mods/" + ModId + "/Version");
             versionStorage.RegisterType(typeof(Version));
             if (!versionStorage.TryLoad(out VersionFromClientStorage))
             {
@@ -351,7 +356,7 @@
 
         public static void LoadDefaultViewPresetFromClientStorage()
         {
-            defaultViewStorage = Api.Client.Storage.GetStorage("Mods/CNEI/DefaultView");
+            defaultViewStorage = Api.Client.Storage.GetStorage("Mods/" + ModId + "/DefaultView");
             bool settingExist = true;
 
             // Force reload preset if saved version is too old.
@@ -385,7 +390,7 @@
 
         public static void LoadGlobalSettingsFromClientStorage()
         {
-            settingsStorage = Api.Client.Storage.GetStorage("Mods/CNEI/GlobalSettings");
+            settingsStorage = Api.Client.Storage.GetStorage("Mods/" + ModId + "/GlobalSettings");
             settingsStorage.RegisterType(typeof(ViewType));
             settingsStorage.RegisterType(typeof(Settings));
 

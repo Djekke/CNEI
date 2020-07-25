@@ -14,6 +14,7 @@
     using CryoFall.CNEI.UI.Controls;
     using CryoFall.CNEI.UI.Data;
     using CryoFall.CNEI.UI.Helpers;
+    using CryoFall.UpdateChecker;
 
     [PrepareOrder(afterType: typeof(BootstrapperClientOptions))]
     public class BootstrapperClientCNEI: BaseBootstrapper
@@ -27,6 +28,11 @@
         public override void ClientInitialize()
         {
             ClientInputManager.RegisterButtonsEnum<CNEIButton>();
+
+            UpdateChecker.CheckNewReleases(
+                EntityViewModelsManager.ModId,
+                EntityViewModelsManager.CurrentVersion,
+                EntityViewModelsManager.RssFeed);
 
             EntityViewModelsManager.Init();
 
