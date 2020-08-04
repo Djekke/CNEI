@@ -90,7 +90,7 @@
         /// </summary>
         public static bool EntityDictionaryCreated = false;
 
-        public static Version CurrentVersion => new Version("0.4.8");
+        public static Version CurrentVersion => new Version("0.4.9");
 
         public const string ModId = "CNEI";
 
