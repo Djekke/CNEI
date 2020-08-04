@@ -60,9 +60,10 @@
                             <GridViewColumn Header="Name"
                                             Width="110"
                                             DisplayMemberBinding="{Binding Name}" />
-                            <GridViewColumn Width="Auto"
+                            <GridViewColumn Header="Chance weight"
+                                            Width="Auto"
                                             DisplayMemberBinding="{Binding Weight}">
-                                <GridViewColumn.Header>
+                                <!--<GridViewColumn.Header>
                                     <GridViewColumnHeader>
                                         <GridViewColumnHeader.Content>
                                             <StackPanel Orientation="Vertical"
@@ -81,23 +82,25 @@
                                             </StackPanel>
                                         </base:ToolTipServiceExtend.ToolTip>
                                     </GridViewColumnHeader>
-                                </GridViewColumn.Header>
+                                </GridViewColumn.Header>-->
                             </GridViewColumn>
-                            <GridViewColumn Width="Auto"
+                            <GridViewColumn Header="Knowledge"
+                                            Width="Auto"
                                             DisplayMemberBinding="{Binding RequiredFishingKnowledgeLevel}">
-                                <GridViewColumn.Header>
+                                <!--<GridViewColumn.Header>
                                     <TextBlock Text="Knowledge"
                                                FontSize="10"
                                                base:ToolTipServiceExtend.ToolTip="Required fishing knowledge level." />
-                                </GridViewColumn.Header>
+                                </GridViewColumn.Header>-->
                             </GridViewColumn>
-                            <GridViewColumn Width="Auto"
+                            <GridViewColumn Header="Salty"
+                                            Width="Auto"
                                             DisplayMemberBinding="{Binding IsSaltwaterFish}">
-                                <GridViewColumn.Header>
+                                <!--<GridViewColumn.Header>
                                     <TextBlock Text="Salty"
                                                FontSize="10"
                                                base:ToolTipServiceExtend.ToolTip="Is salt water fish." />
-                                </GridViewColumn.Header>
+                                </GridViewColumn.Header>-->
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
