@@ -118,18 +118,10 @@
                         EntityInformation.Add(new ViewModelEntityInformation(pair.Key.ToString(), pair.Value));
                     }
                 }
-            }
 
-            if (ProtoEntity is ProtoStatusEffect effect)
-            {
-                if (effect.IntensityAutoDecreasePerSecondValue > 0 ||
-                    effect.IntensityAutoDecreasePerSecondFraction > 0)
+                if (statusEffect.IntensityAutoDecreasePerSecondValue > 0)
                 {
-                    double seconds = 1.0 / effect.IntensityAutoDecreasePerSecondValue;
-                    if (effect.IntensityAutoDecreasePerSecondFraction > 0)
-                    {
-                        seconds = 1.0 / effect.IntensityAutoDecreasePerSecondFraction;
-                    }
+                    double seconds = 1.0 / statusEffect.IntensityAutoDecreasePerSecondValue;
                     EntityInformation.Add(new ViewModelEntityInformation("Auto-disappear in",
                         TimeSpan.FromSeconds(seconds)));
                 }
