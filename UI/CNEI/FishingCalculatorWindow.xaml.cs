@@ -1,8 +1,10 @@
 ﻿namespace CryoFall.CNEI.UI
 {
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
+    using System.Windows.Markup;
     using AtomicTorch.CBND.CoreMod.Items.Fishing.Base;
     using AtomicTorch.CBND.CoreMod.UI.Controls.Core;
     using AtomicTorch.CBND.GameApi.Scripting;
@@ -58,10 +60,14 @@
                     StringFormat = "P0"
                 };
                 // Yep, it's error in VS2019, but it works for noesis.
-                //gridColumn.DisplayMemberBinding = (BindingExpression)ChanceBinding.ProvideValue(null, null);
-                //gridColumn.DisplayMemberBinding = (BindingExpression)ChanceBinding.ProvideValue(null);
-                // TODO: FIND WORKAROUND
-                //BindingOperations.SetBinding(gridColumn, GridViewColumn.DisplayMemberBindingProperty, ChanceBinding);
+                // https://www.noesisengine.com/bugs/view.php?id=1337
+                gridColumn.DisplayMemberBinding =
+                    (BindingExpression)ChanceBinding.ProvideValue(
+                        new ProvideValueTarget
+                        {
+                            TargetObject = null,
+                            TargetProperty = null
+                        });
                 fishingGridView.Columns.Add(gridColumn);
             }
         }
@@ -76,6 +82,18 @@
             {
                 Instance = null;
             }
+        }
+    }
+
+    public class ProvideValueTarget : IServiceProvider, IProvideValueTarget
+    {
+        public object TargetObject { get; set; }
+        public object TargetProperty { get; set; }
+
+        public object GetService(Type serviceType)
+        {
+            if (serviceType == typeof(IProvideValueTarget)) return this;
+            return null;
         }
     }
 }
