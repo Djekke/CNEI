@@ -65,10 +65,6 @@
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Water restore", food.WaterRestore));
                 }
-                if (Math.Abs(food.HealthRestore) > 0)
-                {
-                    EntityInformation.Add(new ViewModelEntityInformation("Health restore", food.HealthRestore));
-                }
                 if (Math.Abs(food.StaminaRestore) > 0)
                 {
                     EntityInformation.Add(new ViewModelEntityInformation("Stamina restore", food.StaminaRestore));

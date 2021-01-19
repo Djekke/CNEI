@@ -58,7 +58,10 @@
                     StringFormat = "P0"
                 };
                 // Yep, it's error in VS2019, but it works for noesis.
-                gridColumn.DisplayMemberBinding = (BindingExpression)ChanceBinding.ProvideValue(null, null);
+                //gridColumn.DisplayMemberBinding = (BindingExpression)ChanceBinding.ProvideValue(null, null);
+                //gridColumn.DisplayMemberBinding = (BindingExpression)ChanceBinding.ProvideValue(null);
+                // TODO: FIND WORKAROUND
+                //BindingOperations.SetBinding(gridColumn, GridViewColumn.DisplayMemberBindingProperty, ChanceBinding);
                 fishingGridView.Columns.Add(gridColumn);
             }
         }

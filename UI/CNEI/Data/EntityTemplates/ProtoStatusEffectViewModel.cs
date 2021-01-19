@@ -31,57 +31,57 @@
         /// <param name="textureHeight">Texture height</param>
         /// <param name="spriteQualityOffset">Sprite quality modifier (0 = full size, 1 = x0.5, 2 = x0.25)</param>
         /// <returns></returns>
-        public override async Task<ITextureResource> GenerateIcon(
-            ProceduralTextureRequest request,
-            ushort textureWidth = 512,
-            ushort textureHeight = 512,
-            sbyte spriteQualityOffset = 0)
-        {
-            var statusEffect = ProtoEntity as IProtoStatusEffect;
-            var icon = statusEffect.Icon;
-            if (icon == null || icon == TextureResource.NoTexture)
-            {
-                icon = new TextureResource(
-                      localFilePath: "Content/Textures/StaticObjects/ObjectUnknown.png",
-                      qualityOffset: spriteQualityOffset);
-            }
-
-            var textureSize = await Api.Client.Rendering.GetTextureSize(icon);
-            request.ThrowIfCancelled();
-
-            var renderingTag = request.TextureName;
-            var cameraObject = Api.Client.Scene.CreateSceneObject(renderingTag);
-
-            var camera = Api.Client.Rendering.CreateCamera(cameraObject,
-                                                           renderingTag,
-                                                           drawOrder: -10);
-
-            var renderTexture = Api.Client.Rendering.CreateRenderTexture(renderingTag,
-                                                                         textureSize.X,
-                                                                         textureSize.Y);
-
-            Api.Client.Rendering.CreateSpriteRenderer(cameraObject,
-                                                      icon,
-                                                      spritePivotPoint: (0, 1),
-                                                      renderingTag: renderingTag);
-
-            camera.RenderTarget = renderTexture;
-            camera.ClearColor = ((SolidColorBrush)ViewModelStatusEffect.GetBrush(Kind, 1.0)).Color;
-            camera.SetOrthographicProjection(textureSize.X, textureSize.Y);
-
-            await camera.DrawAsync();
-            cameraObject.Destroy();
-
-            request.ThrowIfCancelled();
-
-            var generatedTexture = await renderTexture.SaveToTexture(isTransparent: true,
-                qualityScaleCoef: Api.Client.Rendering.CalculateCurrentQualityScaleCoefWithOffset(spriteQualityOffset));
-
-            renderTexture.Dispose();
-            request.ThrowIfCancelled();
-
-            return generatedTexture;
-        }
+        //public override async Task<ITextureResource> GenerateIcon(
+        //    ProceduralTextureRequest request,
+        //    ushort textureWidth = 512,
+        //    ushort textureHeight = 512,
+        //    sbyte spriteQualityOffset = 0)
+        //{
+        //    var statusEffect = ProtoEntity as IProtoStatusEffect;
+        //    var icon = statusEffect.Icon;
+        //    if (icon == null || icon == TextureResource.NoTexture)
+        //    {
+        //        icon = new TextureResource(
+        //              localFilePath: "Content/Textures/StaticObjects/ObjectUnknown.png",
+        //              qualityOffset: spriteQualityOffset);
+        //    }
+        //
+        //    var textureSize = await Api.Client.Rendering.GetTextureSize(icon);
+        //    request.ThrowIfCancelled();
+        //
+        //    var renderingTag = request.TextureName;
+        //    var cameraObject = Api.Client.Scene.CreateSceneObject(renderingTag);
+        //
+        //    var camera = Api.Client.Rendering.CreateCamera(cameraObject,
+        //                                                   renderingTag,
+        //                                                   drawOrder: -10);
+        //
+        //    var renderTexture = Api.Client.Rendering.CreateRenderTexture(renderingTag,
+        //                                                                 textureSize.X,
+        //                                                                 textureSize.Y);
+        //
+        //    Api.Client.Rendering.CreateSpriteRenderer(cameraObject,
+        //                                              icon,
+        //                                              spritePivotPoint: (0, 1),
+        //                                              renderingTag: renderingTag);
+        //
+        //    camera.RenderTarget = renderTexture;
+        //    camera.ClearColor = ((SolidColorBrush)ClientStatusEffectIconColorizer.GetBrush(Kind, 1.0)).Color;
+        //    camera.SetOrthographicProjection(textureSize.X, textureSize.Y);
+        //
+        //    await camera.DrawAsync();
+        //    cameraObject.Destroy();
+        //
+        //    request.ThrowIfCancelled();
+        //
+        //    var generatedTexture = await renderTexture.SaveToTexture(isTransparent: true,
+        //        qualityScaleCoef: Api.Client.Rendering.CalculateCurrentQualityScaleCoefWithOffset(spriteQualityOffset));
+        //
+        //    renderTexture.Dispose();
+        //    request.ThrowIfCancelled();
+        //
+        //    return generatedTexture;
+        //}
 
         /// <summary>
         /// Initialize information about entity - invoked after all entity view Models created,
@@ -150,9 +150,9 @@
 
         public StatusEffectKind Kind { get; }
 
-        public Brush GetBackgroundBrush(double intensity)
-        {
-            return ViewModelStatusEffect.GetBrush(Kind, intensity);
-        }
+        //public Brush GetBackgroundBrush(double intensity)
+        //{
+        //    return ClientStatusEffectIconColorizer.GetBrush(Kind, intensity);
+        //}
     }
 }

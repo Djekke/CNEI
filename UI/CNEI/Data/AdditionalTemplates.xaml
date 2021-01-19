@@ -141,7 +141,7 @@
 
                 <Border Grid.Row="1"
                         Grid.Column="1"
-                        Background="{StaticResource ItemBackgroundNormalDiagonalBrush}"
+                        Background="{StaticResource ItemBackgroundNormalBrush}"
                         CornerRadius="5"
                         Width="256" Height="256">
                     <Rectangle Fill="{Binding Icon}" />

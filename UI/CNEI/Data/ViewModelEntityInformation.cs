@@ -104,7 +104,7 @@
                 StatusEffect = protoStatusEffectViewModel;
                 StatusEffectVisibility = Visibility.Visible;
                 ToolTipIntensityPercent = intensity * 100;
-                StatusEffectBackground = protoStatusEffectViewModel.GetBackgroundBrush(intensity);
+                //StatusEffectBackground = protoStatusEffectViewModel.GetBackgroundBrush(intensity);
             }
             else
             {
