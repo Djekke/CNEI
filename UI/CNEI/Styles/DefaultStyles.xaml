@@ -9,7 +9,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/UI/Styles/DefaultStyles.xaml" />
-        <ResourceDictionary Source="/UI/Styles/SpecialItemsPanel.xaml" />
         <ResourceDictionary Source="/UI/Styles/ItemControlsStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
